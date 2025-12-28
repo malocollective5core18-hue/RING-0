@@ -789,6 +789,84 @@ main.slider-open {
   }
 }
 
+/* ===== UPLOAD PROGRESS STYLES ===== */
+.upload-progress-container {
+    width: 100%;
+    margin: 15px 0;
+    background: rgba(12, 16, 36, 0.5);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid rgba(91, 140, 255, 0.2);
+}
+
+.upload-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.upload-progress-title {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.upload-progress-percent {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.upload-progress-bar {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.upload-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.upload-progress-details {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+}
+
+.upload-status-message {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.upload-status-success {
+    background: rgba(53, 208, 127, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(53, 208, 127, 0.3);
+}
+
+.upload-status-warning {
+    background: rgba(255, 107, 107, 0.1);
+    color: var(--warning);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.upload-status-info {
+    background: rgba(91, 140, 255, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(91, 140, 255, 0.3);
+}
+
 /* ===== UPDATED CARD FOOTER ===== */
 .card-footer{
   display:flex;
@@ -1212,10 +1290,11 @@ main.slider-open {
   animation: fadeInUp 0.5s ease;
 }
 
+
 .card-form-container {
   background: radial-gradient(120% 120% at 0% 0%, #020203, var(--card));
   border-radius: 16px;
-  padding: 25px;
+  padding: 25px 10px;
   margin-bottom: 30px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 }
@@ -2447,7 +2526,7 @@ footer img {
 .groups-container {
   background: rgba(12, 16, 36, 0.5);
   border-radius: 12px;
-  padding: 18px;
+  padding: 18px 3px;
   border: 1px solid rgba(91, 140, 255, 0.2);
   min-height: 200px;
   display: flex;
@@ -3432,11 +3511,16 @@ footer img {
         </button>
       </div>
 
+
       <h2 style="color: var(--accent); margin-bottom: 20px;">Image Slider Content Management</h2>
 
       <div class="admin-tabs">
         <button class="admin-tab active" onclick="switchImageTab('manage-images')">Manage Images</button>
         <button class="admin-tab" onclick="switchImageTab('create-image')">Upload New Image</button>
+        <!-- External button for direct admin access -->
+<button class="admin-tab" onclick="window.location.href='properties.html?admin=direct'">
+    <i class="fas fa-user-shield"></i> Admin Panel (Direct Access)
+</button>
         <button class="admin-tab" onclick="switchImageTab('slider-settings')">Slider Settings</button>
       </div>
 
@@ -3843,6 +3927,53 @@ let zeroClickCount = 0;
 let adminLoginVisible = false;
 let generatedVerificationCode = '';
 let adminEmail = '';
+
+// ================= ENHANCED CLOUDINARY CONFIGURATION =================
+const CLOUDINARY_CONFIG = {
+    CLOUD_NAME: "dcpqnmdas",
+    UPLOAD_PRESET: "unsigned_images",
+    UPLOAD_TIMEOUT: 30000, // 30 seconds timeout
+    MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
+    ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+};
+let cloudinaryImageUrl = "";
+
+// Add this function to test Cloudinary connection
+function testCloudinaryConnection() {
+    console.log('=== Testing Cloudinary Connection ===');
+    console.log('Cloud Name:', CLOUD_NAME);
+    console.log('Upload Preset:', UPLOAD_PRESET);
+    console.log('API URL:', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
+
+    // Test if preset exists by trying a simple upload
+    const testFormData = new FormData();
+    const testBlob = new Blob(['test'], { type: 'text/plain' });
+    testFormData.append('file', testBlob, 'test.txt');
+    testFormData.append('upload_preset', UPLOAD_PRESET);
+
+    fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: testFormData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Cloudinary Response:', data);
+        if (data.error) {
+            console.error('❌ Cloudinary Error:', data.error.message);
+            alert('Cloudinary Error: ' + data.error.message);
+        } else {
+            console.log('✅ Cloudinary connected successfully!');
+            alert('✅ Cloudinary connection successful!');
+        }
+    })
+    .catch(error => {
+        console.error('❌ Network Error:', error);
+        alert('Network error connecting to Cloudinary');
+    });
+}
+
+// Call it to test:
+// testCloudinaryConnection();
 
 // Local SMS simulation system
 class LocalSMSSender {
@@ -6444,7 +6575,7 @@ const defaultImages = [
     title: "University Timetable",
     description: "Current semester schedule and class timings",
     category: "critical",
-    imageUrl: "time_table.jpg",
+    imageUrl: "https://res.cloudinary.com/dcpqnmdas/image/upload/v1710728456/time_table.jpg",
     targetUrl: "#",
     createdAt: new Date().toISOString(),
     expiresAt: null,
@@ -6456,7 +6587,7 @@ const defaultImages = [
     title: "Module Summary",
     description: "Important points and study materials",
     category: "important",
-    imageUrl: "modure_summery.jpg",
+    imageUrl: "https://res.cloudinary.com/dcpqnmdas/image/upload/v1710728456/modure_summery.jpg",
     targetUrl: "#",
     createdAt: new Date().toISOString(),
     expiresAt: null,
@@ -6619,76 +6750,261 @@ function setupAutoAdvance(interval) {
 }
 
 function createImage() {
-  const title = document.getElementById('imageTitle').value.trim();
-  const description = document.getElementById('imageDescription').value.trim();
-  const category = document.getElementById('imageCategory').value;
-  const targetUrl = document.getElementById('imageTargetUrl').value.trim() || '#';
-  const visibility = document.getElementById('imageVisibility').value;
-  const uploadInput = document.getElementById('imageUpload');
-  
-  if (!title || !description || !category || !uploadInput.files[0]) {
-    showTemporaryMessage('Please fill in all required fields', 'warning');
-    return;
-  }
-  
-  let expiresAt = null;
-  if (visibility === 'days') {
-    const days = parseInt(document.getElementById('imageDays').value);
-    if (days && days > 0) {
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + days);
-      expiresAt = expiryDate.toISOString();
+    const title = document.getElementById('imageTitle').value.trim();
+    const description = document.getElementById('imageDescription').value.trim();
+    const category = document.getElementById('imageCategory').value;
+    const targetUrl = document.getElementById('imageTargetUrl').value.trim() || '#';
+    const visibility = document.getElementById('imageVisibility').value;
+    const uploadInput = document.getElementById('imageUpload');
+
+    if (!title || !description || !category || !uploadInput.files[0]) {
+        showTemporaryMessage('Please fill in all required fields', 'warning');
+        return;
     }
-  } else if (visibility === 'date') {
-    const dateStr = document.getElementById('imageEndDate').value;
-    if (dateStr) {
-      expiresAt = new Date(dateStr + 'T23:59:59').toISOString();
+
+    let expiresAt = null;
+    if (visibility === 'days') {
+        const days = parseInt(document.getElementById('imageDays').value);
+        if (days && days > 0) {
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + days);
+            expiresAt = expiryDate.toISOString();
+        }
+    } else if (visibility === 'date') {
+        const dateStr = document.getElementById('imageEndDate').value;
+        if (dateStr) {
+            expiresAt = new Date(dateStr + 'T23:59:59').toISOString();
+        }
     }
-  }
-  
-  const file = uploadInput.files[0];
-  const reader = new FileReader();
-  
-  reader.onload = function(e) {
-    const newImage = {
-      id: Date.now(),
-      title: title,
-      description: description,
-      category: category,
-      imageData: e.target.result,
-      targetUrl: targetUrl,
-      createdAt: new Date().toISOString(),
-      expiresAt: expiresAt,
-      status: 'active',
-      order: allImages.length + 1
+
+    const file = uploadInput.files[0];
+
+    // ===== ENHANCED FILE VALIDATION =====
+    if (!CLOUDINARY_CONFIG.ALLOWED_TYPES.includes(file.type)) {
+        showTemporaryMessage('Only JPG, PNG, GIF, and WebP images are allowed', 'warning');
+        return;
+    }
+
+    if (file.size > CLOUDINARY_CONFIG.MAX_FILE_SIZE) {
+        showTemporaryMessage(`File size must be less than ${CLOUDINARY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`, 'warning');
+        return;
+    }
+    // ===== END FILE VALIDATION =====
+
+    // Show uploading status
+    const submitBtn = document.getElementById('imageSubmitBtn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Uploading...';
+    submitBtn.disabled = true;
+
+    // Create progress indicator
+    const progressContainer = document.createElement('div');
+    progressContainer.id = 'uploadProgress';
+    progressContainer.style.cssText = `
+        margin-top: 15px;
+        padding: 12px;
+        background: rgba(12, 16, 36, 0.5);
+        border-radius: 8px;
+        border: 1px solid rgba(91, 140, 255, 0.3);
+    `;
+
+    progressContainer.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="color: var(--text); font-weight: 600;">Uploading to Cloudinary...</span>
+            <span id="uploadPercent" style="color: var(--accent); font-weight: bold;">0%</span>
+        </div>
+        <div style="height: 6px; background: rgba(0, 0, 0, 0.3); border-radius: 3px; overflow: hidden;">
+            <div id="uploadProgressBar" style="height: 100%; width: 0%; background: var(--accent); border-radius: 3px; transition: width 0.3s ease;"></div>
+        </div>
+        <div style="margin-top: 8px; font-size: 0.8rem; color: var(--muted);">
+            File: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+        </div>
+    `;
+
+    // Insert progress indicator
+    const formButtons = document.querySelector('#createImageForm .form-buttons');
+    if (formButtons) {
+        formButtons.parentNode.insertBefore(progressContainer, formButtons);
+    }
+
+    // Create XMLHttpRequest for progress tracking
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.CLOUD_NAME}/image/upload`, true);
+
+    // ===== NETWORK TIMEOUT HANDLING =====
+    xhr.timeout = CLOUDINARY_CONFIG.UPLOAD_TIMEOUT;
+    xhr.ontimeout = function() {
+        showTemporaryMessage(`Upload timed out after ${CLOUDINARY_CONFIG.UPLOAD_TIMEOUT/1000} seconds. Please try again.`, 'warning');
+
+        // Clean up progress UI
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+
+        // Fallback to local storage
+        fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
     };
-    
-    allImages.push(newImage);
-    saveImagesToStorage();
-    renderActiveImages();
-    resetImageForm();
-    
-    showTemporaryMessage(`"${title}" image uploaded successfully!`, 'success');
-    switchImageTab('manage-images');
-  };
-  
-  reader.readAsDataURL(file);
+    // ===== END NETWORK TIMEOUT =====
+
+    // Progress tracking
+    xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+            const percent = Math.round((e.loaded / e.total) * 100);
+            const percentElement = document.getElementById('uploadPercent');
+            const progressBar = document.getElementById('uploadProgressBar');
+
+            if (percentElement) percentElement.textContent = percent + '%';
+            if (progressBar) progressBar.style.width = percent + '%';
+        }
+    });
+
+    // Success handling
+    xhr.onload = function() {
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+                const data = JSON.parse(xhr.responseText);
+
+                // ===== ENHANCED RESPONSE VALIDATION =====
+                if (!data.secure_url) {
+                    console.error('Cloudinary response missing secure_url:', data);
+                    throw new Error('Upload failed: No secure_url in response');
+                }
+
+                // Create image object with Cloudinary URL
+                const newImage = {
+                    id: Date.now(),
+                    title: title,
+                    description: description,
+                    category: category,
+                    imageUrl: data.secure_url, // Store Cloudinary URL
+                    targetUrl: targetUrl,
+                    createdAt: new Date().toISOString(),
+                    expiresAt: expiresAt,
+                    status: 'active',
+                    order: allImages.length + 1,
+                    cloudinaryId: data.public_id || null
+                };
+
+                allImages.push(newImage);
+                saveImagesToStorage();
+                renderActiveImages();
+                resetImageForm();
+
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+
+                showTemporaryMessage(`"${title}" uploaded to Cloudinary successfully!`, 'success');
+                console.log('✅ Cloudinary upload successful. URL:', data.secure_url);
+
+                switchImageTab('manage-images');
+            } catch (error) {
+                console.error('❌ Upload processing error:', error);
+                showTemporaryMessage('Failed to process upload response', 'warning');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+
+                // Fallback to local storage
+                fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+            }
+        } else {
+            console.error('❌ Upload failed with status:', xhr.status, xhr.statusText);
+            showTemporaryMessage(`Upload failed (HTTP ${xhr.status}). Please try again.`, 'warning');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+
+            // Fallback to local storage
+            fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+        }
+    };
+
+    // Error handling
+    xhr.onerror = function() {
+        console.error('❌ Upload error:', xhr.statusText);
+        showTemporaryMessage('Network error during upload. Please check your connection.', 'warning');
+
+        // Clean up progress UI
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+
+        // Fallback to local storage
+        fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+    };
+
+    // Handle CORS errors
+    xhr.onabort = function() {
+        console.warn('Upload was aborted');
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_CONFIG.UPLOAD_PRESET);
+
+    xhr.send(formData);
+}
+
+// ===== FALLBACK FUNCTION FOR LOCAL STORAGE =====
+function fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const fallbackImage = {
+            id: Date.now(),
+            title: title,
+            description: description,
+            category: category,
+            imageData: e.target.result, // Fallback to base64
+            targetUrl: targetUrl,
+            createdAt: new Date().toISOString(),
+            expiresAt: expiresAt,
+            status: 'active',
+            order: allImages.length + 1,
+            isLocalFallback: true // Mark as fallback
+        };
+
+        allImages.push(fallbackImage);
+        saveImagesToStorage();
+        renderActiveImages();
+        resetImageForm();
+
+        showTemporaryMessage(`"${title}" saved locally (Cloudinary upload failed)`, 'info');
+
+        // Switch to manage images tab
+        const imageTabBtn = document.querySelector('#imageContentManagementSection .admin-tab[onclick="switchImageTab(\'manage-images\')"]');
+        if (imageTabBtn) {
+            imageTabBtn.click();
+        }
+    };
+    reader.onerror = function() {
+        showTemporaryMessage('Failed to read image file', 'error');
+        document.getElementById('imageSubmitBtn').textContent = 'Upload Image';
+        document.getElementById('imageSubmitBtn').disabled = false;
+    };
+    reader.readAsDataURL(file);
 }
 
 function updateImage() {
   if (!imageToEdit) return;
-  
+
   const title = document.getElementById('imageTitle').value.trim();
   const description = document.getElementById('imageDescription').value.trim();
   const category = document.getElementById('imageCategory').value;
   const targetUrl = document.getElementById('imageTargetUrl').value.trim() || '#';
   const visibility = document.getElementById('imageVisibility').value;
-  
+
   if (!title || !description || !category) {
     showTemporaryMessage('Please fill in all required fields', 'warning');
     return;
   }
-  
+
   const imageIndex = allImages.findIndex(img => img.id === imageToEdit.id);
   if (imageIndex !== -1) {
     let expiresAt = null;
@@ -6705,7 +7021,7 @@ function updateImage() {
         expiresAt = new Date(dateStr + 'T23:59:59').toISOString();
       }
     }
-    
+
     allImages[imageIndex] = {
       ...allImages[imageIndex],
       title: title,
@@ -6715,19 +7031,177 @@ function updateImage() {
       expiresAt: expiresAt,
       updatedAt: new Date().toISOString()
     };
-    
+
     const uploadInput = document.getElementById('imageUpload');
     if (uploadInput.files[0]) {
       const file = uploadInput.files[0];
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        allImages[imageIndex].imageData = e.target.result;
-        saveImagesToStorage();
-        renderActiveImages();
-        showTemporaryMessage('Image updated successfully!', 'success');
-        switchImageTab('manage-images');
+
+      // ===== ENHANCED FILE VALIDATION =====
+      if (!CLOUDINARY_CONFIG.ALLOWED_TYPES.includes(file.type)) {
+        showTemporaryMessage('Only JPG, PNG, GIF, and WebP images are allowed', 'warning');
+        return;
+      }
+
+      if (file.size > CLOUDINARY_CONFIG.MAX_FILE_SIZE) {
+        showTemporaryMessage(`File size must be less than ${CLOUDINARY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`, 'warning');
+        return;
+      }
+
+      // Show uploading status
+      const submitBtn = document.getElementById('imageSubmitBtn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Uploading...';
+      submitBtn.disabled = true;
+
+      // Create progress indicator
+      const progressContainer = document.createElement('div');
+      progressContainer.id = 'uploadProgress';
+      progressContainer.className = 'upload-progress-container';
+      progressContainer.innerHTML = `
+        <div class="upload-progress-header">
+          <span class="upload-progress-title">Uploading to Cloudinary...</span>
+          <span class="upload-progress-percent" id="uploadPercent">0%</span>
+        </div>
+        <div class="upload-progress-bar">
+          <div class="upload-progress-fill" id="uploadProgressBar"></div>
+        </div>
+        <div class="upload-progress-details">
+          <span>File: ${file.name}</span>
+          <span>${(file.size / 1024 / 1024).toFixed(2)} MB</span>
+        </div>
+        <div class="upload-status-message" id="uploadStatusMessage"></div>
+      `;
+
+      // Insert progress indicator
+      const formButtons = document.querySelector('#createImageForm .form-buttons');
+      if (formButtons) {
+        formButtons.parentNode.insertBefore(progressContainer, formButtons);
+      }
+
+      // Create XMLHttpRequest for progress tracking
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.CLOUD_NAME}/image/upload`, true);
+
+      // ===== NETWORK TIMEOUT HANDLING =====
+      xhr.timeout = CLOUDINARY_CONFIG.UPLOAD_TIMEOUT;
+      xhr.ontimeout = function() {
+        showTemporaryMessage(`Upload timed out after ${CLOUDINARY_CONFIG.UPLOAD_TIMEOUT/1000} seconds. Please try again.`, 'warning');
+
+        // Clean up progress UI
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+
+        // Fallback to local storage
+        fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
       };
-      reader.readAsDataURL(file);
+
+      // Progress tracking
+      xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          const percentElement = document.getElementById('uploadPercent');
+          const progressBar = document.getElementById('uploadProgressBar');
+
+          if (percentElement) percentElement.textContent = percent + '%';
+          if (progressBar) progressBar.style.width = percent + '%';
+
+          // Update status message based on progress
+          const statusMessage = document.getElementById('uploadStatusMessage');
+          if (statusMessage) {
+            if (percent < 30) {
+              statusMessage.textContent = 'Starting upload...';
+              statusMessage.className = 'upload-status-message upload-status-info';
+            } else if (percent < 70) {
+              statusMessage.textContent = 'Uploading...';
+              statusMessage.className = 'upload-status-message upload-status-info';
+            } else if (percent < 100) {
+              statusMessage.textContent = 'Finalizing upload...';
+              statusMessage.className = 'upload-status-message upload-status-info';
+            }
+          }
+        }
+      });
+
+      // Success handling
+      xhr.onload = function() {
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const data = JSON.parse(xhr.responseText);
+
+            // ===== ENHANCED RESPONSE VALIDATION =====
+            if (!data.secure_url) {
+              console.error('Cloudinary response missing secure_url:', data);
+              throw new Error('Upload failed: No secure_url in response');
+            }
+
+            // Update image with Cloudinary URL
+            allImages[imageIndex].imageUrl = data.secure_url; // Store Cloudinary URL
+            delete allImages[imageIndex].imageData; // Remove old base64 data
+
+            saveImagesToStorage();
+            renderActiveImages();
+
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+
+            showTemporaryMessage(`"${title}" updated successfully!`, 'success');
+            console.log('✅ Cloudinary upload successful. URL:', data.secure_url);
+
+            switchImageTab('manage-images');
+          } catch (error) {
+            console.error('❌ Upload processing error:', error);
+            showTemporaryMessage('Failed to process upload response', 'warning');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+
+            // Fallback to local storage
+            fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+          }
+        } else {
+          console.error('❌ Upload failed with status:', xhr.status, xhr.statusText);
+          showTemporaryMessage(`Upload failed (HTTP ${xhr.status}). Please try again.`, 'warning');
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+
+          // Fallback to local storage
+          fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+        }
+      };
+
+      // Error handling
+      xhr.onerror = function() {
+        console.error('❌ Upload error:', xhr.statusText);
+        showTemporaryMessage('Network error during upload. Please check your connection.', 'warning');
+
+        // Clean up progress UI
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+
+        // Fallback to local storage
+        fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+      };
+
+      // Handle CORS errors
+      xhr.onabort = function() {
+        console.warn('Upload was aborted');
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      };
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_CONFIG.UPLOAD_PRESET);
+
+      xhr.send(formData);
     } else {
       saveImagesToStorage();
       renderActiveImages();
@@ -6758,9 +7232,9 @@ function resetImageForm() {
 function renderActiveImages() {
   const container = document.getElementById('activeImagesContainer');
   const activeImages = allImages.filter(img => img.status === 'active');
-  
+
   container.innerHTML = '';
-  
+
   if (activeImages.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
@@ -6776,19 +7250,22 @@ function renderActiveImages() {
     `;
     return;
   }
-  
+
   activeImages.forEach(image => {
     const imageElement = document.createElement('div');
     imageElement.className = 'image-card';
-    
+
     const isExpired = image.expiresAt && new Date(image.expiresAt) < new Date();
     const categoryClass = `category-${image.category}`;
-    
+
+    // Use Cloudinary URL if available, otherwise use base64 data
+    const imageSource = image.imageUrl || image.imageData || 'placeholder.jpg';
+
     imageElement.innerHTML = `
       <div class="image-card-category ${categoryClass}">
         ${image.category.charAt(0).toUpperCase() + image.category.slice(1)}
       </div>
-      <img src="${image.imageData || image.imageUrl}" alt="${image.title}" onerror="this.src='placeholder.jpg'">
+      <img src="${imageSource}" alt="${image.title}" onerror="this.src='placeholder.jpg'">
       <h4>${image.title}</h4>
       <p>${image.description}</p>
       <div style="font-size: 0.8rem; color: ${isExpired ? 'var(--warning)' : 'var(--muted)'}; margin-bottom: 10px;">
@@ -6803,7 +7280,7 @@ function renderActiveImages() {
         </button>
       </div>
     `;
-    
+
     const img = imageElement.querySelector('img');
     if (image.targetUrl && image.targetUrl !== '#') {
       img.style.cursor = 'pointer';
@@ -6811,7 +7288,7 @@ function renderActiveImages() {
         window.open(image.targetUrl, '_blank');
       });
     }
-    
+
     container.appendChild(imageElement);
   });
 }
@@ -6996,7 +7473,7 @@ function updateSliderImages() {
 function updateImageSlider() {
   const img = document.getElementById('currentImage');
   const counter = document.getElementById('sliderCounter');
-  
+
   if (sliderImages.length === 0) {
     img.src = 'placeholder.jpg';
     img.alt = 'No images available';
@@ -7004,18 +7481,20 @@ function updateImageSlider() {
     document.getElementById('sliderSubtitle').textContent = '';
     return;
   }
-  
+
   const currentImage = sliderImages[currentImageIndex];
-  
-  img.src = currentImage.imageData || currentImage.imageUrl;
+
+  // Use Cloudinary URL if available, otherwise use base64 data
+  const imageSource = currentImage.imageUrl || currentImage.imageData || 'placeholder.jpg';
+  img.src = imageSource;
   img.alt = currentImage.title;
-  
+
   counter.textContent = `${currentImageIndex + 1}/${sliderImages.length}`;
-  
+
   document.querySelectorAll('.indicator-dot').forEach((dot, index) => {
     dot.classList.toggle('active', index === currentImageIndex);
   });
-  
+
   if (currentImage.targetUrl && currentImage.targetUrl !== '#') {
     img.style.cursor = 'pointer';
     img.onclick = function() {
@@ -7025,7 +7504,7 @@ function updateImageSlider() {
     img.style.cursor = 'default';
     img.onclick = null;
   }
-  
+
   updateImageInfo(currentImage);
 }
 

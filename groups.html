@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Member Database | Groups</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
+     
             --bg: #0f1220;
             --card: #171a2e;
             --accent: #5b8cff;
@@ -1724,6 +1726,24 @@
             }
         }
 
+        // Extract just the letter/number from group name (e.g., "Group A" -> "A")
+        function extractGroupLetter(groupName) {
+            if (!groupName) return '';
+            
+            // If it contains "Group ", remove it
+            if (groupName.includes('Group ')) {
+                return groupName.replace('Group ', '');
+            }
+            
+            // If it's something like "GroupA" (no space)
+            if (groupName.includes('Group')) {
+                return groupName.replace('Group', '');
+            }
+            
+            // Otherwise return as-is
+            return groupName;
+        }
+
         // Initialize filter dropdowns
         function initializeFilters() {
             const groupFilter = document.getElementById('groupFilter');
@@ -1873,7 +1893,7 @@
                 });
                 
                 // Add leader badge if applicable
-                let groupDisplay = member.group || 'Not assigned';
+                let groupDisplay = member.group ? extractGroupLetter(member.group) : 'Not assigned';
                 if (isLeader) {
                     groupDisplay += ' <span class="compact-badge badge-leader">👑</span>';
                 }
@@ -2157,7 +2177,7 @@
                     <td>${index + 1}</td>
                     <td>${member.name}</td>
                     <td>${member.regNo}</td>
-                    <td>${member.group || 'Not assigned'}</td>
+                    <td>${member.group ? extractGroupLetter(member.group) : 'Not assigned'}</td>
                     <td title="${member.caseInfo}">${shortCaseInfo}</td>
                     <td>
                         <button class="action-btn action-view-btn" onclick="viewCaseInfo('${member.id}')">
@@ -2308,7 +2328,7 @@
             
             document.getElementById('caseMemberName').textContent = member.name;
             document.getElementById('caseRegNo').textContent = member.regNo;
-            document.getElementById('caseGroup').textContent = member.group || 'Not assigned';
+            document.getElementById('caseGroup').textContent = member.group ? extractGroupLetter(member.group) : 'Not assigned';
             document.getElementById('caseDetailsText').textContent = member.caseInfo;
             
             document.getElementById('caseModal').classList.add('active');

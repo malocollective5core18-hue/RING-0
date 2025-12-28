@@ -1965,8 +1965,7 @@
             </div>
         </div>
     </div>
-
-    <script>
+<script>
     // Data storage
     let properties = [];
     let filteredProperties = [];
@@ -1975,37 +1974,107 @@
     let selectedSearchCategory = 'id';
     let currentView = 'all';
 
-// ==================== ENHANCED CLOUDINARY CONFIGURATION ====================
-const CLOUDINARY_CONFIG = {
-    CLOUD_NAME: "dcpqnmdas",
-    UPLOAD_PRESET: "unsigned_images",
-    UPLOAD_TIMEOUT: 30000, // 30 seconds timeout
-    MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
-    ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
-};
-let cloudinaryImageUrl = "";
+    // ==================== CLOUDINARY CONFIGURATION ====================
+    // IMPORTANT: Your preset MUST be set to UNSIGNED in Cloudinary Console
+    const CLOUDINARY_CONFIG = {
+        CLOUD_NAME: "dcpqnmdas",
+        UPLOAD_PRESET: "unsigned_images", // This must be an UNSIGNED preset
+        UPLOAD_URL: `https://api.cloudinary.com/v1_1/dcpqnmdas/image/upload`,
+        MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
+        ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+    };
+    let cloudinaryImageUrl = "";
 
-// ===== UTILITY FUNCTIONS =====
-function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
-
-
+    // ===== UTILITY FUNCTIONS =====
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
 
     function goBack() {
-            window.history.back();
+        window.history.back();
+    }
+
+    function showMessage(message, type) {
+        // Remove any existing messages
+        const existingMessages = document.querySelectorAll('.custom-message');
+        existingMessages.forEach(msg => msg.remove());
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'custom-message';
+        messageDiv.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: ${type === 'error' ? 'rgba(255, 107, 107, 0.9)' : type === 'warning' ? 'rgba(255, 165, 0, 0.9)' : 'rgba(53, 208, 127, 0.9)'};
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            z-index: 9999;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: slideInRight 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        `;
+
+        // Add appropriate icon based on message type
+        const iconSpan = document.createElement('span');
+        if (type === 'error') {
+            iconSpan.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+        } else if (type === 'warning') {
+            iconSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+        } else {
+            iconSpan.innerHTML = '<i class="fas fa-check-circle"></i>';
         }
-    
+
+        messageDiv.appendChild(iconSpan);
+        messageDiv.appendChild(document.createTextNode(message));
+
+        document.body.appendChild(messageDiv);
+
+        setTimeout(() => {
+            messageDiv.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => {
+                if (document.body.contains(messageDiv)) {
+                    document.body.removeChild(messageDiv);
+                }
+            }, 300);
+        }, 3000);
+
+        // Add CSS animations if not already present
+        if (!document.querySelector('#message-animations')) {
+            const style = document.createElement('style');
+            style.id = 'message-animations';
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOutRight {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
     // Admin variables
-    const ADMIN_PASSWORD = "admin123"; // Change this to your desired password
+    const ADMIN_PASSWORD = "admin123";
     let currentAdminTab = 'all';
     let currentAdminCategoryFilter = 'all';
     let adminProperties = [];
-    
+
     // Sample data for demonstration
     const sampleProperties = [
         {
@@ -2037,61 +2106,24 @@ function formatFileSize(bytes) {
             claimantName: 'Alice Johnson',
             claimantContact: 'alice@email.com',
             claimDate: '2023-10-16',
-            addedDate: new Date(Date.now() - 86400000).toISOString() // 1 day ago
-        },
-        {
-            id: 3,
-            category: 'id',
-            image: 'https://images.unsplash.com/photo-1611944212121-9c5fa5c33d42?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            name: 'Jane Smith',
-            regNumber: 'REG2023002',
-            description: 'Employee ID with access card',
-            location: 'Parking Lot B',
-            date: '2023-10-13',
-            status: 'unclaimed',
-            type: 'Employee ID',
-            finderContact: 'security@campus.com',
-            addedDate: new Date(Date.now() - 172800000).toISOString() // 2 days ago
-        },
-        {
-            id: 4,
-            category: 'other',
-            image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-            name: '',
-            regNumber: '',
-            description: 'Red backpack with laptop compartment and water bottle pocket',
-            location: 'Bus Stop near Main Gate',
-            date: '2023-10-12',
-            status: 'unclaimed',
-            type: 'Backpack',
-            finderContact: 'busdriver@transit.com',
-            addedDate: new Date(Date.now() - 259200000).toISOString() // 3 days ago
+            addedDate: new Date(Date.now() - 86400000).toISOString()
         }
     ];
 
-    // ==================== URL PARAMETER HANDLING FOR DIRECT ADMIN ACCESS ====================
-
-    // Add this function at the beginning of your JavaScript section
+    // ==================== URL PARAMETER HANDLING ====================
     function checkURLForAdminAccess() {
         const urlParams = new URLSearchParams(window.location.search);
         const adminParam = urlParams.get('admin');
 
-        // Check if the URL contains the admin parameter
         if (adminParam === 'direct') {
-            // Clear the URL parameter from browser history
             window.history.replaceState({}, document.title, window.location.pathname);
-
-            // Check if admin is already logged in
             const isAdminLoggedIn = localStorage.getItem('ring0_admin_logged_in');
 
-            // Only show login popup if admin is NOT logged in
             if (isAdminLoggedIn !== 'true') {
-                // Wait a moment for page to load, then trigger admin login
                 setTimeout(() => {
                     openAdminLogin();
                 }, 500);
             } else {
-                // If already logged in, just show the admin panel directly
                 setTimeout(() => {
                     showAdminPanel();
                     loadAdminProperties();
@@ -2101,76 +2133,36 @@ function formatFileSize(bytes) {
         }
     }
 
-    // Check for admin direct access parameter in URL
-    function checkAdminDirectAccess() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const adminParam = urlParams.get('admin');
-
-        if (adminParam === 'direct') {
-            // Show password prompt for direct admin access
-            setTimeout(() => {
-                const password = prompt("Enter admin password to access admin panel:");
-                if (password === ADMIN_PASSWORD) {
-                    localStorage.setItem('ring0_admin_logged_in', 'true');
-                    showAdminPanel();
-                    loadAdminProperties();
-                    showMessage('Admin access granted!', 'success');
-                } else if (password !== null) {
-                    showMessage('Invalid password. Access denied.', 'error');
-                }
-            }, 500); // Small delay to ensure page is loaded
-        }
-    }
-
-    // Initialize page
+    // ==================== INITIALIZATION ====================
     document.addEventListener('DOMContentLoaded', function() {
         loadProperties();
         updateStats();
-
-        // Set up drag and drop for image upload
         setupDragAndDrop();
-
-        // Check if there are properties and show notification
         checkForPropertiesNotification();
-
-        // Set up real-time sync listeners
         setupRealtimeSync();
 
-        // Check for updates every 3 seconds
         setInterval(checkForAdminUpdates, 3000);
 
-        // Check if admin is already logged in
         const isAdminLoggedIn = localStorage.getItem('ring0_admin_logged_in');
         if (isAdminLoggedIn === 'true') {
             showAdminPanel();
             loadAdminProperties();
         }
 
-        // Check for direct admin access from URL
-        checkAdminDirectAccess();
-
-        // Check for direct admin access from URL
-        checkURLForAdminAccess(); // ADD THIS LINE
+        checkURLForAdminAccess();
     });
 
     // ==================== REAL-TIME SYNC FUNCTIONS ====================
-    
-    // Set up real-time sync
     function setupRealtimeSync() {
-        // Listen for changes from admin panel
         window.addEventListener('storage', handleStorageEvent);
-        
-        // Also listen for our own custom events
         window.addEventListener('propertiesUpdated', function() {
             loadProperties();
             showMessage('Properties updated', 'success');
         });
     }
 
-    // Handle storage events
     function handleStorageEvent(event) {
         if (event.key === 'ring0_properties' || event.key === 'ring0_last_update') {
-            // Reload properties from localStorage
             loadProperties();
             if (document.getElementById('adminPanel').classList.contains('active')) {
                 loadAdminProperties();
@@ -2179,13 +2171,11 @@ function formatFileSize(bytes) {
         }
     }
 
-    // Check for updates from admin panel
     function checkForAdminUpdates() {
         const lastUpdate = localStorage.getItem('ring0_last_update') || '0';
         const lastSync = localStorage.getItem('ring0_user_last_sync') || '0';
         
         if (parseInt(lastUpdate) > parseInt(lastSync)) {
-            // Properties have been updated by admin
             loadProperties();
             localStorage.setItem('ring0_user_last_sync', Date.now().toString());
             showMessage('Properties updated automatically', 'success');
@@ -2193,23 +2183,17 @@ function formatFileSize(bytes) {
     }
 
     // ==================== PROPERTY MANAGEMENT FUNCTIONS ====================
-    
-    // Load properties from localStorage
     function loadProperties() {
         try {
             const savedProperties = localStorage.getItem('ring0_properties');
             if (savedProperties) {
                 properties = JSON.parse(savedProperties);
             } else {
-                // Use sample data if none exist
                 properties = sampleProperties;
                 localStorage.setItem('ring0_properties', JSON.stringify(properties));
             }
             
-            // Update counts
             updatePropertiesCount();
-            
-            // Load gallery
             loadGallery();
             
         } catch (e) {
@@ -2220,7 +2204,6 @@ function formatFileSize(bytes) {
         }
     }
 
-    // Save properties to localStorage with real-time sync
     function saveProperties() {
         try {
             localStorage.setItem('ring0_properties', JSON.stringify(properties));
@@ -2228,10 +2211,7 @@ function formatFileSize(bytes) {
             updateStats();
             checkForPropertiesNotification();
             
-            // Trigger sync with admin panel
             localStorage.setItem('ring0_last_update', Date.now().toString());
-            
-            // Dispatch custom event for same-tab updates
             window.dispatchEvent(new CustomEvent('propertiesUpdated'));
             
         } catch (e) {
@@ -2240,7 +2220,6 @@ function formatFileSize(bytes) {
         }
     }
 
-    // Update properties count in notification badge
     function updatePropertiesCount() {
         const badge = document.getElementById('propertiesCount');
         if (badge) {
@@ -2250,7 +2229,6 @@ function formatFileSize(bytes) {
         }
     }
 
-    // Update statistics
     function updateStats() {
         const totalProperties = properties.length;
         const idsFound = properties.filter(p => p.category === 'id').length;
@@ -2263,7 +2241,6 @@ function formatFileSize(bytes) {
         document.getElementById('claimedItems').textContent = claimedItems;
     }
 
-    // Check if there are properties and show notification
     function checkForPropertiesNotification() {
         const notificationAlert = document.getElementById('notificationAlert');
         const unclaimedCount = properties.filter(p => p.status === 'unclaimed').length;
@@ -2275,30 +2252,24 @@ function formatFileSize(bytes) {
         }
     }
 
-    // Switch between tabs
     function switchTab(tabId) {
-        // Hide all tab contents
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
         });
         
-        // Remove active class from all tab buttons
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.classList.remove('active');
         });
         
-        // Show selected tab
         const selectedTab = document.getElementById(tabId + 'Tab');
         if (selectedTab) {
             selectedTab.classList.add('active');
             
-            // Activate corresponding tab button
             const tabBtn = document.querySelector(`.tab-btn[onclick="switchTab('${tabId}')"]`);
             if (tabBtn) {
                 tabBtn.classList.add('active');
             }
             
-            // Refresh data for the tab
             if (tabId === 'gallery') {
                 loadGallery();
             } else if (tabId === 'search') {
@@ -2307,11 +2278,9 @@ function formatFileSize(bytes) {
         }
     }
 
-    // Category selection for upload
     function selectCategory(category) {
         selectedCategory = category;
         
-        // Update UI
         document.querySelectorAll('.category-btn[data-category]').forEach(btn => {
             if (btn.getAttribute('data-category') === category) {
                 btn.classList.add('active');
@@ -2320,7 +2289,6 @@ function formatFileSize(bytes) {
             }
         });
         
-        // Show/hide forms
         if (category === 'id') {
             document.getElementById('idForm').style.display = 'block';
             document.getElementById('otherForm').style.display = 'none';
@@ -2330,11 +2298,9 @@ function formatFileSize(bytes) {
         }
     }
 
-    // Category selection for search
     function selectSearchCategory(category) {
         selectedSearchCategory = category;
         
-        // Update UI
         document.querySelectorAll('.category-btn[data-search-category]').forEach(btn => {
             if (btn.getAttribute('data-search-category') === category) {
                 btn.classList.add('active');
@@ -2343,7 +2309,6 @@ function formatFileSize(bytes) {
             }
         });
         
-        // Show/hide forms
         if (category === 'id') {
             document.getElementById('idSearchForm').style.display = 'block';
             document.getElementById('otherSearchForm').style.display = 'none';
@@ -2353,7 +2318,6 @@ function formatFileSize(bytes) {
         }
     }
 
-    // Setup drag and drop for image upload
     function setupDragAndDrop() {
         const uploadArea = document.getElementById('imageUploadArea');
         
@@ -2376,134 +2340,114 @@ function formatFileSize(bytes) {
         });
     }
 
-    // Trigger image upload
     function triggerImageUpload() {
         document.getElementById('imageInput').click();
     }
 
-// Handle image upload with automatic Cloudinary upload with timeout and progress
-function handleImageUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+    // ==================== CLOUDINARY UPLOAD FUNCTION ====================
+    function handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-    // ===== ENHANCED VALIDATION =====
-    if (!CLOUDINARY_CONFIG.ALLOWED_TYPES.includes(file.type)) {
-        showMessage('Only JPG, PNG, GIF, and WebP images are allowed', 'error');
-        return;
-    }
-
-    if (file.size > CLOUDINARY_CONFIG.MAX_FILE_SIZE) {
-        showMessage(`File size must be less than ${CLOUDINARY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`, 'error');
-        return;
-    }
-    // ===== END VALIDATION =====
-
-    // Show uploading state
-    const uploadArea = document.getElementById('imageUploadArea');
-    const uploadText = document.querySelector('.image-upload-area .upload-text');
-    const uploadIcon = document.querySelector('.image-upload-area .upload-icon');
-
-    uploadText.textContent = 'Uploading to Cloudinary...';
-    uploadText.style.color = 'var(--accent)';
-    uploadIcon.className = 'fas fa-spinner fa-spin upload-icon';
-
-    // Create progress indicator
-    const progressContainer = document.createElement('div');
-    progressContainer.id = 'uploadProgress';
-    progressContainer.style.cssText = `
-        margin-top: 15px;
-        padding: 12px;
-        background: rgba(12, 16, 36, 0.5);
-        border-radius: 8px;
-        border: 1px solid rgba(91, 140, 255, 0.3);
-    `;
-
-    progressContainer.innerHTML = `
-        <div class="upload-progress-header">
-          <span class="upload-progress-title">Upload Progress</span>
-          <span class="upload-progress-percent" id="uploadPercent">0%</span>
-        </div>
-        <div class="upload-progress-bar">
-          <div class="upload-progress-fill" id="uploadProgressBar"></div>
-        </div>
-        <div class="upload-progress-details">
-          <span>File: ${file.name}</span>
-          <span>${formatFileSize(file.size)}</span>
-        </div>
-    `;
-
-    // Insert progress indicator
-    uploadArea.appendChild(progressContainer);
-
-    // Create AbortController for timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), CLOUDINARY_CONFIG.UPLOAD_TIMEOUT);
-
-    // Create FormData
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", CLOUDINARY_CONFIG.UPLOAD_PRESET);
-
-    // Use XMLHttpRequest for better progress tracking
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.CLOUD_NAME}/image/upload`);
-
-    // Progress tracking
-    xhr.upload.addEventListener('progress', function(e) {
-        if (e.lengthComputable) {
-            const percent = Math.round((e.loaded / e.total) * 100);
-            document.getElementById('uploadPercent').textContent = percent + '%';
-            document.getElementById('uploadProgressBar').style.width = percent + '%';
+        // Validate file
+        if (!CLOUDINARY_CONFIG.ALLOWED_TYPES.includes(file.type)) {
+            showMessage('Only JPG, PNG, GIF, and WebP images are allowed', 'error');
+            return;
         }
-    });
 
-    // Handle response
-    xhr.onload = function() {
-        clearTimeout(timeoutId);
+        if (file.size > CLOUDINARY_CONFIG.MAX_FILE_SIZE) {
+            showMessage(`File size must be less than ${CLOUDINARY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`, 'error');
+            return;
+        }
 
-        if (xhr.status >= 200 && xhr.status < 300) {
-            try {
-                const data = JSON.parse(xhr.responseText);
+        // Show uploading state
+        const uploadArea = document.getElementById('imageUploadArea');
+        const uploadText = document.querySelector('.image-upload-area .upload-text');
+        const uploadIcon = document.querySelector('.image-upload-area .upload-icon');
 
-                // ===== ENHANCED RESPONSE VALIDATION =====
-                if (!data.secure_url) {
-                    console.error('Cloudinary response missing secure_url:', data);
-                    throw new Error('Upload failed: No secure_url in response');
-                }
+        uploadText.textContent = 'Uploading to Cloudinary...';
+        uploadText.style.color = 'var(--accent)';
+        uploadIcon.className = 'fas fa-spinner fa-spin upload-icon';
 
-                // Store the Cloudinary URL
-                cloudinaryImageUrl = data.secure_url;
+        // Create progress indicator
+        const progressContainer = document.createElement('div');
+        progressContainer.id = 'uploadProgress';
+        progressContainer.style.cssText = `
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(12, 16, 36, 0.5);
+            border-radius: 8px;
+            border: 1px solid rgba(91, 140, 255, 0.3);
+        `;
 
-                // Preview image
-                const preview = document.getElementById('imagePreview');
-                preview.src = cloudinaryImageUrl;
-                preview.style.display = 'block';
+        progressContainer.innerHTML = `
+            <div class="upload-progress-header">
+                <span class="upload-progress-title">Upload Progress</span>
+                <span class="upload-progress-percent" id="uploadPercent">0%</span>
+            </div>
+            <div class="upload-progress-bar">
+                <div class="upload-progress-fill" id="uploadProgressBar"></div>
+            </div>
+            <div class="upload-progress-details">
+                <span>File: ${file.name}</span>
+                <span>${formatFileSize(file.size)}</span>
+            </div>
+        `;
 
-                // Update upload area text
-                uploadText.textContent = 'Image uploaded to Cloudinary!';
-                uploadText.style.color = 'var(--success)';
-                uploadIcon.className = 'fas fa-check-circle upload-icon';
+        uploadArea.appendChild(progressContainer);
 
-                // Clean up progress UI
-                setTimeout(() => {
-                    const progressContainer = document.getElementById('uploadProgress');
-                    if (progressContainer) progressContainer.remove();
-                }, 1000);
+        // Create FormData
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_CONFIG.UPLOAD_PRESET);
+        // IMPORTANT: Do NOT add api_key or api_secret for unsigned uploads
 
-                console.log("✅ Cloudinary upload successful. URL:", cloudinaryImageUrl);
-                showMessage('Image uploaded to Cloudinary successfully! Everyone can now see it.', 'success');
-            } catch (error) {
-                console.error('❌ Upload processing error:', error);
+        // Use fetch API for cleaner code
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-                // Clean up progress UI
+        fetch(CLOUDINARY_CONFIG.UPLOAD_URL, {
+            method: 'POST',
+            body: formData,
+            signal: controller.signal
+        })
+        .then(response => {
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error(`Upload failed with status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.secure_url) {
+                throw new Error('No secure_url in Cloudinary response');
+            }
+
+            cloudinaryImageUrl = data.secure_url;
+
+            // Preview image
+            const preview = document.getElementById('imagePreview');
+            preview.src = cloudinaryImageUrl;
+            preview.style.display = 'block';
+
+            // Update UI
+            uploadText.textContent = 'Image uploaded to Cloudinary!';
+            uploadText.style.color = 'var(--success)';
+            uploadIcon.className = 'fas fa-check-circle upload-icon';
+
+            // Clean up progress UI
+            setTimeout(() => {
                 const progressContainer = document.getElementById('uploadProgress');
                 if (progressContainer) progressContainer.remove();
+            }, 1000);
 
-                // Fallback to local preview
-                fallbackToLocalPreview(file);
-            }
-        } else {
-            console.error('❌ Upload failed with status:', xhr.status, xhr.statusText);
+            console.log("✅ Cloudinary upload successful. URL:", cloudinaryImageUrl);
+            showMessage('Image uploaded to Cloudinary successfully!', 'success');
+        })
+        .catch(error => {
+            clearTimeout(timeoutId);
+            console.error('❌ Upload error:', error);
 
             // Clean up progress UI
             const progressContainer = document.getElementById('uploadProgress');
@@ -2511,96 +2455,54 @@ function handleImageUpload(event) {
 
             // Fallback to local preview
             fallbackToLocalPreview(file);
-        }
-    };
+        });
+    }
 
-    // Handle errors
-    xhr.onerror = function() {
-        clearTimeout(timeoutId);
-        console.error('❌ Network error during upload');
+    function fallbackToLocalPreview(file) {
+        const reader = new FileReader();
+        const uploadText = document.querySelector('.image-upload-area .upload-text');
+        const uploadIcon = document.querySelector('.image-upload-area .upload-icon');
 
-        // Clean up progress UI
-        const progressContainer = document.getElementById('uploadProgress');
-        if (progressContainer) progressContainer.remove();
+        reader.onload = function(e) {
+            const preview = document.getElementById('imagePreview');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
 
-        // Fallback to local preview
-        fallbackToLocalPreview(file);
-    };
+            uploadText.textContent = 'Image ready (local preview only)';
+            uploadText.style.color = 'var(--warning)';
+            uploadIcon.className = 'fas fa-exclamation-triangle upload-icon';
 
-    // Handle abort (timeout)
-    xhr.ontimeout = function() {
-        console.error('❌ Upload timed out');
-        showMessage(`Upload timed out after ${CLOUDINARY_CONFIG.UPLOAD_TIMEOUT/1000} seconds. Please try again.`, 'warning');
+            showMessage('Using local preview. Image not uploaded to Cloudinary.', 'warning');
+            cloudinaryImageUrl = '';
+        };
 
-        // Clean up progress UI
-        const progressContainer = document.getElementById('uploadProgress');
-        if (progressContainer) progressContainer.remove();
+        reader.onerror = function() {
+            showMessage('Failed to read image file', 'error');
+            uploadText.textContent = 'Click to upload or drag & drop property image';
+            uploadText.style.color = 'var(--muted)';
+            uploadIcon.className = 'fas fa-cloud-upload-alt upload-icon';
+        };
 
-        uploadText.textContent = 'Upload failed. Click to try again.';
-        uploadText.style.color = 'var(--warning)';
-        uploadIcon.className = 'fas fa-exclamation-triangle upload-icon';
+        reader.readAsDataURL(file);
+    }
 
-        // Reset file input
-        document.getElementById('imageInput').value = '';
-    };
-
-    // Send request
-    xhr.send(formData);
-}
-
-// ===== FALLBACK FUNCTION FOR LOCAL PREVIEW =====
-function fallbackToLocalPreview(file) {
-    const reader = new FileReader();
-    const uploadText = document.querySelector('.image-upload-area .upload-text');
-    const uploadIcon = document.querySelector('.image-upload-area .upload-icon');
-
-    reader.onload = function(e) {
-        const preview = document.getElementById('imagePreview');
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-
-        uploadText.textContent = 'Image ready (local preview only)';
-        uploadText.style.color = 'var(--warning)';
-        uploadIcon.className = 'fas fa-exclamation-triangle upload-icon';
-
-        showMessage('Using local preview. Image not uploaded to Cloudinary.', 'warning');
-    };
-
-    reader.onerror = function() {
-        showMessage('Failed to read image file', 'error');
-        uploadText.textContent = 'Click to upload or drag & drop property image';
-        uploadText.style.color = 'var(--muted)';
-        uploadIcon.className = 'fas fa-cloud-upload-alt upload-icon';
-    };
-
-    reader.readAsDataURL(file);
-    cloudinaryImageUrl = ''; // Reset Cloudinary URL
-}
-
-    // Reset form
     function resetForm() {
-        // Reset image preview
         const preview = document.getElementById('imagePreview');
         preview.src = '';
         preview.style.display = 'none';
 
-        // Reset upload area text
         const uploadText = document.querySelector('.image-upload-area .upload-text');
         uploadText.textContent = 'Click to upload or drag & drop property image';
         uploadText.style.color = 'var(--muted)';
 
-        // Reset upload icon
         const uploadIcon = document.querySelector('.image-upload-area .upload-icon');
         uploadIcon.className = 'fas fa-cloud-upload-alt upload-icon';
 
-        // Remove any progress containers
         const progressContainer = document.getElementById('uploadProgress');
         if (progressContainer) progressContainer.remove();
 
-        // Reset Cloudinary URL
         cloudinaryImageUrl = '';
 
-        // Reset form fields
         document.getElementById('ownerName').value = '';
         document.getElementById('regNumber').value = '';
         document.getElementById('idLocation').value = '';
@@ -2608,19 +2510,13 @@ function fallbackToLocalPreview(file) {
         document.getElementById('propertyDescription').value = '';
         document.getElementById('otherLocation').value = '';
         document.getElementById('finderContact').value = '';
-
-        // Reset file input
         document.getElementById('imageInput').value = '';
 
-        // Reset to ID category
         selectCategory('id');
-
         showMessage('Form has been reset', 'success');
     }
 
-    // Submit property to admin
     function submitProperty() {
-        // Get image
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
 
@@ -2629,14 +2525,12 @@ function fallbackToLocalPreview(file) {
             return;
         }
 
-        // Check if Cloudinary upload is still in progress
         const progressContainer = document.getElementById('uploadProgress');
         if (progressContainer) {
             showMessage('Please wait for image upload to complete', 'warning');
             return;
         }
 
-        // Validate based on category
         if (selectedCategory === 'id') {
             const ownerName = document.getElementById('ownerName').value.trim();
             const regNumber = document.getElementById('regNumber').value.trim();
@@ -2657,7 +2551,6 @@ function fallbackToLocalPreview(file) {
                 return;
             }
 
-            // Create property object
             const newProperty = {
                 id: properties.length > 0 ? Math.max(...properties.map(p => p.id)) + 1 : 1,
                 category: 'id',
@@ -2671,7 +2564,6 @@ function fallbackToLocalPreview(file) {
                 type: 'ID Card',
                 finderContact: document.getElementById('finderContact').value.trim(),
                 addedDate: new Date().toISOString(),
-                // Add Cloudinary status for tracking
                 cloudinaryStatus: cloudinaryImageUrl ? 'uploaded' : 'local'
             };
 
@@ -2697,7 +2589,6 @@ function fallbackToLocalPreview(file) {
                 return;
             }
 
-            // Create property object
             const typeLabels = {
                 'bag': 'Bag/Backpack',
                 'book': 'Book/Notebook',
@@ -2722,38 +2613,31 @@ function fallbackToLocalPreview(file) {
                 type: typeLabels[propertyType] || 'Other Property',
                 finderContact: document.getElementById('finderContact').value.trim(),
                 addedDate: new Date().toISOString(),
-                // Add Cloudinary status for tracking
                 cloudinaryStatus: cloudinaryImageUrl ? 'uploaded' : 'local'
             };
 
             properties.push(newProperty);
         }
 
-        // Save properties and reset form
         saveProperties();
         resetForm();
 
-        // Auto-refresh gallery if someone is viewing it
         if (document.getElementById('galleryTab').classList.contains('active')) {
             loadGallery();
         }
 
-        // Notify all users about new property (for real-time feeling)
         localStorage.setItem('ring0_new_property_added', Date.now().toString());
 
-        // Show success message with Cloudinary status
         const successMessage = cloudinaryImageUrl
-            ? 'Property submitted to admin successfully! Image uploaded to Cloudinary.'
-            : 'Property submitted to admin successfully! Using local image preview.';
+            ? 'Property submitted successfully! Image uploaded to Cloudinary.'
+            : 'Property submitted successfully! Using local image preview.';
         showMessage(successMessage, 'success');
 
-        // Switch to gallery to see the new property
         setTimeout(() => {
             switchTab('gallery');
         }, 1500);
     }
 
-    // Reset search
     function resetSearch() {
         document.getElementById('searchName').value = '';
         document.getElementById('searchRegNumber').value = '';
@@ -2765,7 +2649,6 @@ function fallbackToLocalPreview(file) {
         selectSearchCategory('id');
     }
 
-    // Search property
     function searchProperty() {
         let searchResults = [];
         
@@ -2778,7 +2661,6 @@ function fallbackToLocalPreview(file) {
                 return;
             }
             
-            // Search in ID properties
             searchResults = properties.filter(p => 
                 p.category === 'id' && 
                 p.status === 'unclaimed' &&
@@ -2795,7 +2677,6 @@ function fallbackToLocalPreview(file) {
                 return;
             }
             
-            // Search in other properties
             searchResults = properties.filter(p => 
                 p.category === 'other' && 
                 p.status === 'unclaimed' &&
@@ -2803,7 +2684,6 @@ function fallbackToLocalPreview(file) {
                  p.type.toLowerCase().includes(searchDescription))
             );
             
-            // Filter by type if selected
             if (searchType) {
                 searchResults = searchResults.filter(p => {
                     const typeMap = {
@@ -2826,11 +2706,9 @@ function fallbackToLocalPreview(file) {
             }
         }
         
-        // Display results
         displaySearchResults(searchResults);
     }
 
-    // Display search results
     function displaySearchResults(results) {
         const resultsContainer = document.getElementById('searchResultsContainer');
         const resultsSection = document.getElementById('searchResults');
@@ -2840,7 +2718,7 @@ function fallbackToLocalPreview(file) {
                 <div class="empty-state" style="grid-column: 1 / -1;">
                     <div class="empty-icon">🔍</div>
                     <h3 class="empty-title">No Properties Found</h3>
-                    <p class="empty-text">No properties match your search criteria. Try adjusting your search terms or check back later.</p>
+                    <p class="empty-text">No properties match your search criteria.</p>
                 </div>
             `;
             resultsSection.style.display = 'block';
@@ -2857,7 +2735,6 @@ function fallbackToLocalPreview(file) {
         resultsSection.style.display = 'block';
     }
 
-    // Load gallery
     function loadGallery() {
         const galleryContainer = document.getElementById('galleryContainer');
         
@@ -2866,7 +2743,7 @@ function fallbackToLocalPreview(file) {
                 <div class="empty-state" style="grid-column: 1 / -1;">
                     <div class="empty-icon">📦</div>
                     <h3 class="empty-title">No Properties Found</h3>
-                    <p class="empty-text">No properties have been reported yet. Be the first to report a found item!</p>
+                    <p class="empty-text">No properties have been reported yet.</p>
                     <button class="form-btn primary" onclick="switchTab('upload')">
                         <i class="fas fa-upload"></i> Report Found Item
                     </button>
@@ -2875,7 +2752,6 @@ function fallbackToLocalPreview(file) {
             return;
         }
         
-        // Filter properties based on current view
         let filtered = [...properties];
         
         if (currentView === 'id') {
@@ -2893,7 +2769,7 @@ function fallbackToLocalPreview(file) {
                 <div class="empty-state" style="grid-column: 1 / -1;">
                     <div class="empty-icon">📭</div>
                     <h3 class="empty-title">No Properties in This Category</h3>
-                    <p class="empty-text">No properties match the current filter. Try selecting a different category.</p>
+                    <p class="empty-text">No properties match the current filter.</p>
                 </div>
             `;
             return;
@@ -2905,12 +2781,10 @@ function fallbackToLocalPreview(file) {
         });
     }
 
-    // Create property card element
     function createPropertyCard(property) {
         const card = document.createElement('div');
         card.className = 'property-card';
         
-        // Format date
         const date = new Date(property.date);
         const formattedDate = date.toLocaleDateString('en-US', { 
             year: 'numeric', 
@@ -2918,7 +2792,6 @@ function fallbackToLocalPreview(file) {
             day: 'numeric' 
         });
         
-        // Determine status badge
         let statusBadge = '';
         if (property.status === 'claimed') {
             statusBadge = `<span class="status-badge status-claimed">Claimed</span>`;
@@ -2926,10 +2799,8 @@ function fallbackToLocalPreview(file) {
             statusBadge = `<span class="status-badge status-pending">Unclaimed</span>`;
         }
         
-        // Determine type badge
         const typeBadge = `<span class="property-type">${property.type}</span>`;
         
-        // Add real-time indicator for recently added items (last 5 minutes)
         const isRecent = (Date.now() - new Date(property.addedDate || property.date).getTime()) < 5 * 60 * 1000;
         const recentBadge = isRecent ? '<div style="position: absolute; top: 10px; right: 10px; background: var(--accent); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: bold;">NEW</div>' : '';
         
@@ -2976,11 +2847,9 @@ function fallbackToLocalPreview(file) {
         return card;
     }
 
-    // Filter properties in gallery
     function filterProperties(view) {
         currentView = view;
         
-        // Update active button
         document.querySelectorAll('.view-btn').forEach(btn => {
             if (btn.getAttribute('data-view') === view) {
                 btn.classList.add('active');
@@ -2989,18 +2858,15 @@ function fallbackToLocalPreview(file) {
             }
         });
         
-        // Reload gallery
         loadGallery();
     }
 
-    // View property details
     function viewPropertyDetails(propertyId) {
         const property = properties.find(p => p.id === propertyId);
         if (!property) return;
         
         currentPropertyId = propertyId;
         
-        // Format date
         const date = new Date(property.date);
         const formattedDate = date.toLocaleDateString('en-US', { 
             weekday: 'long',
@@ -3009,7 +2875,6 @@ function fallbackToLocalPreview(file) {
             day: 'numeric' 
         });
         
-        // Update modal content
         document.getElementById('modalImage').src = property.image;
         document.getElementById('modalType').textContent = property.type;
         document.getElementById('modalDate').textContent = formattedDate;
@@ -3028,12 +2893,10 @@ function fallbackToLocalPreview(file) {
             document.getElementById('modalDesc').textContent = property.description;
         }
         
-        // Update status
         const statusElement = document.getElementById('modalStatus');
         statusElement.textContent = property.status === 'claimed' ? 'Claimed' : 'Unclaimed';
         statusElement.className = property.status === 'claimed' ? 'status-badge status-claimed' : 'status-badge status-pending';
         
-        // Show/hide claim button
         const claimButton = document.getElementById('claimButton');
         if (property.status === 'claimed') {
             claimButton.style.display = 'none';
@@ -3041,34 +2904,28 @@ function fallbackToLocalPreview(file) {
             claimButton.style.display = 'inline-flex';
         }
         
-        // Show modal
         document.getElementById('propertyModal').classList.add('active');
     }
 
-    // Close property details modal
     function closePropertyModal() {
         document.getElementById('propertyModal').classList.remove('active');
         currentPropertyId = null;
     }
 
-    // Open claim modal
     function openClaimModal(propertyId) {
         currentPropertyId = propertyId;
         document.getElementById('claimModal').classList.add('active');
         
-        // Reset form
         document.getElementById('claimantName').value = '';
         document.getElementById('claimantContact').value = '';
         document.getElementById('claimProof').value = '';
     }
 
-    // Close claim modal
     function closeClaimModal() {
         document.getElementById('claimModal').classList.remove('active');
         currentPropertyId = null;
     }
 
-    // Submit claim request
     function submitClaim() {
         const claimantName = document.getElementById('claimantName').value.trim();
         const claimantContact = document.getElementById('claimantContact').value.trim();
@@ -3083,7 +2940,6 @@ function fallbackToLocalPreview(file) {
             return;
         }
         
-        // Update property status
         const propertyIndex = properties.findIndex(p => p.id === currentPropertyId);
         if (propertyIndex !== -1) {
             properties[propertyIndex].status = 'claimed';
@@ -3095,45 +2951,36 @@ function fallbackToLocalPreview(file) {
             saveProperties();
         }
         
-        // Close modals
         closeClaimModal();
         closePropertyModal();
         
-        // Show success message
-        showMessage('Claim request submitted successfully! Admin will contact you shortly.', 'success');
+        showMessage('Claim request submitted successfully!', 'success');
         
-        // Reload gallery
         setTimeout(() => {
             loadGallery();
         }, 500);
     }
 
-    // Claim property directly from details modal
     function claimProperty() {
         openClaimModal(currentPropertyId);
     }
 
     // ==================== ADMIN FUNCTIONS ====================
-    
-    // Open admin login modal
     function openAdminLogin() {
         document.getElementById('adminLoginModal').classList.add('active');
         document.getElementById('adminPassword').value = '';
         document.getElementById('adminPasswordError').style.display = 'none';
     }
     
-    // Close admin login modal
     function closeAdminLogin() {
         document.getElementById('adminLoginModal').classList.remove('active');
     }
     
-    // Admin login function
     function adminLogin() {
         const passwordInput = document.getElementById('adminPassword');
         const passwordError = document.getElementById('adminPasswordError');
         
         if (passwordInput.value === ADMIN_PASSWORD) {
-            // Store login state
             localStorage.setItem('ring0_admin_logged_in', 'true');
             closeAdminLogin();
             showAdminPanel();
@@ -3141,8 +2988,6 @@ function fallbackToLocalPreview(file) {
         } else {
             passwordError.style.display = 'block';
             passwordInput.style.borderColor = 'var(--warning)';
-            
-            // Shake animation for wrong password
             passwordInput.style.animation = 'shake 0.5s';
             setTimeout(() => {
                 passwordInput.style.animation = '';
@@ -3150,7 +2995,6 @@ function fallbackToLocalPreview(file) {
         }
     }
     
-    // Show admin panel
     function showAdminPanel() {
         document.querySelector('.main-container').style.display = 'none';
         document.querySelector('.hero-section').style.display = 'none';
@@ -3158,7 +3002,6 @@ function fallbackToLocalPreview(file) {
         document.getElementById('adminPanel').classList.add('active');
     }
     
-    // Go back to user interface
     function goToUserInterface() {
         document.getElementById('adminPanel').classList.remove('active');
         document.querySelector('.main-container').style.display = 'block';
@@ -3166,13 +3009,11 @@ function fallbackToLocalPreview(file) {
         document.querySelector('.header').style.display = 'flex';
     }
     
-    // Logout admin
     function logoutAdmin() {
         localStorage.removeItem('ring0_admin_logged_in');
         goToUserInterface();
     }
     
-    // Load properties for admin panel
     function loadAdminProperties() {
         try {
             const savedProperties = localStorage.getItem('ring0_properties');
@@ -3193,7 +3034,6 @@ function fallbackToLocalPreview(file) {
         }
     }
     
-    // Update admin statistics
     function updateAdminStats() {
         const totalItems = adminProperties.length;
         const idCards = adminProperties.filter(p => p.category === 'id').length;
@@ -3206,17 +3046,14 @@ function fallbackToLocalPreview(file) {
         document.getElementById('adminClaimedItems').textContent = claimedItems;
     }
     
-    // Refresh admin data
     function refreshAdminData() {
         loadAdminProperties();
         showMessage('Admin data refreshed successfully', 'success');
     }
     
-    // Switch admin tabs
     function switchAdminTab(tab) {
         currentAdminTab = tab;
         
-        // Update active tab button
         document.querySelectorAll('.admin-tab-btn').forEach(btn => {
             if (btn.getAttribute('onclick') === `switchAdminTab('${tab}')`) {
                 btn.classList.add('active');
@@ -3225,7 +3062,6 @@ function fallbackToLocalPreview(file) {
             }
         });
         
-        // Show/hide tab content
         document.querySelectorAll('.admin-tab-content').forEach(content => {
             if (content.id === `admin${tab.charAt(0).toUpperCase() + tab.slice(1)}Tab`) {
                 content.classList.add('active');
@@ -3234,15 +3070,12 @@ function fallbackToLocalPreview(file) {
             }
         });
         
-        // Apply current filters to the new tab
         renderAdminTable(tab);
     }
     
-    // Filter admin by category
     function filterAdminByCategory(category) {
         currentAdminCategoryFilter = category;
         
-        // Update active filter button
         document.querySelectorAll('.filter-btn').forEach(btn => {
             if (btn.getAttribute('onclick') === `filterAdminByCategory('${category}')`) {
                 btn.classList.add('active');
@@ -3251,16 +3084,13 @@ function fallbackToLocalPreview(file) {
             }
         });
         
-        // Apply filter to current tab
         renderAdminTable(currentAdminTab);
     }
     
-    // Search admin properties
     function searchAdminProperties() {
         renderAdminTable(currentAdminTab);
     }
     
-    // Render all admin tables
     function renderAllAdminTables() {
         renderAdminTable('all');
         renderAdminTable('claimed');
@@ -3268,17 +3098,14 @@ function fallbackToLocalPreview(file) {
         renderAdminTable('recent');
     }
     
-    // Render admin table based on tab
     function renderAdminTable(tab) {
         let filteredProperties = [...adminProperties];
         const searchTerm = document.getElementById('adminSearchInput').value.toLowerCase();
         
-        // Apply category filter
         if (currentAdminCategoryFilter !== 'all') {
             filteredProperties = filteredProperties.filter(p => p.category === currentAdminCategoryFilter);
         }
         
-        // Apply search filter
         if (searchTerm) {
             filteredProperties = filteredProperties.filter(p => 
                 (p.name && p.name.toLowerCase().includes(searchTerm)) ||
@@ -3289,7 +3116,6 @@ function fallbackToLocalPreview(file) {
             );
         }
         
-        // Apply tab-specific filtering
         switch(tab) {
             case 'claimed':
                 filteredProperties = filteredProperties.filter(p => p.status === 'claimed');
@@ -3300,20 +3126,17 @@ function fallbackToLocalPreview(file) {
                 renderAdminUnclaimedTable(filteredProperties);
                 break;
             case 'recent':
-                // Show properties added in the last 7 days
                 const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
                 filteredProperties = filteredProperties.filter(p => new Date(p.addedDate || p.date) > oneWeekAgo);
-                // Sort by most recent first
                 filteredProperties.sort((a, b) => new Date(b.addedDate || b.date) - new Date(a.addedDate || a.date));
                 renderAdminRecentTable(filteredProperties);
                 break;
-            default: // 'all'
+            default:
                 renderAdminAllTable(filteredProperties);
                 break;
         }
     }
     
-    // Render "All Properties" table for admin
     function renderAdminAllTable(filteredProperties) {
         const tableBody = document.getElementById('adminAllPropertiesTable');
         const emptyState = document.getElementById('adminAllEmptyState');
@@ -3374,7 +3197,6 @@ function fallbackToLocalPreview(file) {
         tableBody.innerHTML = tableHTML;
     }
     
-    // Render "Claimed Properties" table for admin
     function renderAdminClaimedTable(filteredProperties) {
         const tableBody = document.getElementById('adminClaimedPropertiesTable');
         const emptyState = document.getElementById('adminClaimedEmptyState');
@@ -3433,7 +3255,6 @@ function fallbackToLocalPreview(file) {
         tableBody.innerHTML = tableHTML;
     }
     
-    // Render "Unclaimed Properties" table for admin
     function renderAdminUnclaimedTable(filteredProperties) {
         const tableBody = document.getElementById('adminUnclaimedPropertiesTable');
         const emptyState = document.getElementById('adminUnclaimedEmptyState');
@@ -3489,7 +3310,6 @@ function fallbackToLocalPreview(file) {
         tableBody.innerHTML = tableHTML;
     }
     
-    // Render "Recently Added" table for admin
     function renderAdminRecentTable(filteredProperties) {
         const tableBody = document.getElementById('adminRecentPropertiesTable');
         const emptyState = document.getElementById('adminRecentEmptyState');
@@ -3513,7 +3333,6 @@ function fallbackToLocalPreview(file) {
                 minute: '2-digit'
             });
             
-            // Calculate how many days ago
             const daysAgo = Math.floor((new Date() - date) / (1000 * 60 * 60 * 24));
             const timeAgo = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo} days ago`;
             
@@ -3557,7 +3376,6 @@ function fallbackToLocalPreview(file) {
         tableBody.innerHTML = tableHTML;
     }
     
-    // View property details in admin panel
     function viewAdminPropertyDetails(propertyId) {
         const property = adminProperties.find(p => p.id === propertyId);
         if (!property) return;
@@ -3678,123 +3496,40 @@ function fallbackToLocalPreview(file) {
         document.getElementById('adminDetailsModal').classList.add('active');
     }
     
-    // Close admin details modal
     function closeAdminDetailsModal() {
         document.getElementById('adminDetailsModal').classList.remove('active');
     }
     
-    // Open delete confirmation modal
     function openDeleteModal(propertyId) {
         currentPropertyId = propertyId;
         document.getElementById('deleteModal').classList.add('active');
     }
     
-    // Close delete modal
     function closeDeleteModal() {
         document.getElementById('deleteModal').classList.remove('active');
         currentPropertyId = null;
     }
     
-    // Confirm delete property
     function confirmDelete() {
         if (currentPropertyId) {
-            // Remove property from arrays
             properties = properties.filter(p => p.id !== currentPropertyId);
             adminProperties = adminProperties.filter(p => p.id !== currentPropertyId);
             
-            // Save to localStorage
             localStorage.setItem('ring0_properties', JSON.stringify(properties));
-            
-            // Update sync timestamp for real-time updates
             localStorage.setItem('ring0_last_update', Date.now().toString());
             
-            // Update stats and tables
             updateStats();
             updateAdminStats();
             loadGallery();
             renderAllAdminTables();
             
-            // Show success message
             showMessage('Property deleted successfully', 'success');
         }
         
         closeDeleteModal();
     }
 
-    // Show message
-    function showMessage(message, type) {
-        // Remove any existing messages
-        const existingMessages = document.querySelectorAll('.custom-message');
-        existingMessages.forEach(msg => msg.remove());
-
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'custom-message';
-        messageDiv.style.cssText = `
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: ${type === 'error' ? 'rgba(255, 107, 107, 0.9)' : type === 'warning' ? 'rgba(255, 165, 0, 0.9)' : 'rgba(53, 208, 127, 0.9)'};
-            color: white;
-            padding: 12px 24px;
-            border-radius: 10px;
-            z-index: 9999;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            animation: slideInRight 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        `;
-
-        // Add appropriate icon based on message type
-        const iconSpan = document.createElement('span');
-        if (type === 'error') {
-            iconSpan.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-        } else if (type === 'warning') {
-            iconSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
-        } else {
-            iconSpan.innerHTML = '<i class="fas fa-check-circle"></i>';
-        }
-
-        messageDiv.appendChild(iconSpan);
-        messageDiv.appendChild(document.createTextNode(message));
-
-        document.body.appendChild(messageDiv);
-
-        setTimeout(() => {
-            messageDiv.style.animation = 'slideOutRight 0.3s ease';
-            setTimeout(() => {
-                if (document.body.contains(messageDiv)) {
-                    document.body.removeChild(messageDiv);
-                }
-            }, 300);
-        }, 3000);
-
-        // Add CSS animations if not already present
-        if (!document.querySelector('#message-animations')) {
-            const style = document.createElement('style');
-            style.id = 'message-animations';
-            style.textContent = `
-                @keyframes shake {
-                    0%, 100% { transform: translateX(0); }
-                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                    20%, 40%, 60%, 80% { transform: translateX(5px); }
-                }
-                @keyframes slideInRight {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOutRight {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }
-
-
-    // Close modals when clicking outside
+    // ==================== EVENT LISTENERS ====================
     document.querySelectorAll('.modal-overlay').forEach(modal => {
         modal.addEventListener('click', function(e) {
             if (e.target === this) {
@@ -3813,7 +3548,6 @@ function fallbackToLocalPreview(file) {
         });
     });
 
-    // Close modals with Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closePropertyModal();

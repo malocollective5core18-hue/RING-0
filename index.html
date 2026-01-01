@@ -6,8 +6,14 @@
 <title>RING-0 | Time Progress</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+<!-- Add this line after other <link> tags in the <head> section -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+
+
+
+
+
 :root{
   --bg:#0f1220;
   --card:#171a2e;
@@ -1935,6 +1941,188 @@ footer img {
   max-width: 100%;
 }
 
+/* ================= SUPABASE POSTS STYLING ================= */
+.supabase-posts-section {
+  background: radial-gradient(120% 120% at 0% 0%, #1b1f3d, var(--card));
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px 0;
+  border: 2px solid rgba(91, 140, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.section-header h2 {
+  color: var(--accent);
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.section-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.supabase-posts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.supabase-post-card {
+  background: rgba(12, 16, 36, 0.7);
+  border-radius: 12px;
+  padding: 18px;
+  border: 1px solid rgba(91, 140, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.supabase-post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  border-color: var(--accent);
+}
+
+.supabase-post-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #4a7dff);
+}
+
+.supabase-post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.supabase-post-title {
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.supabase-post-time {
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.supabase-post-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 12px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.supabase-post-image:hover {
+  transform: scale(1.02);
+}
+
+.supabase-post-description {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+.supabase-post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.supabase-post-badge {
+  background: rgba(91, 140, 255, 0.1);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.supabase-post-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.supabase-post-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.supabase-post-btn.view {
+  background: rgba(91, 140, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(91, 140, 255, 0.3);
+}
+
+.supabase-post-btn.view:hover {
+  background: rgba(91, 140, 255, 0.2);
+}
+
+.supabase-post-btn.share {
+  background: rgba(53, 208, 127, 0.1);
+  color: var(--success);
+  border: 1px solid rgba(53, 208, 127, 0.3);
+}
+
+.supabase-post-btn.share:hover {
+  background: rgba(53, 208, 127, 0.2);
+}
+
+/* Empty state */
+.supabase-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+  grid-column: 1 / -1;
+}
+
+.supabase-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .supabase-posts-container {
+    grid-template-columns: 1fr;
+  }
+}
+/* ====================================================== */
+
 /* ================= USER MANAGEMENT SPECIFIC STYLES ================= */
 /* User Management Tabs */
 .user-management-tabs {
@@ -3215,6 +3403,191 @@ footer img {
     padding: 12px;
   }
 }
+
+
+
+
+/* ================= SUPABASE POSTS STYLING ================= */
+.supabase-posts-section {
+  background: radial-gradient(120% 120% at 0% 0%, #1b1f3d, var(--card));
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px 0;
+  border: 2px solid rgba(91, 140, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.section-header h2 {
+  color: var(--accent);
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.section-subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.supabase-posts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.supabase-post-card {
+  background: rgba(12, 16, 36, 0.7);
+  border-radius: 12px;
+  padding: 18px;
+  border: 1px solid rgba(91, 140, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.supabase-post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  border-color: var(--accent);
+}
+
+.supabase-post-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #4a7dff);
+}
+
+.supabase-post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.supabase-post-title {
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.supabase-post-time {
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+.supabase-post-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 12px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.supabase-post-image:hover {
+  transform: scale(1.02);
+}
+
+.supabase-post-description {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+.supabase-post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.supabase-post-badge {
+  background: rgba(91, 140, 255, 0.1);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.supabase-post-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.supabase-post-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.supabase-post-btn.view {
+  background: rgba(91, 140, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(91, 140, 255, 0.3);
+}
+
+.supabase-post-btn.view:hover {
+  background: rgba(91, 140, 255, 0.2);
+}
+
+.supabase-post-btn.share {
+  background: rgba(53, 208, 127, 0.1);
+  color: var(--success);
+  border: 1px solid rgba(53, 208, 127, 0.3);
+}
+
+.supabase-post-btn.share:hover {
+  background: rgba(53, 208, 127, 0.2);
+}
+
+/* Empty state */
+.supabase-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+  grid-column: 1 / -1;
+}
+
+.supabase-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .supabase-posts-container {
+    grid-template-columns: 1fr;
+  }
+}
+/* ====================================================== */
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -3916,6 +4289,17 @@ footer img {
 
 <main id="cards"></main>
 
+<!-- Add this AFTER your existing cards but BEFORE </main> -->
+<section id="supabase-posts" class="supabase-posts-section">
+  <div class="section-header">
+    <h2><i class="fas fa-broadcast-tower"></i> Live Updates</h2>
+    <div class="section-subtitle">Real-time posts from database</div>
+  </div>
+  <div class="supabase-posts-container" id="supabasePostsContainer">
+    <!-- Posts from Supabase will appear here -->
+  </div>
+</section>
+
 <footer> 
   <img src="UNI-COT.png" alt="union_image" height="100"><br> 
   © 2025 RING-0 _from MC core
@@ -3923,6 +4307,657 @@ footer img {
 
 
 <script>
+// ================= SUPABASE INITIALIZATION =================
+const SUPABASE_URL = 'https://dngbicvrkxetsrirzmwn.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRuZ2JpY3Zya3hldHNyaXJ6bXduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAyMTMsImV4cCI6MjA4MjUwNjIxM30.RVDwv00a5ZuwKPbgq8dVYuMhAP0L55VYxmaCHRzM6dY';
+
+// Create Supabase client
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Test connection on load (optional)
+supabase.from('posts').select('count').then(response => {
+  console.log('✅ Supabase connected:', response.error ? 'Error' : 'Success');
+});
+// ============================================================
+
+// ================= FETCH AND DISPLAY SUPABASE POSTS =================
+async function loadPostsFromSupabase() {
+  try {
+    const container = document.getElementById('supabasePostsContainer');
+    if (!container) return [];
+
+    // Show loading state
+    container.innerHTML = `
+      <div class="supabase-empty-state">
+        <div class="supabase-empty-icon">
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <div>Loading posts from database...</div>
+      </div>
+    `;
+
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    // Clear container
+    container.innerHTML = '';
+
+    if (posts && posts.length > 0) {
+      console.log(`📥 Loaded ${posts.length} posts from Supabase`);
+
+      // Display each post
+      posts.forEach(post => {
+        const postElement = createPostElement(post);
+        container.appendChild(postElement);
+      });
+
+      // Show success message
+      showTemporaryMessage(`Loaded ${posts.length} live posts`, 'success');
+    } else {
+      // Show empty state
+      container.innerHTML = `
+        <div class="supabase-empty-state">
+          <div class="supabase-empty-icon">📭</div>
+          <h3>No Live Posts Yet</h3>
+          <p>Posts from the admin will appear here in real-time</p>
+          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      `;
+    }
+
+    return posts || [];
+  } catch (error) {
+    console.error('❌ Error loading posts from Supabase:', error.message);
+
+    const container = document.getElementById('supabasePostsContainer');
+    if (container) {
+      container.innerHTML = `
+        <div class="supabase-empty-state">
+          <div class="supabase-empty-icon">⚠️</div>
+          <h3>Connection Error</h3>
+          <p>Could not load posts. Please check your connection.</p>
+          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
+            <i class="fas fa-redo"></i> Try Again
+          </button>
+        </div>
+      `;
+    }
+
+    showTemporaryMessage('Error loading posts', 'error');
+    return [];
+  }
+}
+
+// Helper function to create post HTML
+function createPostElement(post) {
+  const postDiv = document.createElement('div');
+  postDiv.className = 'supabase-post-card';
+
+  // Format date
+  const postDate = new Date(post.created_at);
+  const formattedDate = postDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  // Truncate description if too long
+  const shortDescription = post.description && post.description.length > 120
+    ? post.description.substring(0, 120) + '...'
+    : post.description;
+
+  postDiv.innerHTML = `
+    <div class="supabase-post-header">
+      <h3 class="supabase-post-title">${post.title || 'Untitled Post'}</h3>
+      <div class="supabase-post-time">${formattedDate}</div>
+    </div>
+
+    ${post.image_url ? `
+      <img src="${post.image_url}"
+           alt="${post.title || 'Post image'}"
+           class="supabase-post-image"
+           onclick="openImageModal('${post.image_url}', '${post.title}')">
+    ` : ''}
+
+    ${post.description ? `
+      <div class="supabase-post-description">
+        ${shortDescription}
+      </div>
+    ` : ''}
+
+    <div class="supabase-post-footer">
+      <span class="supabase-post-badge">
+        <i class="fas fa-database"></i> Live Database
+      </span>
+      <div class="supabase-post-actions">
+        ${post.image_url ? `
+          <button class="supabase-post-btn view" onclick="openImageModal('${post.image_url}', '${post.title}')">
+            <i class="fas fa-expand"></i> View
+          </button>
+        ` : ''}
+        <button class="supabase-post-btn share" onclick="sharePost('${post.id}', '${post.title}')">
+          <i class="fas fa-share"></i> Share
+        </button>
+      </div>
+    </div>
+  `;
+
+  return postDiv;
+}
+
+// Helper function to open image in modal
+function openImageModal(imageUrl, title) {
+  // Create modal HTML
+  const modalHTML = `
+    <div class="modal-overlay active" id="imageModal" onclick="closeImageModal()">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-title">
+          <i class="fas fa-image"></i> ${title || 'Image Preview'}
+        </div>
+        <img src="${imageUrl}" alt="${title}" style="width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px;">
+        <div class="modal-buttons" style="margin-top: 20px;">
+          <button class="modal-btn cancel" onclick="closeImageModal()">Close</button>
+          <a href="${imageUrl}" target="_blank" class="modal-btn primary">
+            <i class="fas fa-external-link-alt"></i> Open Original
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Add to body
+  const modalContainer = document.createElement('div');
+  modalContainer.innerHTML = modalHTML;
+  document.body.appendChild(modalContainer);
+}
+
+function closeImageModal() {
+  const modal = document.getElementById('imageModal');
+  if (modal) modal.remove();
+}
+
+function sharePost(postId, title) {
+  if (navigator.share) {
+    navigator.share({
+      title: title,
+      text: 'Check out this post from our website',
+      url: window.location.href
+    });
+  } else {
+    // Fallback: copy to clipboard
+    navigator.clipboard.writeText(`${title} - ${window.location.href}`);
+    showTemporaryMessage('Link copied to clipboard!', 'success');
+  }
+}
+// ============================================================
+
+// ================= REAL-TIME UPDATES =================
+function setupRealtimeUpdates() {
+  const channel = supabase
+    .channel('posts-changes')
+    .on('postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'posts'
+        },
+        async (payload) => {
+          console.log('🔄 New post added in real-time:', payload.new);
+
+          // Show notification
+          showTemporaryMessage(`New post: "${payload.new.title}"`, 'success');
+
+          // Refresh the posts display
+          await loadPostsFromSupabase();
+
+          // Optional: Play a subtle sound
+          playNotificationSound();
+        }
+    )
+    .on('postgres_changes',
+        {
+          event: 'DELETE',
+          schema: 'public',
+          table: 'posts'
+        },
+        async () => {
+          console.log('🗑️ Post deleted, refreshing...');
+          await loadPostsFromSupabase();
+        }
+    )
+    .subscribe((status) => {
+      console.log(`📡 Real-time status: ${status}`);
+    });
+
+  console.log('👂 Listening for real-time post updates...');
+}
+
+// Optional notification sound
+function playNotificationSound() {
+  try {
+    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
+    audio.volume = 0.3;
+    audio.play().catch(e => console.log('Audio play failed:', e));
+  } catch (e) {
+    // Silent fail if audio doesn't work
+  }
+}
+// ============================================================
+// ================= FETCH AND DISPLAY SUPABASE POSTS =================
+async function loadPostsFromSupabase() {
+  try {
+    const container = document.getElementById('supabasePostsContainer');
+    if (!container) return [];
+
+    // Show loading state
+    container.innerHTML = `
+      <div class="supabase-empty-state">
+        <div class="supabase-empty-icon">
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <div>Loading posts from database...</div>
+      </div>
+    `;
+
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    // Clear container
+    container.innerHTML = '';
+
+    if (posts && posts.length > 0) {
+      console.log(`📥 Loaded ${posts.length} posts from Supabase`);
+
+      // Display each post
+      posts.forEach(post => {
+        const postElement = createPostElement(post);
+        container.appendChild(postElement);
+      });
+
+      // Show success message
+      showTemporaryMessage(`Loaded ${posts.length} live posts`, 'success');
+    } else {
+      // Show empty state
+      container.innerHTML = `
+        <div class="supabase-empty-state">
+          <div class="supabase-empty-icon">📭</div>
+          <h3>No Live Posts Yet</h3>
+          <p>Posts from the admin will appear here in real-time</p>
+          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      `;
+    }
+
+    return posts || [];
+  } catch (error) {
+    console.error('❌ Error loading posts from Supabase:', error.message);
+
+    const container = document.getElementById('supabasePostsContainer');
+    if (container) {
+      container.innerHTML = `
+        <div class="supabase-empty-state">
+          <div class="supabase-empty-icon">⚠️</div>
+          <h3>Connection Error</h3>
+          <p>Could not load posts. Please check your connection.</p>
+          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
+            <i class="fas fa-redo"></i> Try Again
+          </button>
+        </div>
+      `;
+    }
+
+    showTemporaryMessage('Error loading posts', 'error');
+    return [];
+  }
+}
+
+// Helper function to create post HTML
+function createPostElement(post) {
+  const postDiv = document.createElement('div');
+  postDiv.className = 'supabase-post-card';
+
+  // Format date
+  const postDate = new Date(post.created_at);
+  const formattedDate = postDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  // Truncate description if too long
+  const shortDescription = post.description && post.description.length > 120
+    ? post.description.substring(0, 120) + '...'
+    : post.description;
+
+  postDiv.innerHTML = `
+    <div class="supabase-post-header">
+      <h3 class="supabase-post-title">${post.title || 'Untitled Post'}</h3>
+      <div class="supabase-post-time">${formattedDate}</div>
+    </div>
+
+    ${post.image_url ? `
+      <img src="${post.image_url}"
+           alt="${post.title || 'Post image'}"
+           class="supabase-post-image"
+           onclick="openImageModal('${post.image_url}', '${post.title}')">
+    ` : ''}
+
+    ${post.description ? `
+      <div class="supabase-post-description">
+        ${shortDescription}
+      </div>
+    ` : ''}
+
+    <div class="supabase-post-footer">
+      <span class="supabase-post-badge">
+        <i class="fas fa-database"></i> Live Database
+      </span>
+      <div class="supabase-post-actions">
+        ${post.image_url ? `
+          <button class="supabase-post-btn view" onclick="openImageModal('${post.image_url}', '${post.title}')">
+            <i class="fas fa-expand"></i> View
+          </button>
+        ` : ''}
+        <button class="supabase-post-btn share" onclick="sharePost('${post.id}', '${post.title}')">
+          <i class="fas fa-share"></i> Share
+        </button>
+      </div>
+    </div>
+  `;
+
+  return postDiv;
+}
+
+// Helper function to open image in modal
+function openImageModal(imageUrl, title) {
+  // Create modal HTML
+  const modalHTML = `
+    <div class="modal-overlay active" id="imageModal" onclick="closeImageModal()">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-title">
+          <i class="fas fa-image"></i> ${title || 'Image Preview'}
+        </div>
+        <img src="${imageUrl}" alt="${title}" style="width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px;">
+        <div class="modal-buttons" style="margin-top: 20px;">
+          <button class="modal-btn cancel" onclick="closeImageModal()">Close</button>
+          <a href="${imageUrl}" target="_blank" class="modal-btn primary">
+            <i class="fas fa-external-link-alt"></i> Open Original
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Add to body
+  const modalContainer = document.createElement('div');
+  modalContainer.innerHTML = modalHTML;
+  document.body.appendChild(modalContainer);
+}
+
+function closeImageModal() {
+  const modal = document.getElementById('imageModal');
+  if (modal) modal.remove();
+}
+
+function sharePost(postId, title) {
+  if (navigator.share) {
+    navigator.share({
+      title: title,
+      text: 'Check out this post from our website',
+      url: window.location.href
+    });
+  } else {
+    // Fallback: copy to clipboard
+    navigator.clipboard.writeText(`${title} - ${window.location.href}`);
+    showTemporaryMessage('Link copied to clipboard!', 'success');
+  }
+}
+// ============================================================
+
+// ================= REAL-TIME UPDATES =================
+function setupRealtimeUpdates() {
+  const channel = supabase
+    .channel('posts-changes')
+    .on('postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'posts'
+        },
+        async (payload) => {
+          console.log('🔄 New post added in real-time:', payload.new);
+
+          // Show notification
+          showTemporaryMessage(`New post: "${payload.new.title}"`, 'success');
+
+          // Refresh the posts display
+          await loadPostsFromSupabase();
+
+          // Optional: Play a subtle sound
+          playNotificationSound();
+        }
+    )
+    .on('postgres_changes',
+        {
+          event: 'DELETE',
+          schema: 'public',
+          table: 'posts'
+        },
+        async () => {
+          console.log('🗑️ Post deleted, refreshing...');
+          await loadPostsFromSupabase();
+        }
+    )
+    .subscribe((status) => {
+      console.log(`📡 Real-time status: ${status}`);
+    });
+
+  console.log('👂 Listening for real-time post updates...');
+}
+
+// Optional notification sound
+function playNotificationSound() {
+  try {
+    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
+    audio.volume = 0.3;
+    audio.play().catch(e => console.log('Audio play failed:', e));
+  } catch (e) {
+    // Silent fail if audio doesn't work
+  }
+}
+// ============================================================
+// ================= FETCH AND DISPLAY SUPABASE POSTS =================
+async function loadPostsFromSupabase() {
+  try {
+    const container = document.getElementById('supabasePostsContainer');
+    if (!container) return [];
+    
+    // Show loading state
+    container.innerHTML = `
+      <div class="supabase-empty-state">
+        <div class="supabase-empty-icon">
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <div>Loading posts from database...</div>
+      </div>
+    `;
+    
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    
+    // Clear container
+    container.innerHTML = '';
+    
+    if (posts && posts.length > 0) {
+      console.log(`📥 Loaded ${posts.length} posts from Supabase`);
+      
+      // Display each post
+      posts.forEach(post => {
+        const postElement = createPostElement(post);
+        container.appendChild(postElement);
+      });
+      
+      // Show success message
+      showTemporaryMessage(`Loaded ${posts.length} live posts`, 'success');
+    } else {
+      // Show empty state
+      container.innerHTML = `
+        <div class="supabase-empty-state">
+          <div class="supabase-empty-icon">📭</div>
+          <h3>No Live Posts Yet</h3>
+          <p>Posts from the admin will appear here in real-time</p>
+          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      `;
+    }
+    
+    return posts || [];
+  } catch (error) {
+    console.error('❌ Error loading posts from Supabase:', error.message);
+    
+    const container = document.getElementById('supabasePostsContainer');
+    if (container) {
+      container.innerHTML = `
+        <div class="supabase-empty-state">
+          <div class="supabase-empty-icon">⚠️</div>
+          <h3>Connection Error</h3>
+          <p>Could not load posts. Please check your connection.</p>
+          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
+            <i class="fas fa-redo"></i> Try Again
+          </button>
+        </div>
+      `;
+    }
+    
+    showTemporaryMessage('Error loading posts', 'error');
+    return [];
+  }
+}
+
+// Helper function to create post HTML
+function createPostElement(post) {
+  const postDiv = document.createElement('div');
+  postDiv.className = 'supabase-post-card';
+  
+  // Format date
+  const postDate = new Date(post.created_at);
+  const formattedDate = postDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  
+  // Truncate description if too long
+  const shortDescription = post.description && post.description.length > 120
+    ? post.description.substring(0, 120) + '...'
+    : post.description;
+  
+  postDiv.innerHTML = `
+    <div class="supabase-post-header">
+      <h3 class="supabase-post-title">${post.title || 'Untitled Post'}</h3>
+      <div class="supabase-post-time">${formattedDate}</div>
+    </div>
+
+    ${post.image_url ? `
+      <img src="${post.image_url}"
+           alt="${post.title || 'Post image'}"
+           class="supabase-post-image"
+           onclick="openImageModal('${post.image_url}', '${post.title}')">
+    ` : ''}
+
+    ${post.description ? `
+      <div class="supabase-post-description">
+        ${shortDescription}
+      </div>
+    ` : ''}
+
+    <div class="supabase-post-footer">
+      <span class="supabase-post-badge">
+        <i class="fas fa-database"></i> Live Database
+      </span>
+      <div class="supabase-post-actions">
+        ${post.image_url ? `
+          <button class="supabase-post-btn view" onclick="openImageModal('${post.image_url}', '${post.title}')">
+            <i class="fas fa-expand"></i> View
+          </button>
+        ` : ''}
+        <button class="supabase-post-btn share" onclick="sharePost('${post.id}', '${post.title}')">
+          <i class="fas fa-share"></i> Share
+        </button>
+      </div>
+    </div>
+  `;
+
+  return postDiv;
+}
+
+// Helper function to open image in modal
+function openImageModal(imageUrl, title) {
+  // Create modal HTML
+  const modalHTML = `
+    <div class="modal-overlay active" id="imageModal" onclick="closeImageModal()">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-title">
+          <i class="fas fa-image"></i> ${title || 'Image Preview'}
+        </div>
+        <img src="${imageUrl}" alt="${title}" style="width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px;">
+        <div class="modal-buttons" style="margin-top: 20px;">
+          <button class="modal-btn cancel" onclick="closeImageModal()">Close</button>
+          <a href="${imageUrl}" target="_blank" class="modal-btn primary">
+            <i class="fas fa-external-link-alt"></i> Open Original
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Add to body
+  const modalContainer = document.createElement('div');
+  modalContainer.innerHTML = modalHTML;
+  document.body.appendChild(modalContainer);
+}
+
+function closeImageModal() {
+  const modal = document.getElementById('imageModal');
+  if (modal) modal.remove();
+}
+
+function sharePost(postId, title) {
+  if (navigator.share) {
+    navigator.share({
+      title: title,
+      text: 'Check out this post from our website',
+      url: window.location.href
+    });
+  } else {
+    // Fallback: copy to clipboard
+    navigator.clipboard.writeText(`${title} - ${window.location.href}`);
+    showTemporaryMessage('Link copied to clipboard!', 'success');
+  }
+}
+// ============================================================
+
 // ================= ADMIN SECURITY SYSTEM =================
 let zeroClickCount = 0;
 let adminLoginVisible = false;
@@ -7760,8 +8795,15 @@ function update(){
   });
 }
 
-function initializePage() {
+async function initializePage() {
+  // Load existing cards from localStorage
   loadCardsFromStorage();
+
+  // NEW: Load and display posts from Supabase
+  await loadPostsFromSupabase();
+
+  // NEW: Setup real-time updates
+  setupRealtimeUpdates();
 
   const activeCards = allPosts.filter(card => card.status === 'active');
   cards = activeCards.map(p => ({post:p, el:buildCardElement(p)}));
@@ -7786,11 +8828,55 @@ function initializePage() {
     clearInterval(autoAdvanceInterval);
     autoAdvanceInterval = null;
   }
-  
+
   const isRegistrationEnabled = localStorage.getItem('ring0_registration_enabled') !== 'false';
   const menuButtons = document.querySelectorAll('nav button');
   const memberSignUpBtn = menuButtons[menuButtons.length - 1];
-  
+
+  if (memberSignUpBtn && memberSignUpBtn.textContent.toLowerCase().includes('member')) {
+    if (!isRegistrationEnabled) {
+      memberSignUpBtn.style.display = 'none';
+    }
+  }
+}
+async function initializePage() {
+  // Load existing cards from localStorage
+  loadCardsFromStorage();
+
+  // NEW: Load and display posts from Supabase
+  await loadPostsFromSupabase();
+
+  // NEW: Setup real-time updates
+  setupRealtimeUpdates();
+
+  const activeCards = allPosts.filter(card => card.status === 'active');
+  cards = activeCards.map(p => ({post:p, el:buildCardElement(p)}));
+
+  loadImagesFromStorage();
+  loadSliderSettings();
+  updateSliderImages();
+  updateSliderIndicators();
+
+  loadDataFramework();
+  loadUserData();
+  loadGroups();
+  updateRegistrationSwitch();
+
+  updateRegistrationSettingsUI();
+  updateMainMenu();
+
+  update();
+  setInterval(update,1000);
+
+  if (autoAdvanceInterval) {
+    clearInterval(autoAdvanceInterval);
+    autoAdvanceInterval = null;
+  }
+
+  const isRegistrationEnabled = localStorage.getItem('ring0_registration_enabled') !== 'false';
+  const menuButtons = document.querySelectorAll('nav button');
+  const memberSignUpBtn = menuButtons[menuButtons.length - 1];
+
   if (memberSignUpBtn && memberSignUpBtn.textContent.toLowerCase().includes('member')) {
     if (!isRegistrationEnabled) {
       memberSignUpBtn.style.display = 'none';

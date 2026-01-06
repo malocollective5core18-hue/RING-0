@@ -1,20 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Redirecting…</title>
-    <meta http-equiv="refresh" content="0;url=./index.html">
-    <script>location.replace('./index.html');</script>
-    <style>html,body{height:100%;margin:0;display:flex;align-items:center;justify-content:center;background:#0b0e1a;color:#e8eaf6;font-family:Inter,system-ui,Arial}a{color:#5b8cff}</style>
-  </head>
-  <body>
-    <div>
-      <h2>Redirecting to the updated site</h2>
-      <p>If you are not redirected automatically, <a href="./index.html">click here</a>.</p>
-    </div>
-  </body>
-</html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Database | Groups</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+     
+            --bg: #0f1220;
+            --card: #171a2e;
+            --accent: #5b8cff;
+            --text: #e8eaf6;
+            --muted: #9aa0c6;
+            --success: #35d07f;
+            --warning: #ff6b6b;
+            --gold: #ffd700;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, Arial;
+            background: linear-gradient(120deg, #0f1220, #0b0e1a);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: linear-gradient(270deg, #0f1220, #0b0e1a, #1b1f3d, #0f1220);
+            background-size: 800% 800%;
+            animation: gradientBG 15s ease infinite;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .header-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        
+        .header-title .zero {
+            color: var(--accent);
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .nav-btn {
+            background: rgba(12, 16, 36, 0.8);
+            border: 1px solid rgba(91, 140, 255, 0.3);
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(91, 140, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .notification-badge {
+            background: var(--warning);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        /* Main Content */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Dashboard Tabs */
+        .dashboard-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
             flex-wrap: wrap;
         }
         

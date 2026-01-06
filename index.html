@@ -6,14 +6,11 @@
 <title>RING-0 | Time Progress</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-<!-- Add this line after other <link> tags in the <head> section -->
+
+<!-- Supabase JS (required for realtime and DB) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-
-
-
-
-
 :root{
   --bg:#0f1220;
   --card:#171a2e;
@@ -1941,188 +1938,6 @@ footer img {
   max-width: 100%;
 }
 
-/* ================= SUPABASE POSTS STYLING ================= */
-.supabase-posts-section {
-  background: radial-gradient(120% 120% at 0% 0%, #1b1f3d, var(--card));
-  border-radius: 16px;
-  padding: 20px;
-  margin: 20px 0;
-  border: 2px solid rgba(91, 140, 255, 0.3);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-.section-header h2 {
-  color: var(--accent);
-  font-size: 1.4rem;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.section-subtitle {
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.supabase-posts-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 20px;
-  margin-top: 15px;
-}
-
-.supabase-post-card {
-  background: rgba(12, 16, 36, 0.7);
-  border-radius: 12px;
-  padding: 18px;
-  border: 1px solid rgba(91, 140, 255, 0.2);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.supabase-post-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  border-color: var(--accent);
-}
-
-.supabase-post-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), #4a7dff);
-}
-
-.supabase-post-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.supabase-post-title {
-  color: var(--text);
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0;
-  flex: 1;
-}
-
-.supabase-post-time {
-  color: var(--muted);
-  font-size: 0.8rem;
-  white-space: nowrap;
-  margin-left: 10px;
-}
-
-.supabase-post-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin: 12px 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.supabase-post-image:hover {
-  transform: scale(1.02);
-}
-
-.supabase-post-description {
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin: 10px 0;
-}
-
-.supabase-post-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 15px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.supabase-post-badge {
-  background: rgba(91, 140, 255, 0.1);
-  color: var(--accent);
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.supabase-post-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.supabase-post-btn {
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: all 0.3s ease;
-}
-
-.supabase-post-btn.view {
-  background: rgba(91, 140, 255, 0.1);
-  color: var(--accent);
-  border: 1px solid rgba(91, 140, 255, 0.3);
-}
-
-.supabase-post-btn.view:hover {
-  background: rgba(91, 140, 255, 0.2);
-}
-
-.supabase-post-btn.share {
-  background: rgba(53, 208, 127, 0.1);
-  color: var(--success);
-  border: 1px solid rgba(53, 208, 127, 0.3);
-}
-
-.supabase-post-btn.share:hover {
-  background: rgba(53, 208, 127, 0.2);
-}
-
-/* Empty state */
-.supabase-empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--muted);
-  grid-column: 1 / -1;
-}
-
-.supabase-empty-icon {
-  font-size: 3rem;
-  margin-bottom: 15px;
-  opacity: 0.5;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .supabase-posts-container {
-    grid-template-columns: 1fr;
-  }
-}
-/* ====================================================== */
-
 /* ================= USER MANAGEMENT SPECIFIC STYLES ================= */
 /* User Management Tabs */
 .user-management-tabs {
@@ -3403,191 +3218,6 @@ footer img {
     padding: 12px;
   }
 }
-
-
-
-
-/* ================= SUPABASE POSTS STYLING ================= */
-.supabase-posts-section {
-  background: radial-gradient(120% 120% at 0% 0%, #1b1f3d, var(--card));
-  border-radius: 16px;
-  padding: 20px;
-  margin: 20px 0;
-  border: 2px solid rgba(91, 140, 255, 0.3);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-.section-header h2 {
-  color: var(--accent);
-  font-size: 1.4rem;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.section-subtitle {
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.supabase-posts-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 20px;
-  margin-top: 15px;
-}
-
-.supabase-post-card {
-  background: rgba(12, 16, 36, 0.7);
-  border-radius: 12px;
-  padding: 18px;
-  border: 1px solid rgba(91, 140, 255, 0.2);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.supabase-post-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  border-color: var(--accent);
-}
-
-.supabase-post-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), #4a7dff);
-}
-
-.supabase-post-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.supabase-post-title {
-  color: var(--text);
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0;
-  flex: 1;
-}
-
-.supabase-post-time {
-  color: var(--muted);
-  font-size: 0.8rem;
-  white-space: nowrap;
-  margin-left: 10px;
-}
-
-.supabase-post-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin: 12px 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.supabase-post-image:hover {
-  transform: scale(1.02);
-}
-
-.supabase-post-description {
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin: 10px 0;
-}
-
-.supabase-post-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 15px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.supabase-post-badge {
-  background: rgba(91, 140, 255, 0.1);
-  color: var(--accent);
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.supabase-post-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.supabase-post-btn {
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: all 0.3s ease;
-}
-
-.supabase-post-btn.view {
-  background: rgba(91, 140, 255, 0.1);
-  color: var(--accent);
-  border: 1px solid rgba(91, 140, 255, 0.3);
-}
-
-.supabase-post-btn.view:hover {
-  background: rgba(91, 140, 255, 0.2);
-}
-
-.supabase-post-btn.share {
-  background: rgba(53, 208, 127, 0.1);
-  color: var(--success);
-  border: 1px solid rgba(53, 208, 127, 0.3);
-}
-
-.supabase-post-btn.share:hover {
-  background: rgba(53, 208, 127, 0.2);
-}
-
-/* Empty state */
-.supabase-empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--muted);
-  grid-column: 1 / -1;
-}
-
-.supabase-empty-icon {
-  font-size: 3rem;
-  margin-bottom: 15px;
-  opacity: 0.5;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .supabase-posts-container {
-    grid-template-columns: 1fr;
-  }
-}
-/* ====================================================== */
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -4289,675 +3919,12 @@ footer img {
 
 <main id="cards"></main>
 
-<!-- Add this AFTER your existing cards but BEFORE </main> -->
-<section id="supabase-posts" class="supabase-posts-section">
-  <div class="section-header">
-    <h2><i class="fas fa-broadcast-tower"></i> Live Updates</h2>
-    <div class="section-subtitle">Real-time posts from database</div>
-  </div>
-  <div class="supabase-posts-container" id="supabasePostsContainer">
-    <!-- Posts from Supabase will appear here -->
-  </div>
-</section>
-
 <footer> 
   <img src="UNI-COT.png" alt="union_image" height="100"><br> 
   © 2025 RING-0 _from MC core
 </footer>
 
-
 <script>
-// ================= SUPABASE INITIALIZATION =================
-const SUPABASE_URL = 'https://dngbicvrkxetsrirzmwn.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRuZ2JpY3Zya3hldHNyaXJ6bXduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAyMTMsImV4cCI6MjA4MjUwNjIxM30.RVDwv00a5ZuwKPbgq8dVYuMhAP0L55VYxmaCHRzM6dY';
-
-// Create Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// Test connection on load (optional)
-supabase.from('posts').select('count').then(response => {
-  console.log('✅ Supabase connected:', response.error ? 'Error' : 'Success');
-});
-// ============================================================
-
-// ================= FETCH AND DISPLAY SUPABASE POSTS =================
-async function loadPostsFromSupabase() {
-  try {
-    const container = document.getElementById('supabasePostsContainer');
-    if (!container) return [];
-
-    // Show loading state
-    container.innerHTML = `
-      <div class="supabase-empty-state">
-        <div class="supabase-empty-icon">
-          <i class="fas fa-spinner fa-spin"></i>
-        </div>
-        <div>Loading posts from database...</div>
-      </div>
-    `;
-
-    const { data: posts, error } = await supabase
-      .from('posts')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-
-    // Clear container
-    container.innerHTML = '';
-
-    if (posts && posts.length > 0) {
-      console.log(`📥 Loaded ${posts.length} posts from Supabase`);
-
-      // Display each post
-      posts.forEach(post => {
-        const postElement = createPostElement(post);
-        container.appendChild(postElement);
-      });
-
-      // Show success message
-      showTemporaryMessage(`Loaded ${posts.length} live posts`, 'success');
-    } else {
-      // Show empty state
-      container.innerHTML = `
-        <div class="supabase-empty-state">
-          <div class="supabase-empty-icon">📭</div>
-          <h3>No Live Posts Yet</h3>
-          <p>Posts from the admin will appear here in real-time</p>
-          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
-            <i class="fas fa-sync-alt"></i> Refresh
-          </button>
-        </div>
-      `;
-    }
-
-    return posts || [];
-  } catch (error) {
-    console.error('❌ Error loading posts from Supabase:', error.message);
-
-    const container = document.getElementById('supabasePostsContainer');
-    if (container) {
-      container.innerHTML = `
-        <div class="supabase-empty-state">
-          <div class="supabase-empty-icon">⚠️</div>
-          <h3>Connection Error</h3>
-          <p>Could not load posts. Please check your connection.</p>
-          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
-            <i class="fas fa-redo"></i> Try Again
-          </button>
-        </div>
-      `;
-    }
-
-    showTemporaryMessage('Error loading posts', 'error');
-    return [];
-  }
-}
-
-// Helper function to create post HTML
-function createPostElement(post) {
-  const postDiv = document.createElement('div');
-  postDiv.className = 'supabase-post-card';
-
-  // Format date
-  const postDate = new Date(post.created_at);
-  const formattedDate = postDate.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-
-  // Truncate description if too long
-  const shortDescription = post.description && post.description.length > 120
-    ? post.description.substring(0, 120) + '...'
-    : post.description;
-
-  postDiv.innerHTML = `
-    <div class="supabase-post-header">
-      <h3 class="supabase-post-title">${post.title || 'Untitled Post'}</h3>
-      <div class="supabase-post-time">${formattedDate}</div>
-    </div>
-
-    ${post.image_url ? `
-      <img src="${post.image_url}"
-           alt="${post.title || 'Post image'}"
-           class="supabase-post-image"
-           onclick="openImageModal('${post.image_url}', '${post.title}')">
-    ` : ''}
-
-    ${post.description ? `
-      <div class="supabase-post-description">
-        ${shortDescription}
-      </div>
-    ` : ''}
-
-    <div class="supabase-post-footer">
-      <span class="supabase-post-badge">
-        <i class="fas fa-database"></i> Live Database
-      </span>
-      <div class="supabase-post-actions">
-        ${post.image_url ? `
-          <button class="supabase-post-btn view" onclick="openImageModal('${post.image_url}', '${post.title}')">
-            <i class="fas fa-expand"></i> View
-          </button>
-        ` : ''}
-        <button class="supabase-post-btn share" onclick="sharePost('${post.id}', '${post.title}')">
-          <i class="fas fa-share"></i> Share
-        </button>
-      </div>
-    </div>
-  `;
-
-  return postDiv;
-}
-
-// Helper function to open image in modal
-function openImageModal(imageUrl, title) {
-  // Create modal HTML
-  const modalHTML = `
-    <div class="modal-overlay active" id="imageModal" onclick="closeImageModal()">
-      <div class="modal-content" onclick="event.stopPropagation()">
-        <div class="modal-title">
-          <i class="fas fa-image"></i> ${title || 'Image Preview'}
-        </div>
-        <img src="${imageUrl}" alt="${title}" style="width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px;">
-        <div class="modal-buttons" style="margin-top: 20px;">
-          <button class="modal-btn cancel" onclick="closeImageModal()">Close</button>
-          <a href="${imageUrl}" target="_blank" class="modal-btn primary">
-            <i class="fas fa-external-link-alt"></i> Open Original
-          </a>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Add to body
-  const modalContainer = document.createElement('div');
-  modalContainer.innerHTML = modalHTML;
-  document.body.appendChild(modalContainer);
-}
-
-function closeImageModal() {
-  const modal = document.getElementById('imageModal');
-  if (modal) modal.remove();
-}
-
-function sharePost(postId, title) {
-  if (navigator.share) {
-    navigator.share({
-      title: title,
-      text: 'Check out this post from our website',
-      url: window.location.href
-    });
-  } else {
-    // Fallback: copy to clipboard
-    navigator.clipboard.writeText(`${title} - ${window.location.href}`);
-    showTemporaryMessage('Link copied to clipboard!', 'success');
-  }
-}
-// ============================================================
-
-// ================= REAL-TIME UPDATES =================
-function setupRealtimeUpdates() {
-  const channel = supabase
-    .channel('posts-changes')
-    .on('postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'posts'
-        },
-        async (payload) => {
-          console.log('🔄 New post added in real-time:', payload.new);
-
-          // Show notification
-          showTemporaryMessage(`New post: "${payload.new.title}"`, 'success');
-
-          // Refresh the posts display
-          await loadPostsFromSupabase();
-
-          // Optional: Play a subtle sound
-          playNotificationSound();
-        }
-    )
-    .on('postgres_changes',
-        {
-          event: 'DELETE',
-          schema: 'public',
-          table: 'posts'
-        },
-        async () => {
-          console.log('🗑️ Post deleted, refreshing...');
-          await loadPostsFromSupabase();
-        }
-    )
-    .subscribe((status) => {
-      console.log(`📡 Real-time status: ${status}`);
-    });
-
-  console.log('👂 Listening for real-time post updates...');
-}
-
-// Optional notification sound
-function playNotificationSound() {
-  try {
-    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
-    audio.volume = 0.3;
-    audio.play().catch(e => console.log('Audio play failed:', e));
-  } catch (e) {
-    // Silent fail if audio doesn't work
-  }
-}
-// ============================================================
-// ================= FETCH AND DISPLAY SUPABASE POSTS =================
-async function loadPostsFromSupabase() {
-  try {
-    const container = document.getElementById('supabasePostsContainer');
-    if (!container) return [];
-
-    // Show loading state
-    container.innerHTML = `
-      <div class="supabase-empty-state">
-        <div class="supabase-empty-icon">
-          <i class="fas fa-spinner fa-spin"></i>
-        </div>
-        <div>Loading posts from database...</div>
-      </div>
-    `;
-
-    const { data: posts, error } = await supabase
-      .from('posts')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-
-    // Clear container
-    container.innerHTML = '';
-
-    if (posts && posts.length > 0) {
-      console.log(`📥 Loaded ${posts.length} posts from Supabase`);
-
-      // Display each post
-      posts.forEach(post => {
-        const postElement = createPostElement(post);
-        container.appendChild(postElement);
-      });
-
-      // Show success message
-      showTemporaryMessage(`Loaded ${posts.length} live posts`, 'success');
-    } else {
-      // Show empty state
-      container.innerHTML = `
-        <div class="supabase-empty-state">
-          <div class="supabase-empty-icon">📭</div>
-          <h3>No Live Posts Yet</h3>
-          <p>Posts from the admin will appear here in real-time</p>
-          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
-            <i class="fas fa-sync-alt"></i> Refresh
-          </button>
-        </div>
-      `;
-    }
-
-    return posts || [];
-  } catch (error) {
-    console.error('❌ Error loading posts from Supabase:', error.message);
-
-    const container = document.getElementById('supabasePostsContainer');
-    if (container) {
-      container.innerHTML = `
-        <div class="supabase-empty-state">
-          <div class="supabase-empty-icon">⚠️</div>
-          <h3>Connection Error</h3>
-          <p>Could not load posts. Please check your connection.</p>
-          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
-            <i class="fas fa-redo"></i> Try Again
-          </button>
-        </div>
-      `;
-    }
-
-    showTemporaryMessage('Error loading posts', 'error');
-    return [];
-  }
-}
-
-// Helper function to create post HTML
-function createPostElement(post) {
-  const postDiv = document.createElement('div');
-  postDiv.className = 'supabase-post-card';
-
-  // Format date
-  const postDate = new Date(post.created_at);
-  const formattedDate = postDate.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-
-  // Truncate description if too long
-  const shortDescription = post.description && post.description.length > 120
-    ? post.description.substring(0, 120) + '...'
-    : post.description;
-
-  postDiv.innerHTML = `
-    <div class="supabase-post-header">
-      <h3 class="supabase-post-title">${post.title || 'Untitled Post'}</h3>
-      <div class="supabase-post-time">${formattedDate}</div>
-    </div>
-
-    ${post.image_url ? `
-      <img src="${post.image_url}"
-           alt="${post.title || 'Post image'}"
-           class="supabase-post-image"
-           onclick="openImageModal('${post.image_url}', '${post.title}')">
-    ` : ''}
-
-    ${post.description ? `
-      <div class="supabase-post-description">
-        ${shortDescription}
-      </div>
-    ` : ''}
-
-    <div class="supabase-post-footer">
-      <span class="supabase-post-badge">
-        <i class="fas fa-database"></i> Live Database
-      </span>
-      <div class="supabase-post-actions">
-        ${post.image_url ? `
-          <button class="supabase-post-btn view" onclick="openImageModal('${post.image_url}', '${post.title}')">
-            <i class="fas fa-expand"></i> View
-          </button>
-        ` : ''}
-        <button class="supabase-post-btn share" onclick="sharePost('${post.id}', '${post.title}')">
-          <i class="fas fa-share"></i> Share
-        </button>
-      </div>
-    </div>
-  `;
-
-  return postDiv;
-}
-
-// Helper function to open image in modal
-function openImageModal(imageUrl, title) {
-  // Create modal HTML
-  const modalHTML = `
-    <div class="modal-overlay active" id="imageModal" onclick="closeImageModal()">
-      <div class="modal-content" onclick="event.stopPropagation()">
-        <div class="modal-title">
-          <i class="fas fa-image"></i> ${title || 'Image Preview'}
-        </div>
-        <img src="${imageUrl}" alt="${title}" style="width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px;">
-        <div class="modal-buttons" style="margin-top: 20px;">
-          <button class="modal-btn cancel" onclick="closeImageModal()">Close</button>
-          <a href="${imageUrl}" target="_blank" class="modal-btn primary">
-            <i class="fas fa-external-link-alt"></i> Open Original
-          </a>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Add to body
-  const modalContainer = document.createElement('div');
-  modalContainer.innerHTML = modalHTML;
-  document.body.appendChild(modalContainer);
-}
-
-function closeImageModal() {
-  const modal = document.getElementById('imageModal');
-  if (modal) modal.remove();
-}
-
-function sharePost(postId, title) {
-  if (navigator.share) {
-    navigator.share({
-      title: title,
-      text: 'Check out this post from our website',
-      url: window.location.href
-    });
-  } else {
-    // Fallback: copy to clipboard
-    navigator.clipboard.writeText(`${title} - ${window.location.href}`);
-    showTemporaryMessage('Link copied to clipboard!', 'success');
-  }
-}
-// ============================================================
-
-// ================= REAL-TIME UPDATES =================
-function setupRealtimeUpdates() {
-  const channel = supabase
-    .channel('posts-changes')
-    .on('postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'posts'
-        },
-        async (payload) => {
-          console.log('🔄 New post added in real-time:', payload.new);
-
-          // Show notification
-          showTemporaryMessage(`New post: "${payload.new.title}"`, 'success');
-
-          // Refresh the posts display
-          await loadPostsFromSupabase();
-
-          // Optional: Play a subtle sound
-          playNotificationSound();
-        }
-    )
-    .on('postgres_changes',
-        {
-          event: 'DELETE',
-          schema: 'public',
-          table: 'posts'
-        },
-        async () => {
-          console.log('🗑️ Post deleted, refreshing...');
-          await loadPostsFromSupabase();
-        }
-    )
-    .subscribe((status) => {
-      console.log(`📡 Real-time status: ${status}`);
-    });
-
-  console.log('👂 Listening for real-time post updates...');
-}
-
-// Optional notification sound
-function playNotificationSound() {
-  try {
-    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
-    audio.volume = 0.3;
-    audio.play().catch(e => console.log('Audio play failed:', e));
-  } catch (e) {
-    // Silent fail if audio doesn't work
-  }
-}
-// ============================================================
-// ================= FETCH AND DISPLAY SUPABASE POSTS =================
-async function loadPostsFromSupabase() {
-  try {
-    const container = document.getElementById('supabasePostsContainer');
-    if (!container) return [];
-    
-    // Show loading state
-    container.innerHTML = `
-      <div class="supabase-empty-state">
-        <div class="supabase-empty-icon">
-          <i class="fas fa-spinner fa-spin"></i>
-        </div>
-        <div>Loading posts from database...</div>
-      </div>
-    `;
-    
-    const { data: posts, error } = await supabase
-      .from('posts')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
-    if (error) throw error;
-    
-    // Clear container
-    container.innerHTML = '';
-    
-    if (posts && posts.length > 0) {
-      console.log(`📥 Loaded ${posts.length} posts from Supabase`);
-      
-      // Display each post
-      posts.forEach(post => {
-        const postElement = createPostElement(post);
-        container.appendChild(postElement);
-      });
-      
-      // Show success message
-      showTemporaryMessage(`Loaded ${posts.length} live posts`, 'success');
-    } else {
-      // Show empty state
-      container.innerHTML = `
-        <div class="supabase-empty-state">
-          <div class="supabase-empty-icon">📭</div>
-          <h3>No Live Posts Yet</h3>
-          <p>Posts from the admin will appear here in real-time</p>
-          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
-            <i class="fas fa-sync-alt"></i> Refresh
-          </button>
-        </div>
-      `;
-    }
-    
-    return posts || [];
-  } catch (error) {
-    console.error('❌ Error loading posts from Supabase:', error.message);
-    
-    const container = document.getElementById('supabasePostsContainer');
-    if (container) {
-      container.innerHTML = `
-        <div class="supabase-empty-state">
-          <div class="supabase-empty-icon">⚠️</div>
-          <h3>Connection Error</h3>
-          <p>Could not load posts. Please check your connection.</p>
-          <button class="form-btn secondary" onclick="loadPostsFromSupabase()" style="margin-top: 15px;">
-            <i class="fas fa-redo"></i> Try Again
-          </button>
-        </div>
-      `;
-    }
-    
-    showTemporaryMessage('Error loading posts', 'error');
-    return [];
-  }
-}
-
-// Helper function to create post HTML
-function createPostElement(post) {
-  const postDiv = document.createElement('div');
-  postDiv.className = 'supabase-post-card';
-  
-  // Format date
-  const postDate = new Date(post.created_at);
-  const formattedDate = postDate.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-  
-  // Truncate description if too long
-  const shortDescription = post.description && post.description.length > 120
-    ? post.description.substring(0, 120) + '...'
-    : post.description;
-  
-  postDiv.innerHTML = `
-    <div class="supabase-post-header">
-      <h3 class="supabase-post-title">${post.title || 'Untitled Post'}</h3>
-      <div class="supabase-post-time">${formattedDate}</div>
-    </div>
-
-    ${post.image_url ? `
-      <img src="${post.image_url}"
-           alt="${post.title || 'Post image'}"
-           class="supabase-post-image"
-           onclick="openImageModal('${post.image_url}', '${post.title}')">
-    ` : ''}
-
-    ${post.description ? `
-      <div class="supabase-post-description">
-        ${shortDescription}
-      </div>
-    ` : ''}
-
-    <div class="supabase-post-footer">
-      <span class="supabase-post-badge">
-        <i class="fas fa-database"></i> Live Database
-      </span>
-      <div class="supabase-post-actions">
-        ${post.image_url ? `
-          <button class="supabase-post-btn view" onclick="openImageModal('${post.image_url}', '${post.title}')">
-            <i class="fas fa-expand"></i> View
-          </button>
-        ` : ''}
-        <button class="supabase-post-btn share" onclick="sharePost('${post.id}', '${post.title}')">
-          <i class="fas fa-share"></i> Share
-        </button>
-      </div>
-    </div>
-  `;
-
-  return postDiv;
-}
-
-// Helper function to open image in modal
-function openImageModal(imageUrl, title) {
-  // Create modal HTML
-  const modalHTML = `
-    <div class="modal-overlay active" id="imageModal" onclick="closeImageModal()">
-      <div class="modal-content" onclick="event.stopPropagation()">
-        <div class="modal-title">
-          <i class="fas fa-image"></i> ${title || 'Image Preview'}
-        </div>
-        <img src="${imageUrl}" alt="${title}" style="width: 100%; max-height: 70vh; object-fit: contain; border-radius: 8px;">
-        <div class="modal-buttons" style="margin-top: 20px;">
-          <button class="modal-btn cancel" onclick="closeImageModal()">Close</button>
-          <a href="${imageUrl}" target="_blank" class="modal-btn primary">
-            <i class="fas fa-external-link-alt"></i> Open Original
-          </a>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Add to body
-  const modalContainer = document.createElement('div');
-  modalContainer.innerHTML = modalHTML;
-  document.body.appendChild(modalContainer);
-}
-
-function closeImageModal() {
-  const modal = document.getElementById('imageModal');
-  if (modal) modal.remove();
-}
-
-function sharePost(postId, title) {
-  if (navigator.share) {
-    navigator.share({
-      title: title,
-      text: 'Check out this post from our website',
-      url: window.location.href
-    });
-  } else {
-    // Fallback: copy to clipboard
-    navigator.clipboard.writeText(`${title} - ${window.location.href}`);
-    showTemporaryMessage('Link copied to clipboard!', 'success');
-  }
-}
-// ============================================================
-
 // ================= ADMIN SECURITY SYSTEM =================
 let zeroClickCount = 0;
 let adminLoginVisible = false;
@@ -4968,25 +3935,26 @@ let adminEmail = '';
 const CLOUDINARY_CONFIG = {
     CLOUD_NAME: "dcpqnmdas",
     UPLOAD_PRESET: "unsigned_images",
-    UPLOAD_URL: `https://api.cloudinary.com/v1_1/dcpqnmdas/image/upload`,
-    UPLOAD_TIMEOUT: 30000,
-    MAX_FILE_SIZE: 5 * 1024 * 1024,
+    UPLOAD_TIMEOUT: 30000, // 30 seconds timeout
+    MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
     ALLOWED_TYPES: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
 };
+let cloudinaryImageUrl = "";
 
 // Add this function to test Cloudinary connection
 function testCloudinaryConnection() {
     console.log('=== Testing Cloudinary Connection ===');
-    console.log('Cloud Name:', CLOUDINARY_CONFIG.CLOUD_NAME);
-    console.log('Upload Preset:', CLOUDINARY_CONFIG.UPLOAD_PRESET);
-    console.log('API URL:', CLOUDINARY_CONFIG.UPLOAD_URL);
+    console.log('Cloud Name:', CLOUD_NAME);
+    console.log('Upload Preset:', UPLOAD_PRESET);
+    console.log('API URL:', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
 
+    // Test if preset exists by trying a simple upload
     const testFormData = new FormData();
     const testBlob = new Blob(['test'], { type: 'text/plain' });
     testFormData.append('file', testBlob, 'test.txt');
-    testFormData.append('upload_preset', CLOUDINARY_CONFIG.UPLOAD_PRESET);
+    testFormData.append('upload_preset', UPLOAD_PRESET);
 
-    fetch(CLOUDINARY_CONFIG.UPLOAD_URL, {
+    fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
         method: 'POST',
         body: testFormData
     })
@@ -5006,6 +3974,9 @@ function testCloudinaryConnection() {
         alert('Network error connecting to Cloudinary');
     });
 }
+
+// Call it to test:
+// testCloudinaryConnection();
 
 // Local SMS simulation system
 class LocalSMSSender {
@@ -5087,25 +4058,7 @@ class LocalSMSSender {
 const smsSender = new LocalSMSSender();
 
 // Track clicks on the "0" in RING-0
-document.addEventListener('DOMContentLoaded', function() {
-  const zeroElement = document.querySelector('.brand .zero');
-  if (zeroElement) {
-    zeroElement.addEventListener('click', handleZeroClick);
-    
-    let clickTimeout;
-    zeroElement.addEventListener('click', function() {
-      clearTimeout(clickTimeout);
-      clickTimeout = setTimeout(() => {
-        if (zeroClickCount < 5) {
-          zeroClickCount = 0;
-          showTemporaryMessage('Sequence reset', 'warning');
-        }
-      }, 10000);
-    });
-  }
-});
-
-function handleZeroClick() {
+document.querySelector('.brand .zero').addEventListener('click', function() {
   zeroClickCount++;
 
   this.style.color = 'var(--accent)';
@@ -5121,19 +4074,29 @@ function handleZeroClick() {
   if (zeroClickCount >= 5 && !adminLoginVisible) {
     unlockAdminLogin();
   }
-}
+});
+
+let clickTimeout;
+document.querySelector('.brand .zero').addEventListener('click', function() {
+  clearTimeout(clickTimeout);
+  clickTimeout = setTimeout(() => {
+    if (zeroClickCount < 5) {
+      zeroClickCount = 0;
+      showTemporaryMessage('Sequence reset', 'warning');
+    }
+  }, 10000);
+});
 
 function unlockAdminLogin() {
   adminLoginVisible = true;
   const adminLoginBtn = document.querySelector('nav button.admin-login');
-  if (adminLoginBtn) {
-    adminLoginBtn.classList.add('visible');
-    adminLoginBtn.addEventListener('click', function() {
-      openAdminModal();
-    });
-  }
+  adminLoginBtn.classList.add('visible');
   
   showTemporaryMessage('Admin login unlocked!', 'success');
+  
+  adminLoginBtn.addEventListener('click', function() {
+    openAdminModal();
+  });
 }
 
 function showTemporaryMessage(message, type) {
@@ -5161,45 +4124,34 @@ function showTemporaryMessage(message, type) {
   setTimeout(() => {
     messageDiv.style.animation = 'slideUp 0.3s ease';
     setTimeout(() => {
-      if (messageDiv.parentNode) {
-        document.body.removeChild(messageDiv);
-      }
+      document.body.removeChild(messageDiv);
     }, 300);
   }, 3000);
 }
 
 // Add CSS animations for messages
-if (!document.querySelector('#temp-message-styles')) {
-  const style = document.createElement('style');
-  style.id = 'temp-message-styles';
-  style.textContent = `
-    @keyframes slideDown {
-      from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
-      to { transform: translateX(-50%) translateY(0); opacity: 1; }
-    }
-    @keyframes slideUp {
-      from { transform: translateX(-50%) translateY(0); opacity: 1; }
-      to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
-}
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideDown {
+    from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { transform: translateX(-50%) translateY(0); opacity: 1; }
+    to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
 
 // ================= ADMIN MODAL FUNCTIONS =================
 function openAdminModal() {
-  const adminModal = document.getElementById('adminModal');
-  if (adminModal) {
-    adminModal.classList.add('active');
-    resetAdminForm();
-  }
+  document.getElementById('adminModal').classList.add('active');
+  resetAdminForm();
 }
 
 function closeAdminModal() {
-  const adminModal = document.getElementById('adminModal');
-  if (adminModal) {
-    adminModal.classList.remove('active');
-    resetAdminForm();
-  }
+  document.getElementById('adminModal').classList.remove('active');
+  resetAdminForm();
 }
 
 function resetAdminForm() {
@@ -5215,10 +4167,7 @@ function goToStep(stepNumber) {
     step.classList.remove('active');
   });
   
-  const stepElement = document.getElementById(`step${stepNumber}`);
-  if (stepElement) {
-    stepElement.classList.add('active');
-  }
+  document.getElementById(`step${stepNumber}`).classList.add('active');
   clearErrors();
 }
 
@@ -5229,25 +4178,25 @@ function clearErrors() {
   document.querySelectorAll('.admin-form-input').forEach(input => {
     input.classList.remove('error');
   });
-  const emailSentMessage = document.getElementById('emailSentMessage');
-  if (emailSentMessage) {
-    emailSentMessage.classList.remove('show');
-  }
+  document.getElementById('emailSentMessage').classList.remove('show');
 }
 
 function verifyPassword() {
   const password = document.getElementById('adminPassword').value;
   const errorElement = document.getElementById('passwordError');
   
+  // Define the allowed accounts
   const allowedAccounts = [
     { password: 'malo1818', email: 'malo.collective@gmail.com' },
     { password: 'hider-admin-2025', email: 'admin2025@gmail.com' }
   ];
   
+  // Check if the password matches any allowed account
   const validAccount = allowedAccounts.find(account => account.password === password);
   
   if (validAccount) {
     goToStep(2);
+    // Store the valid email for verification
     adminEmail = validAccount.email;
   } else {
     errorElement.textContent = 'Wrong password. Please try again.';
@@ -5256,17 +4205,20 @@ function verifyPassword() {
   }
 }
 
+
 function sendVerificationCode() {
   const emailInput = document.getElementById('adminEmail').value.trim();
   const errorElement = document.getElementById('emailError');
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  // Define the allowed accounts
   const allowedAccounts = [
     { password: 'malo1818', email: 'malo.collective@gmail.com' },
     { password: 'hider-admin-2025', email: 'admin2025@gmail.com' }
   ];
 
+  // Check if email is valid and matches allowed accounts
   if (!emailRegex.test(emailInput)) {
     errorElement.textContent = 'Please enter a valid email address.';
     errorElement.classList.add('show');
@@ -5274,6 +4226,7 @@ function sendVerificationCode() {
     return;
   }
 
+  // Check if email is in allowed accounts
   const validAccount = allowedAccounts.find(account => account.email === emailInput);
   
   if (!validAccount) {
@@ -5283,6 +4236,8 @@ function sendVerificationCode() {
     return;
   }
 
+  // Check if the email matches the password that was entered earlier
+  // (We stored adminEmail from verifyPassword)
   if (adminEmail && adminEmail !== emailInput) {
     errorElement.textContent = 'Email does not match the account credentials.';
     errorElement.classList.add('show');
@@ -5291,6 +4246,7 @@ function sendVerificationCode() {
   }
 
   adminEmail = emailInput;
+
   generatedVerificationCode = Math.floor(100 + Math.random() * 900).toString();
 
   const sendBtn = document.querySelector('#step2 .admin-modal-btn.primary');
@@ -5300,6 +4256,7 @@ function sendVerificationCode() {
 
   setTimeout(() => {
     const result = smsSender.sendCode(emailInput, generatedVerificationCode);
+
     console.log(result.message);
 
     const codeDisplay = document.createElement('div');
@@ -5332,21 +4289,15 @@ function sendVerificationCode() {
     `;
 
     const formGroup = document.querySelector('#step2 .admin-form-group');
-    if (formGroup) {
-      formGroup.parentNode.insertBefore(codeDisplay, formGroup.nextSibling);
-    }
+    formGroup.parentNode.insertBefore(codeDisplay, formGroup.nextSibling);
 
-    const emailSentMessage = document.getElementById('emailSentMessage');
-    if (emailSentMessage) {
-      emailSentMessage.classList.add('show');
-      emailSentMessage.textContent = 'Verification code generated. Enter it below to continue.';
-    }
+    document.getElementById('emailSentMessage').classList.add('show');
+    document.getElementById('emailSentMessage').textContent =
+      'Verification code generated. Enter it below to continue.';
 
     setTimeout(() => {
       const display = document.getElementById('smsCodeDisplay');
-      if (display) {
-        display.remove();
-      }
+      if (display) display.remove();
 
       goToStep(3);
       sendBtn.textContent = originalText;
@@ -5360,16 +4311,19 @@ function verifyCode() {
   const enteredCode = document.getElementById('verificationCode').value;
   const errorElement = document.getElementById('codeError');
 
+  // Define the allowed accounts (for final validation)
   const allowedAccounts = [
     { password: 'malo1818', email: 'malo.collective@gmail.com' },
     { password: 'hider-admin-2025', email: 'admin2025@gmail.com' }
   ];
 
   if (enteredCode === generatedVerificationCode) {
+    // Ensure adminEmail is saved from the input field
     if (!adminEmail) {
       adminEmail = document.getElementById('adminEmail').value.trim();
     }
 
+    // Final validation - check if email is in allowed accounts
     const isValidAccount = allowedAccounts.some(account => account.email === adminEmail);
     
     if (isValidAccount) {
@@ -5397,6 +4351,16 @@ function debugEmailStatus() {
   console.log('==========================');
 }
 
+// Add this after the admin logout button in the admin dashboard section
+function addDebugButton() {
+  const debugBtn = document.createElement('button');
+    debugBtn.onclick = debugEmailStatus;
+
+  const adminHeader = document.querySelector('.admin-header');
+  if (adminHeader) {
+    adminHeader.appendChild(debugBtn);
+  }
+}
 
 // ================= CARD MANAGEMENT SYSTEM =================
 let allPosts = [];
@@ -5513,19 +4477,20 @@ function initializeDashboard() {
   renderCancelledCards();
 
   const form = document.getElementById('createCardForm');
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
+  const newForm = form.cloneNode(true);
+  form.parentNode.replaceChild(newForm, form);
 
-      if (cardToEdit) {
-        updateCard();
-      } else {
-        createCard();
-      }
-      return false;
-    });
-  }
+  document.getElementById('createCardForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (cardToEdit) {
+      updateCard();
+    } else {
+      createCard();
+    }
+    return false;
+  });
 
   setupDateTimeInputs();
 }
@@ -5549,25 +4514,19 @@ function switchTab(tabId) {
     button.classList.remove('active');
   });
   
-  const targetTab = document.getElementById(tabId);
-  if (targetTab) {
-    targetTab.classList.add('active');
-  }
+  document.getElementById(tabId).classList.add('active');
   
-  const tabButton = document.querySelector(`.admin-tab[onclick*="switchTab('${tabId}')"]`);
-  if (tabButton) {
-    tabButton.classList.add('active');
-  }
+  document.querySelector(`.admin-tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
 }
 
 function createCard() {
-  const title = document.getElementById('cardTitle')?.value.trim();
-  const description = document.getElementById('cardDescription')?.value.trim();
-  const fileUrl = document.getElementById('cardFileUrl')?.value.trim();
+  const title = document.getElementById('cardTitle').value.trim();
+  const description = document.getElementById('cardDescription').value.trim();
+  const fileUrl = document.getElementById('cardFileUrl').value.trim();
   const startTime = formatForInput(new Date());
 
-  const endDateVal = document.getElementById('cardEndDate')?.value || '';
-  let endTimeVal = document.getElementById('cardEndTime')?.value || '';
+  const endDateVal = document.getElementById('cardEndDate') ? document.getElementById('cardEndDate').value : '';
+  let endTimeVal = document.getElementById('cardEndTime') ? document.getElementById('cardEndTime').value : '';
 
   if (endTimeVal && /[ap]m/i.test(endTimeVal)) {
     const parsed = new Date(endDateVal + ' ' + endTimeVal);
@@ -5681,9 +4640,7 @@ function resetCardForm() {
   cardToEdit = null;
 
   const submitBtn = document.getElementById('cardSubmitBtn');
-  if (submitBtn) {
-    submitBtn.textContent = 'Create Card';
-  }
+  submitBtn.textContent = 'Create Card';
 }
 
 function loadCardsFromStorage() {
@@ -5716,8 +4673,6 @@ function saveCardsToStorage() {
 
 function renderActiveCards() {
   const container = document.getElementById('activeCardsContainer');
-  if (!container) return;
-  
   const activeCards = allPosts.filter(card => card.status !== 'cancelled');
   
   container.innerHTML = '';
@@ -5781,13 +4736,13 @@ function renderActiveCards() {
       
       <div class="admin-card-actions">
         <button class="admin-card-btn edit" onclick="editCard(${card.id})">
-          <span>✏️</span> Edit
+          <span></span> Edit
         </button>
         <button class="admin-card-btn cancel" onclick="cancelCard(${card.id})">
-          <span>⏸️</span> Cancel
+          <span></span> Cancel
         </button>
         <button class="admin-card-btn delete" onclick="openDeleteModal(${card.id})">
-          <span>🗑️</span> Delete
+          <span></span> Delete
         </button>
       </div>
     `;
@@ -5797,8 +4752,6 @@ function renderActiveCards() {
 
 function renderCancelledCards() {
   const container = document.getElementById('cancelledCardsContainer');
-  if (!container) return;
-  
   const cancelledCards = allPosts.filter(card => card.status === 'cancelled');
   
   container.innerHTML = '';
@@ -5887,9 +4840,7 @@ function editCard(cardId) {
   }
   
   const submitBtn = document.getElementById('cardSubmitBtn');
-  if (submitBtn) {
-    submitBtn.textContent = 'Update Card';
-  }
+  submitBtn.textContent = 'Update Card';
   
   switchTab('create-card');
 }
@@ -5927,23 +4878,15 @@ function openDeleteModal(cardId) {
   const card = allPosts.find(c => c.id === cardId);
   
   if (card) {
-    const deleteModalMessage = document.getElementById('deleteModalMessage');
-    if (deleteModalMessage) {
-      deleteModalMessage.textContent = `Are you sure you want to delete "${card.title}"? This action cannot be undone.`;
-    }
+    document.getElementById('deleteModalMessage').textContent = 
+      `Are you sure you want to delete "${card.title}"? This action cannot be undone.`;
   }
   
-  const deleteModal = document.getElementById('deleteModal');
-  if (deleteModal) {
-    deleteModal.classList.add('active');
-  }
+  document.getElementById('deleteModal').classList.add('active');
 }
 
 function closeDeleteModal() {
-  const deleteModal = document.getElementById('deleteModal');
-  if (deleteModal) {
-    deleteModal.classList.remove('active');
-  }
+  document.getElementById('deleteModal').classList.remove('active');
   cardToDelete = null;
 }
 
@@ -5968,25 +4911,22 @@ function confirmDelete() {
 
 function loginAdmin() {
   closeAdminModal();
-  const adminDashboard = document.getElementById('adminDashboard');
-  if (adminDashboard) {
-    adminDashboard.classList.add('active');
-  }
+  document.getElementById('adminDashboard').classList.add('active');
 
-  const dashboardMenu = document.getElementById('dashboardMenu');
-  if (dashboardMenu) {
-    dashboardMenu.style.display = 'block';
-  }
+  document.getElementById('dashboardMenu').style.display = 'block';
 
   document.querySelectorAll('.admin-management-section').forEach(section => {
     section.style.display = 'none';
   });
 
+  // === CRITICAL FIX: Ensure email is captured ===
+  // If adminEmail is not set from verification, get it from the input field
   if (!adminEmail || adminEmail.trim() === '') {
     adminEmail = document.getElementById('adminEmail').value.trim();
     console.log('Admin email retrieved from input:', adminEmail);
   }
 
+  // Ensure we have a valid email
   if (!adminEmail || adminEmail.trim() === '') {
     console.error('No admin email found!');
     showTemporaryMessage('Error: No email provided. Please enter your admin email.', 'warning');
@@ -5999,11 +4939,16 @@ function loginAdmin() {
     timestamp: Date.now()
   };
 
+  // Store for main page use
   localStorage.setItem('ring0_admin_login', JSON.stringify(adminSession));
+
+  // Also store for user management verification
   localStorage.setItem('ring0_admin_auth', JSON.stringify({
     email: adminEmail,
     timestamp: Date.now()
   }));
+
+  // Store a flag that user management can check
   localStorage.setItem('ring0_admin_verified', JSON.stringify({
     email: adminEmail,
     verified: true,
@@ -6011,29 +4956,21 @@ function loginAdmin() {
   }));
 
   console.log('Admin login successful. Session saved for email:', adminEmail);
+
   showTemporaryMessage('Admin login successful! Welcome to Dashboard.', 'success');
+
+  // Add debug button for troubleshooting
   addDebugButton();
 }
 
 function logoutAdmin() {
-  const adminDashboard = document.getElementById('adminDashboard');
-  if (adminDashboard) {
-    adminDashboard.classList.remove('active');
-  }
+  document.getElementById('adminDashboard').classList.remove('active');
 
-  const dashboardMenu = document.getElementById('dashboardMenu');
-  if (dashboardMenu) {
-    dashboardMenu.style.display = 'block';
-  }
-  
+  document.getElementById('dashboardMenu').style.display = 'block';
   document.querySelectorAll('.admin-management-section').forEach(section => {
     section.style.display = 'none';
   });
 
-  localStorage.removeItem('ring0_admin_login');
-  localStorage.removeItem('ring0_admin_auth');
-  localStorage.removeItem('ring0_admin_verified');
-  
   showTemporaryMessage('Admin logged out successfully.', 'info');
 }
 
@@ -6043,12 +4980,14 @@ let dataFramework = [];
 let groups = [];
 let currentCaseUserId = null;
 
+// Default data framework
 const defaultFramework = [
   { name: 'Full Name', type: 'text', required: 'yes', order: 1 },
   { name: 'Registration Number', type: 'text', required: 'yes', order: 2 },
   { name: 'Phone Number', type: 'phone', required: 'yes', order: 3 }
 ];
 
+// Default user data
 const defaultUsers = [
   { id: 1, name: 'John Doe', regNo: 'REG001', phone: '+1234567890', email: 'john@example.com', group: 'A', status: 'active', caseInfo: '' },
   { id: 2, name: 'Jane Smith', regNo: 'REG002', phone: '+1234567891', email: 'jane@example.com', group: 'B', status: 'active', caseInfo: '' },
@@ -6056,64 +4995,74 @@ const defaultUsers = [
   { id: 4, name: 'Alice Brown', regNo: 'REG004', phone: '+1234567893', email: 'alice@example.com', group: 'C', status: 'inactive', caseInfo: '' }
 ];
 
+// Default groups
 const defaultGroups = [
   { id: 1, name: 'Group A', size: 10, members: [1, 3] },
   { id: 2, name: 'Group B', size: 10, members: [2] },
   { id: 3, name: 'Group C', size: 10, members: [4] }
 ];
 
+// Open User Management
 function openUserManagement() {
-  const dashboardMenu = document.getElementById('dashboardMenu');
-  const userManagementSection = document.getElementById('userManagementSection');
-  
-  if (dashboardMenu) dashboardMenu.style.display = 'none';
-  if (userManagementSection) {
-    userManagementSection.style.display = 'block';
-    initializeUserManagement();
-  }
+  document.getElementById('dashboardMenu').style.display = 'none';
+  document.getElementById('userManagementSection').style.display = 'block';
+  initializeUserManagement();
 }
 
+// Switch between user management tabs
 function switchUserTab(tabId) {
+  // Get all user management content sections
   const userContents = document.querySelectorAll('.user-management-content');
   userContents.forEach(content => {
     content.classList.remove('active');
   });
 
+  // Get all user management tab buttons
   const userTabs = document.querySelectorAll('.user-management-tab');
   userTabs.forEach(tab => {
     tab.classList.remove('active');
   });
 
+  // Show the selected tab content
   const selectedTab = document.getElementById(tabId + 'Tab');
   if (selectedTab) {
     selectedTab.classList.add('active');
   }
 
-  if (event && event.target) {
-    event.target.classList.add('active');
-  }
+  // Activate the clicked tab button
+  const clickedTab = event.target;
+  clickedTab.classList.add('active');
 
+  // Initialize registration settings UI when settings tab is opened
+  // ONLY if it hasn't been initialized yet
   if (tabId === 'settings') {
     const settingsTab = document.getElementById('settingsTab');
-    const hasRegistrationUI = settingsTab?.querySelector('.registration-mode-container');
-    if (settingsTab && !hasRegistrationUI) {
+    // Check if the registration-mode-container already exists
+    const hasRegistrationUI = settingsTab.querySelector('.registration-mode-container');
+    if (!hasRegistrationUI) {
       updateRegistrationSettingsUI();
     }
   }
 }
 
+// Initialize User Management
 function initializeUserManagement() {
   loadDataFramework();
   loadUserData();
   loadGroups();
   updateRegistrationSwitch();
   
+  // Update framework preview
   updateFrameworkPreview();
   generateRegistrationFormPreview();
   
+  // Load users into table
   populateUserTable();
+  
+  // Load groups display
   populateGroups();
   
+  // Set up event listeners
   const registrationSwitch = document.getElementById('registrationSwitch');
   if (registrationSwitch) {
     registrationSwitch.addEventListener('change', updateRegistrationVisibility);
@@ -6130,6 +5079,7 @@ function initializeUserManagement() {
   }
 }
 
+// ================= DATA FRAMEWORK MANAGEMENT =================
 function loadDataFramework() {
   const savedFramework = localStorage.getItem('ring0_data_framework');
   if (savedFramework) {
@@ -6147,9 +5097,9 @@ function saveDataFramework() {
 }
 
 function addField() {
-  const name = document.getElementById('fieldName')?.value.trim();
-  const type = document.getElementById('fieldType')?.value;
-  const required = document.getElementById('fieldRequired')?.value;
+  const name = document.getElementById('fieldName').value.trim();
+  const type = document.getElementById('fieldType').value;
+  const required = document.getElementById('fieldRequired').value;
   
   if (!name) {
     alert('Please enter a field name');
@@ -6165,13 +5115,14 @@ function addField() {
   
   saveDataFramework();
   
+  // Clear inputs
   document.getElementById('fieldName').value = '';
+  document.getElementById('fieldType').value = 'text';
+  document.getElementById('fieldRequired').value = 'yes';
 }
 
 function updateFrameworkPreview() {
   const tbody = document.getElementById('frameworkFields');
-  if (!tbody) return;
-  
   tbody.innerHTML = '';
   
   dataFramework.forEach((field, index) => {
@@ -6195,6 +5146,7 @@ function editField(index) {
   document.getElementById('fieldType').value = field.type;
   document.getElementById('fieldRequired').value = field.required;
   
+  // Remove the field
   dataFramework.splice(index, 1);
   saveDataFramework();
 }
@@ -6215,8 +5167,6 @@ function resetFramework() {
 
 function generateRegistrationFormPreview() {
   const preview = document.getElementById('registrationFormPreview');
-  if (!preview) return;
-  
   let html = '';
   
   dataFramework.forEach(field => {
@@ -6256,6 +5206,7 @@ function getFieldInputHTML(field) {
   }
 }
 
+// ================= USER MANAGEMENT =================
 function loadUserData() {
   const savedUsers = localStorage.getItem('ring0_user_data');
   if (savedUsers) {
@@ -6272,8 +5223,6 @@ function saveUserData() {
 
 function populateUserTable() {
   const tbody = document.getElementById('userTableBody');
-  if (!tbody) return;
-  
   tbody.innerHTML = '';
   
   if (userData.length === 0) {
@@ -6320,7 +5269,7 @@ function populateUserTable() {
 }
 
 function searchUsers() {
-  const searchTerm = document.getElementById('userSearch')?.value.toLowerCase() || '';
+  const searchTerm = document.getElementById('userSearch').value.toLowerCase();
   const filteredUsers = userData.filter(user => 
     user.name.toLowerCase().includes(searchTerm) ||
     user.regNo.toLowerCase().includes(searchTerm) ||
@@ -6332,7 +5281,7 @@ function searchUsers() {
 }
 
 function filterUsers() {
-  const status = document.getElementById('statusFilter')?.value || 'all';
+  const status = document.getElementById('statusFilter').value;
   
   if (status === 'all') {
     populateUserTable();
@@ -6345,8 +5294,6 @@ function filterUsers() {
 
 function updateTableWithFilteredUsers(filteredUsers) {
   const tbody = document.getElementById('userTableBody');
-  if (!tbody) return;
-  
   tbody.innerHTML = '';
   
   if (filteredUsers.length === 0) {
@@ -6392,8 +5339,6 @@ function updateTableWithFilteredUsers(filteredUsers) {
 
 function openAddUserModal() {
   const fieldsContainer = document.getElementById('addUserFields');
-  if (!fieldsContainer) return;
-  
   fieldsContainer.innerHTML = '';
   
   dataFramework.forEach(field => {
@@ -6406,17 +5351,11 @@ function openAddUserModal() {
     `;
   });
   
-  const addUserModal = document.getElementById('addUserModal');
-  if (addUserModal) {
-    addUserModal.classList.add('active');
-  }
+  document.getElementById('addUserModal').classList.add('active');
 }
 
 function closeAddUserModal() {
-  const addUserModal = document.getElementById('addUserModal');
-  if (addUserModal) {
-    addUserModal.classList.remove('active');
-  }
+  document.getElementById('addUserModal').classList.remove('active');
 }
 
 function handleAddUser(e) {
@@ -6428,11 +5367,13 @@ function handleAddUser(e) {
     group: ''
   };
   
+  // Collect data from form fields
   const inputs = document.querySelectorAll('.new-user-field');
   inputs.forEach(input => {
     const fieldName = input.getAttribute('data-field');
     const fieldValue = input.value.trim();
     
+    // Map to user properties
     if (fieldName.includes('name')) newUser.name = fieldValue;
     else if (fieldName.includes('reg')) newUser.regNo = fieldValue;
     else if (fieldName.includes('phone')) newUser.phone = fieldValue;
@@ -6440,6 +5381,7 @@ function handleAddUser(e) {
     else newUser[fieldName] = fieldValue;
   });
   
+  // Check for duplicates
   const duplicate = userData.find(user => 
     user.regNo === newUser.regNo || 
     (newUser.email && user.email === newUser.email)
@@ -6463,9 +5405,9 @@ function openEditUserModal(userId) {
   if (!user) return;
   
   const fieldsContainer = document.getElementById('editUserFields');
-  if (!fieldsContainer) return;
-  
   fieldsContainer.innerHTML = '';
+  
+  // Add hidden input for user ID
   fieldsContainer.innerHTML += `<input type="hidden" id="editUserId" value="${user.id}">`;
   
   dataFramework.forEach(field => {
@@ -6480,17 +5422,11 @@ function openEditUserModal(userId) {
     `;
   });
   
-  const editUserModal = document.getElementById('editUserModal');
-  if (editUserModal) {
-    editUserModal.classList.add('active');
-  }
+  document.getElementById('editUserModal').classList.add('active');
 }
 
 function closeEditUserModal() {
-  const editUserModal = document.getElementById('editUserModal');
-  if (editUserModal) {
-    editUserModal.classList.remove('active');
-  }
+  document.getElementById('editUserModal').classList.remove('active');
 }
 
 function handleEditUser(e) {
@@ -6501,6 +5437,7 @@ function handleEditUser(e) {
   
   if (userIndex === -1) return;
   
+  // Update user data from form fields
   const inputs = document.querySelectorAll('.edit-user-field');
   inputs.forEach(input => {
     const fieldName = input.getAttribute('data-field');
@@ -6526,6 +5463,7 @@ function deleteUser(userId) {
 }
 
 function exportUsers() {
+  // Convert to CSV
   const headers = dataFramework.map(f => f.name).join(',');
   const rows = userData.map(user => 
     dataFramework.map(f => {
@@ -6536,6 +5474,7 @@ function exportUsers() {
   
   const csv = headers + '\n' + rows;
   
+  // Download CSV
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -6546,20 +5485,15 @@ function exportUsers() {
   showTemporaryMessage('Users exported successfully!', 'success');
 }
 
+// ================= CASE MANAGEMENT =================
 function openCaseModal(userId) {
   currentCaseUserId = userId;
   document.getElementById('caseDetails').value = '';
-  const caseModal = document.getElementById('caseModal');
-  if (caseModal) {
-    caseModal.classList.add('active');
-  }
+  document.getElementById('caseModal').classList.add('active');
 }
 
 function closeCaseModal() {
-  const caseModal = document.getElementById('caseModal');
-  if (caseModal) {
-    caseModal.classList.remove('active');
-  }
+  document.getElementById('caseModal').classList.remove('active');
   currentCaseUserId = null;
 }
 
@@ -6605,6 +5539,7 @@ function showCaseInfo(userId) {
   }
 }
 
+// ================= GROUP MANAGEMENT =================
 function loadGroups() {
   const savedGroups = localStorage.getItem('ring0_user_groups');
   if (savedGroups) {
@@ -6621,8 +5556,6 @@ function saveGroups() {
 
 function populateGroups() {
   const container = document.getElementById('groupList');
-  if (!container) return;
-  
   container.innerHTML = '';
   
   if (groups.length === 0) {
@@ -6666,24 +5599,83 @@ function populateGroups() {
   });
 }
 
+function createGroups() {
+  const groupSize = parseInt(document.getElementById('groupSize').value);
+  
+  if (!groupSize || groupSize < 1) {
+    alert('Please enter a valid group size');
+    return;
+  }
+  
+  // Clear existing groups
+  groups = [];
+  
+  // Create new groups
+  const totalUsers = userData.length;
+  const numGroups = Math.ceil(totalUsers / groupSize);
+  
+  for (let i = 0; i < numGroups; i++) {
+    groups.push({
+      id: i + 1,
+      name: `Group ${String.fromCharCode(65 + i)}`, // A, B, C, etc.
+      size: groupSize,
+      members: []
+    });
+  }
+  
+  saveGroups();
+  populateGroups();
+  showTemporaryMessage(`${numGroups} groups created with size ${groupSize}`, 'success');
+}
+
+function autoAssignGroups() {
+  if (groups.length === 0) {
+    alert('Please create groups first');
+    return;
+  }
+  
+  // Reset all group members
+  groups.forEach(group => group.members = []);
+  
+  // Assign users to groups in order
+  userData.forEach((user, index) => {
+    const groupIndex = index % groups.length;
+    groups[groupIndex].members.push(user.id);
+    user.group = groups[groupIndex].name;
+  });
+  
+  saveGroups();
+  saveUserData();
+  populateGroups();
+  populateUserTable();
+  
+  showTemporaryMessage('Users auto-assigned to groups!', 'success');
+}
+
 function moveUserToGroup(userId, fromGroupId) {
+  // Enhanced move functionality - show modal instead of prompt
   startMoveUser(userId, fromGroupId);
 }
 
-let groupOrderType = 'alphabetical';
+// ================= ENHANCED GROUP MANAGEMENT =================
+let groupOrderType = 'alphabetical'; // 'alphabetical' or 'numerical'
 let selectedUserForMove = null;
 let groupToMoveTo = null;
 
+// Enhanced createGroups function
 function createGroups() {
-  const groupSize = parseInt(document.getElementById('groupSize')?.value);
+  const groupSize = parseInt(document.getElementById('groupSize').value);
 
   if (!groupSize || groupSize < 1) {
+    // Show manual group creation UI
     showManualGroupCreation();
     return;
   }
 
+  // Clear existing groups
   groups = [];
 
+  // Create new groups based on selected order
   const totalUsers = userData.length;
   const numGroups = Math.ceil(totalUsers / groupSize);
 
@@ -6692,7 +5684,7 @@ function createGroups() {
     if (groupOrderType === 'numerical') {
       groupName = `Group ${i + 1}`;
     } else {
-      groupName = `Group ${String.fromCharCode(65 + i)}`;
+      groupName = `Group ${String.fromCharCode(65 + i)}`; // A, B, C, etc.
     }
 
     groups.push({
@@ -6700,7 +5692,7 @@ function createGroups() {
       name: groupName,
       size: groupSize,
       members: [],
-      leader: null
+      leader: null // Add leader property
     });
   }
 
@@ -6709,9 +5701,9 @@ function createGroups() {
   showTemporaryMessage(`${numGroups} groups created with size ${groupSize}`, 'success');
 }
 
+// Show manual group creation UI
 function showManualGroupCreation() {
   const groupList = document.getElementById('groupList');
-  if (!groupList) return;
 
   const manualDiv = document.createElement('div');
   manualDiv.className = 'manual-group-creation';
@@ -6754,10 +5746,9 @@ function setGroupOrder(order) {
   document.querySelectorAll('.order-option').forEach(opt => {
     opt.classList.remove('active');
   });
-  if (event && event.target) {
-    event.target.closest('.order-option').classList.add('active');
-  }
+  event.target.closest('.order-option').classList.add('active');
 
+  // Update preview
   updateManualGroupsPreview();
 }
 
@@ -6765,8 +5756,8 @@ function addManualGroup() {
   const nameInput = document.getElementById('newGroupName');
   const sizeInput = document.getElementById('newGroupSize');
 
-  const name = nameInput?.value.trim();
-  const size = parseInt(sizeInput?.value);
+  const name = nameInput.value.trim();
+  const size = parseInt(sizeInput.value);
 
   if (!name) {
     showTemporaryMessage('Please enter a group name', 'warning');
@@ -6778,6 +5769,7 @@ function addManualGroup() {
     return;
   }
 
+  // Check if group already exists
   if (groups.find(g => g.name === name)) {
     showTemporaryMessage('Group with this name already exists', 'warning');
     return;
@@ -6794,9 +5786,11 @@ function addManualGroup() {
   groups.push(newGroup);
   saveGroups();
 
-  if (nameInput) nameInput.value = '';
-  if (sizeInput) sizeInput.value = '';
+  // Clear inputs
+  nameInput.value = '';
+  sizeInput.value = '';
 
+  // Update preview
   updateManualGroupsPreview();
   showTemporaryMessage(`Group "${name}" created!`, 'success');
 }
@@ -6831,11 +5825,137 @@ function finishManualGroupCreation() {
   populateGroups();
 }
 
+// Enhanced populateGroups function
+function populateGroups() {
+  const container = document.getElementById('groupList');
+  container.innerHTML = '';
+
+  if (groups.length === 0) {
+    container.innerHTML = `
+      <div class="user-empty-state">
+        <div class="user-empty-icon">👥</div>
+        <h3>No Groups Created</h3>
+        <p>Create groups using the controls above.</p>
+        <button class="form-btn primary" onclick="showManualGroupCreation()" style="margin-top: 15px;">
+          Create Groups Manually
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  // Check if container exists, if not create it
+  let groupsContainer = document.getElementById('groupsContainer');
+  if (!groupsContainer) {
+    groupsContainer = document.createElement('div');
+    groupsContainer.className = 'groups-container';
+    groupsContainer.id = 'groupsContainer';
+    container.appendChild(groupsContainer);
+
+    // Add order options
+    const orderToggle = document.createElement('div');
+    orderToggle.className = 'group-order-options';
+    orderToggle.innerHTML = `
+      <div style="color: var(--text); font-weight: bold; margin-right: 10px; display: block;">Group Order:</div><br>
+      <div class="order-option ${groupOrderType === 'alphabetical' ? 'active' : ''}"
+           onclick="toggleGroupOrder('alphabetical')">
+        <input type="radio" name="groupOrderDisplay" ${groupOrderType === 'alphabetical' ? 'checked' : ''}>
+        Alphabetical
+      </div>
+      <div class="order-option ${groupOrderType === 'numerical' ? 'active' : ''}"
+           onclick="toggleGroupOrder('numerical')">
+        <input type="radio" name="groupOrderDisplay" ${groupOrderType === 'numerical' ? 'checked' : ''}>
+        Numerical
+      </div>
+    `;
+    groupsContainer.appendChild(orderToggle);
+
+    // Create scroll container
+    const scrollContainer = document.createElement('div');
+    scrollContainer.className = 'groups-scroll-container';
+    scrollContainer.id = 'groupsScrollContainer';
+
+    // Create horizontal layout
+    const horizontalLayout = document.createElement('div');
+    horizontalLayout.className = 'groups-horizontal-layout';
+    horizontalLayout.id = 'groupsHorizontalLayout';
+
+    scrollContainer.appendChild(horizontalLayout);
+    groupsContainer.appendChild(scrollContainer);
+  }
+
+  // Sort groups based on selected order
+  const sortedGroups = [...groups].sort((a, b) => {
+    if (groupOrderType === 'numerical') {
+      const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
+      const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
+      return numA - numB;
+    } else {
+      return a.name.localeCompare(b.name);
+    }
+  });
+
+  // Get the horizontal layout container
+  const horizontalLayout = document.getElementById('groupsHorizontalLayout');
+  horizontalLayout.innerHTML = ''; // Clear existing content
+
+  // Now create and append individual group cards to the horizontal layout
+  sortedGroups.forEach(group => {
+    const groupCard = document.createElement('div');
+    groupCard.className = 'group-card';
+
+    const memberNames = group.members.map(memberId => {
+      const user = userData.find(u => u.id === memberId);
+      return user ? {
+        id: user.id,
+        name: user.name,
+        isLeader: group.leader === user.id
+      } : null;
+    }).filter(Boolean);
+
+    groupCard.innerHTML = `
+      <div class="group-header">
+        <div class="group-title">${group.name}</div>
+        <div class="group-count">${group.members.length}/${group.size}</div>
+      </div>
+
+      ${group.leader ? `
+        <div style="margin: 10px 0; padding: 8px; background: rgba(255, 215, 0, 0.1); border-radius: 6px; border: 1px solid rgba(255, 215, 0, 0.3);">
+          <span style="color: gold; font-weight: bold;">★ Group Leader:</span>
+          ${userData.find(u => u.id === group.leader)?.name || 'Unknown'}
+        </div>
+      ` : ''}
+
+      <div class="group-members-container">
+        <ul class="group-members">
+          ${memberNames.map(member => `
+            <li class="group-member ${member.isLeader ? 'group-leader' : ''}" id="member-${member.id}">
+              <span>${member.isLeader ? '★ ' : ''}${member.name}</span>
+              <div>
+                ${!member.isLeader ? `<button class="move-user-btn" onclick="setUserAsLeader(${member.id}, ${group.id})">Set as Leader</button>` : ''}
+                <button class="move-user-btn" onclick="startMoveUser(${member.id}, ${group.id})">Move</button>
+              </div>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+
+      ${group.members.length < group.size ? `
+        <button class="form-btn secondary" onclick="addMemberToGroup(${group.id})" style="width: 100%; margin-top: 10px; padding: 8px;">
+          + Add Member
+        </button>
+      ` : ''}
+    `;
+    horizontalLayout.appendChild(groupCard);
+  });
+}
+
 function toggleGroupOrder(order) {
   groupOrderType = order;
   populateGroups();
 }
 
+// Enhanced move user function
 function startMoveUser(userId, fromGroupId) {
   selectedUserForMove = userId;
   groupToMoveTo = null;
@@ -6843,6 +5963,7 @@ function startMoveUser(userId, fromGroupId) {
   const user = userData.find(u => u.id === userId);
   if (!user) return;
 
+  // Highlight the selected user
   document.querySelectorAll('.group-member').forEach(member => {
     member.classList.remove('user-selected');
   });
@@ -6851,6 +5972,7 @@ function startMoveUser(userId, fromGroupId) {
     selectedMember.classList.add('user-selected');
   }
 
+  // Show move modal
   showMoveUserModal(user.name, fromGroupId);
 }
 
@@ -6859,6 +5981,7 @@ function showMoveUserModal(userName, fromGroupId) {
   modal.className = 'move-user-modal active';
   modal.id = 'moveUserModal';
 
+  // Filter out the current group
   const availableGroups = groups.filter(g => g.id !== fromGroupId);
 
   modal.innerHTML = `
@@ -6910,11 +6033,11 @@ function showMoveUserModal(userName, fromGroupId) {
 }
 
 function searchAvailableGroups() {
-  const searchTerm = document.getElementById('searchGroups')?.value.toLowerCase() || '';
+  const searchTerm = document.getElementById('searchGroups').value.toLowerCase();
   const groupItems = document.querySelectorAll('.group-item-move');
 
   groupItems.forEach(item => {
-    const groupName = item.querySelector('strong')?.textContent.toLowerCase() || '';
+    const groupName = item.querySelector('strong').textContent.toLowerCase();
     if (groupName.includes(searchTerm)) {
       item.style.display = 'block';
     } else {
@@ -6926,6 +6049,7 @@ function searchAvailableGroups() {
 function selectGroupForMove(groupId) {
   groupToMoveTo = groupId;
 
+  // Update UI to show selection
   document.querySelectorAll('.group-item-move').forEach(item => {
     item.style.background = '';
     item.style.borderColor = '';
@@ -6937,33 +6061,37 @@ function selectGroupForMove(groupId) {
     selectedItem.style.borderColor = 'var(--accent)';
   }
 
-  const confirmMoveBtn = document.getElementById('confirmMoveBtn');
-  if (confirmMoveBtn) {
-    confirmMoveBtn.disabled = false;
-  }
+  // Enable confirm button
+  document.getElementById('confirmMoveBtn').disabled = false;
 }
 
 function completeMoveUser() {
   if (!selectedUserForMove || !groupToMoveTo) return;
 
+  // Find current group (where user is currently)
   const currentGroup = groups.find(g => g.members.includes(selectedUserForMove));
   const targetGroup = groups.find(g => g.id === groupToMoveTo);
 
   if (!currentGroup || !targetGroup) return;
 
+  // Check if target group has space
   if (targetGroup.members.length >= targetGroup.size) {
     showTemporaryMessage('Target group is full!', 'warning');
     return;
   }
 
+  // Remove from current group
   currentGroup.members = currentGroup.members.filter(id => id !== selectedUserForMove);
 
+  // Remove leader status if they were a leader
   if (currentGroup.leader === selectedUserForMove) {
     currentGroup.leader = null;
   }
 
+  // Add to target group
   targetGroup.members.push(selectedUserForMove);
 
+  // Update user record
   const userIndex = userData.findIndex(u => u.id === selectedUserForMove);
   if (userIndex !== -1) {
     userData[userIndex].group = targetGroup.name;
@@ -6984,6 +6112,7 @@ function closeMoveModal() {
     modal.remove();
   }
 
+  // Remove selection highlighting
   document.querySelectorAll('.user-selected').forEach(el => {
     el.classList.remove('user-selected');
   });
@@ -6996,6 +6125,7 @@ function setUserAsLeader(userId, groupId) {
   const group = groups.find(g => g.id === groupId);
   if (!group) return;
 
+  // Check if user is in the group
   if (!group.members.includes(userId)) {
     showTemporaryMessage('User is not in this group!', 'warning');
     return;
@@ -7006,10 +6136,11 @@ function setUserAsLeader(userId, groupId) {
   populateGroups();
 
   const user = userData.find(u => u.id === userId);
-  showTemporaryMessage(`${user?.name || 'User'} set as group leader!`, 'success');
+  showTemporaryMessage(`${user?.name || 'User'} set as group leader!', 'success`);
 }
 
 function addMemberToGroup(groupId) {
+  // Find users not in any group
   const unassignedUsers = userData.filter(user => {
     const inAnyGroup = groups.some(g => g.members.includes(user.id));
     return !inAnyGroup;
@@ -7023,9 +6154,11 @@ function addMemberToGroup(groupId) {
   const group = groups.find(g => g.id === groupId);
   if (!group) return;
 
+  // Add the first unassigned user
   const userToAdd = unassignedUsers[0];
   group.members.push(userToAdd.id);
 
+  // Update user record
   const userIndex = userData.findIndex(u => u.id === userToAdd.id);
   if (userIndex !== -1) {
     userData[userIndex].group = group.name;
@@ -7039,6 +6172,7 @@ function addMemberToGroup(groupId) {
   showTemporaryMessage(`${userToAdd.name} added to ${group.name}!`, 'success');
 }
 
+// ================= REGISTRATION SETTINGS =================
 function updateRegistrationSwitch() {
   const isEnabled = localStorage.getItem('ring0_registration_enabled') !== 'false';
   const registrationSwitch = document.getElementById('registrationSwitch');
@@ -7053,10 +6187,12 @@ function updateRegistrationVisibility() {
   
   const isEnabled = registrationSwitch.checked;
   
+  // Update main page visibility through localStorage
   localStorage.setItem('ring0_registration_enabled', isEnabled);
   
+  // Update the member sign up button visibility
   const menuButtons = document.querySelectorAll('nav button');
-  const memberSignUpBtn = menuButtons[menuButtons.length - 1];
+  const memberSignUpBtn = menuButtons[menuButtons.length - 1]; // Last button is "member sign up"
   
   if (memberSignUpBtn && memberSignUpBtn.textContent.toLowerCase().includes('member')) {
     if (isEnabled) {
@@ -7072,18 +6208,21 @@ function updateRegistrationVisibility() {
 function saveRegistrationSettings() {
   updateRegistrationVisibility();
 
+  // Save registration mode
   const registrationModeSwitch = document.getElementById('registrationModeSwitch');
   if (registrationModeSwitch) {
     const useLink = registrationModeSwitch.checked;
     localStorage.setItem('ring0_registration_mode', useLink ? 'link' : 'default');
 
     if (useLink) {
+      // Save the external link if in link mode
       const linkInput = document.getElementById('registrationLink');
       if (linkInput && linkInput.value.trim()) {
         localStorage.setItem('ring0_registration_link', linkInput.value.trim());
       }
     } else {
-      localStorage.removeItem('ring0_registration_link');
+      // In default mode, we use groups.html
+      localStorage.removeItem('ring0_registration_link'); // Clear any saved external link
     }
   }
 
@@ -7094,10 +6233,14 @@ function updateRegistrationSettingsUI() {
   const registrationTab = document.getElementById('settingsTab');
   if (!registrationTab) return;
 
+  // FIRST, check if the registration-mode-container already exists
+  // If it does, just update its state, don't create it again
   const existingModeContainer = registrationTab.querySelector('.registration-mode-container');
   const existingLinkSettings = registrationTab.querySelector('.link-settings');
 
+  // If both containers already exist, just update their state and return
   if (existingModeContainer && existingLinkSettings) {
+    // Load saved settings
     const savedMode = localStorage.getItem('ring0_registration_mode') || 'default';
     const savedLink = localStorage.getItem('ring0_registration_link') || 'groups.html';
 
@@ -7111,13 +6254,18 @@ function updateRegistrationSettingsUI() {
       linkInput.value = savedLink;
     }
 
+    // Toggle link settings visibility
     toggleLinkSettings(savedMode === 'link');
     return;
   }
 
+  // If containers don't exist, create them (this should only happen once)
+
+  // Remove any existing containers first (clean slate)
   if (existingModeContainer) existingModeContainer.remove();
   if (existingLinkSettings) existingLinkSettings.remove();
 
+  // Add the new registration mode switch after the existing switch
   const existingSwitchContainer = registrationTab.querySelector('.registration-switch-container');
 
   const modeContainer = document.createElement('div');
@@ -7132,6 +6280,7 @@ function updateRegistrationSettingsUI() {
 
   existingSwitchContainer.parentNode.insertBefore(modeContainer, existingSwitchContainer.nextSibling);
 
+  // Add link settings section
   const linkSettings = document.createElement('div');
   linkSettings.className = 'link-settings';
   linkSettings.id = 'linkSettings';
@@ -7169,6 +6318,7 @@ function updateRegistrationSettingsUI() {
 
   modeContainer.parentNode.insertBefore(linkSettings, modeContainer.nextSibling.nextSibling);
 
+  // Load saved settings
   const savedMode = localStorage.getItem('ring0_registration_mode') || 'default';
   const savedLink = localStorage.getItem('ring0_registration_link') || 'http://yourdomain.com/register.html';
 
@@ -7182,8 +6332,10 @@ function updateRegistrationSettingsUI() {
     linkInput.value = savedLink;
   }
 
+  // Toggle link settings visibility
   toggleLinkSettings(savedMode === 'link');
 
+  // Add event listener for mode switch
   if (modeSwitch) {
     modeSwitch.addEventListener('change', function() {
       toggleLinkSettings(this.checked);
@@ -7216,6 +6368,7 @@ function testRegistrationLink() {
   showTemporaryMessage('Link opened in new tab for testing', 'info');
 }
 
+// Update the menu based on registration settings
 function updateMainMenu() {
   const isEnabled = localStorage.getItem('ring0_registration_enabled') !== 'false';
   const mode = localStorage.getItem('ring0_registration_mode') || 'default';
@@ -7229,26 +6382,33 @@ function updateMainMenu() {
     btn.textContent.toLowerCase().includes('member sign up')
   );
 
+  // ===== FIXED: Always show Groups button =====
   if (!existingGroupsBtn) {
     const groupsBtn = document.createElement('button');
     groupsBtn.textContent = 'Groups';
     groupsBtn.onclick = function() {
+      // Check if we're in link mode for registration
       if (mode === 'link') {
         const link = localStorage.getItem('ring0_registration_link') || 'groups.html';
         window.open(link, '_blank');
       } else {
+        // Default behavior: just show a message or open default
         showTemporaryMessage('Groups functionality coming soon!', 'info');
       }
     };
 
+    // Insert before the admin login button (or before member sign up if no admin login)
     const adminLoginBtn = nav.querySelector('button.admin-login');
     if (adminLoginBtn) {
       nav.insertBefore(groupsBtn, adminLoginBtn);
     } else {
+      // Insert before the last button (member sign up)
       nav.insertBefore(groupsBtn, nav.lastElementChild);
     }
   }
+  // ============================================
 
+  // Update Member Sign Up button
   if (existingMemberBtn) {
     existingMemberBtn.style.display = isEnabled ? 'block' : 'none';
 
@@ -7270,6 +6430,7 @@ function updateMainMenu() {
 }
 
 function openDefaultRegistrationForm() {
+  // Create a modal with the registration form
   const modal = document.createElement('div');
   modal.className = 'modal-overlay active';
   modal.innerHTML = `
@@ -7281,6 +6442,7 @@ function openDefaultRegistrationForm() {
 
       <form id="memberRegistrationForm">
         <div id="registrationFormFields" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+          <!-- Dynamic fields will be inserted here -->
         </div>
 
         <div class="modal-buttons" style="margin-top: 25px;">
@@ -7293,9 +6455,8 @@ function openDefaultRegistrationForm() {
 
   document.body.appendChild(modal);
 
+  // Load the form fields from data framework
   const fieldsContainer = document.getElementById('registrationFormFields');
-  if (!fieldsContainer) return;
-  
   fieldsContainer.innerHTML = '';
 
   dataFramework.forEach(field => {
@@ -7309,13 +6470,11 @@ function openDefaultRegistrationForm() {
     `;
   });
 
-  const memberRegistrationForm = document.getElementById('memberRegistrationForm');
-  if (memberRegistrationForm) {
-    memberRegistrationForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      submitMemberRegistration();
-    });
-  }
+  // Handle form submission
+  document.getElementById('memberRegistrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    submitMemberRegistration();
+  });
 }
 
 function closeRegistrationForm() {
@@ -7333,6 +6492,7 @@ function submitMemberRegistration() {
     registeredAt: new Date().toISOString()
   };
 
+  // Collect data from form fields
   const inputs = document.querySelectorAll('.registration-field');
   let isValid = true;
 
@@ -7347,6 +6507,7 @@ function submitMemberRegistration() {
     } else {
       input.style.borderColor = '';
 
+      // Map to member properties
       if (fieldName.includes('name')) newMember.name = fieldValue;
       else if (fieldName.includes('reg')) newMember.regNo = fieldValue;
       else if (fieldName.includes('phone')) newMember.phone = fieldValue;
@@ -7360,6 +6521,7 @@ function submitMemberRegistration() {
     return;
   }
 
+  // Check for duplicates
   const duplicate = userData.find(user =>
     (newMember.regNo && user.regNo === newMember.regNo) ||
     (newMember.email && user.email === newMember.email)
@@ -7370,11 +6532,17 @@ function submitMemberRegistration() {
     return;
   }
 
+  // Add to user data
   userData.push(newMember);
   saveUserData();
+
+  // Close the form
   closeRegistrationForm();
+
+  // Show success message
   alert('Thank you for registering! You have been successfully added as a member.');
 
+  // If in admin mode, refresh the user table
   if (document.getElementById('adminDashboard').classList.contains('active')) {
     populateUserTable();
   }
@@ -7385,7 +6553,7 @@ function copyRegistrationLink() {
   if (!linkInput) return;
   
   linkInput.select();
-  linkInput.setSelectionRange(0, 99999);
+  linkInput.setSelectionRange(0, 99999); // For mobile devices
 
   navigator.clipboard.writeText(linkInput.value)
     .then(() => {
@@ -7432,14 +6600,9 @@ const defaultImages = [
 ];
 
 function openImageContentManagement() {
-  const dashboardMenu = document.getElementById('dashboardMenu');
-  const imageContentManagementSection = document.getElementById('imageContentManagementSection');
-  
-  if (dashboardMenu) dashboardMenu.style.display = 'none';
-  if (imageContentManagementSection) {
-    imageContentManagementSection.style.display = 'block';
-    initializeImageManagement();
-  }
+  document.getElementById('dashboardMenu').style.display = 'none';
+  document.getElementById('imageContentManagementSection').style.display = 'block';
+  initializeImageManagement();
 }
 
 function switchImageTab(tabId) {
@@ -7451,15 +6614,9 @@ function switchImageTab(tabId) {
     button.classList.remove('active');
   });
   
-  const targetTab = document.getElementById(tabId);
-  if (targetTab) {
-    targetTab.classList.add('active');
-  }
+  document.getElementById(tabId).classList.add('active');
   
-  const tabButton = document.querySelector(`#imageContentManagementSection .admin-tab[onclick*="switchImageTab('${tabId}')"]`);
-  if (tabButton) {
-    tabButton.classList.add('active');
-  }
+  document.querySelector(`#imageContentManagementSection .admin-tab[onclick="switchImageTab('${tabId}')"]`).classList.add('active');
 }
 
 function initializeImageManagement() {
@@ -7469,16 +6626,14 @@ function initializeImageManagement() {
   setupImageUploadPreview();
   
   const form = document.getElementById('createImageForm');
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      if (imageToEdit) {
-        updateImage();
-      } else {
-        createImage();
-      }
-    });
-  }
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (imageToEdit) {
+      updateImage();
+    } else {
+      createImage();
+    }
+  });
 }
 
 function setupImageUploadPreview() {
@@ -7486,29 +6641,25 @@ function setupImageUploadPreview() {
   const preview = document.getElementById('previewImage');
   const previewContainer = document.getElementById('imagePreview');
   
-  if (uploadInput && preview && previewContainer) {
-    uploadInput.addEventListener('change', function() {
-      if (this.files && this.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          preview.src = e.target.result;
-          previewContainer.style.display = 'block';
-        }
-        reader.readAsDataURL(this.files[0]);
+  uploadInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        previewContainer.style.display = 'block';
       }
-    });
-  }
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
 }
 
 function toggleVisibilityOptions() {
-  const visibility = document.getElementById('imageVisibility')?.value;
+  const visibility = document.getElementById('imageVisibility').value;
   const daysGroup = document.getElementById('daysInputGroup');
   const dateGroup = document.getElementById('dateInputGroup');
   
-  if (daysGroup && dateGroup) {
-    daysGroup.style.display = visibility === 'days' ? 'block' : 'none';
-    dateGroup.style.display = visibility === 'date' ? 'block' : 'none';
-  }
+  daysGroup.style.display = visibility === 'days' ? 'block' : 'none';
+  dateGroup.style.display = visibility === 'date' ? 'block' : 'none';
 }
 
 function loadImagesFromStorage() {
@@ -7541,17 +6692,15 @@ function loadSliderSettings() {
     const settings = localStorage.getItem('ring0_slider_settings');
     if (settings) {
       const parsed = JSON.parse(settings);
-      const sliderContainer = document.querySelector('.image-slider-container');
-      if (parsed.backgroundColor && sliderContainer) {
-        sliderContainer.style.background = parsed.backgroundColor;
+      if (parsed.backgroundColor) {
+        document.querySelector('.image-slider-container').style.background = parsed.backgroundColor;
         const colorOption = document.querySelector(`.color-option[data-color="${parsed.backgroundColor}"]`);
         if (colorOption) colorOption.style.borderColor = 'var(--accent)';
-        const selectedColor = document.getElementById('selectedColor');
-        if (selectedColor) selectedColor.value = parsed.backgroundColor;
+        document.getElementById('selectedColor').value = parsed.backgroundColor;
       }
-      const autoAdvance = document.getElementById('autoAdvance');
-      if (parsed.autoAdvance !== undefined && autoAdvance) {
-        autoAdvance.value = parsed.autoAdvance;
+      if (parsed.autoAdvance !== undefined) {
+        document.getElementById('autoAdvance').value = parsed.autoAdvance;
+        // Do not auto-start auto-advance on load. Only start when user saves settings.
       }
     }
   } catch (e) {
@@ -7560,22 +6709,19 @@ function loadSliderSettings() {
 }
 
 function saveSliderSettings() {
-  const backgroundColor = document.getElementById('selectedColor')?.value;
-  const autoAdvance = document.getElementById('autoAdvance')?.value;
+  const backgroundColor = document.getElementById('selectedColor').value;
+  const autoAdvance = document.getElementById('autoAdvance').value;
   
   const settings = {
-    backgroundColor: backgroundColor || '#0c1024',
-    autoAdvance: autoAdvance || '0'
+    backgroundColor: backgroundColor,
+    autoAdvance: autoAdvance
   };
   
   try {
     localStorage.setItem('ring0_slider_settings', JSON.stringify(settings));
     
-    const sliderContainer = document.querySelector('.image-slider-container');
-    if (sliderContainer) {
-      sliderContainer.style.background = settings.backgroundColor;
-    }
-    setupAutoAdvance(settings.autoAdvance);
+    document.querySelector('.image-slider-container').style.background = backgroundColor;
+    setupAutoAdvance(autoAdvance);
     
     showTemporaryMessage('Slider settings saved successfully!', 'success');
   } catch (e) {
@@ -7592,8 +6738,7 @@ function selectColor(color) {
   const selectedOption = document.querySelector(`.color-option[data-color="${color}"]`);
   if (selectedOption) selectedOption.style.borderColor = 'var(--accent)';
   
-  const selectedColor = document.getElementById('selectedColor');
-  if (selectedColor) selectedColor.value = color;
+  document.getElementById('selectedColor').value = color;
 }
 
 function setupAutoAdvance(interval) {
@@ -7608,28 +6753,28 @@ function setupAutoAdvance(interval) {
 }
 
 function createImage() {
-    const title = document.getElementById('imageTitle')?.value.trim();
-    const description = document.getElementById('imageDescription')?.value.trim();
-    const category = document.getElementById('imageCategory')?.value;
-    const targetUrl = document.getElementById('imageTargetUrl')?.value.trim() || '#';
-    const visibility = document.getElementById('imageVisibility')?.value;
+    const title = document.getElementById('imageTitle').value.trim();
+    const description = document.getElementById('imageDescription').value.trim();
+    const category = document.getElementById('imageCategory').value;
+    const targetUrl = document.getElementById('imageTargetUrl').value.trim() || '#';
+    const visibility = document.getElementById('imageVisibility').value;
     const uploadInput = document.getElementById('imageUpload');
 
-    if (!title || !description || !category || !uploadInput?.files[0]) {
+    if (!title || !description || !category || !uploadInput.files[0]) {
         showTemporaryMessage('Please fill in all required fields', 'warning');
         return;
     }
 
     let expiresAt = null;
     if (visibility === 'days') {
-        const days = parseInt(document.getElementById('imageDays')?.value || 0);
+        const days = parseInt(document.getElementById('imageDays').value);
         if (days && days > 0) {
             const expiryDate = new Date();
             expiryDate.setDate(expiryDate.getDate() + days);
             expiresAt = expiryDate.toISOString();
         }
     } else if (visibility === 'date') {
-        const dateStr = document.getElementById('imageEndDate')?.value;
+        const dateStr = document.getElementById('imageEndDate').value;
         if (dateStr) {
             expiresAt = new Date(dateStr + 'T23:59:59').toISOString();
         }
@@ -7637,6 +6782,7 @@ function createImage() {
 
     const file = uploadInput.files[0];
 
+    // ===== ENHANCED FILE VALIDATION =====
     if (!CLOUDINARY_CONFIG.ALLOWED_TYPES.includes(file.type)) {
         showTemporaryMessage('Only JPG, PNG, GIF, and WebP images are allowed', 'warning');
         return;
@@ -7646,12 +6792,15 @@ function createImage() {
         showTemporaryMessage(`File size must be less than ${CLOUDINARY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`, 'warning');
         return;
     }
+    // ===== END FILE VALIDATION =====
 
+    // Show uploading status
     const submitBtn = document.getElementById('imageSubmitBtn');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Uploading...';
     submitBtn.disabled = true;
 
+    // Create progress indicator
     const progressContainer = document.createElement('div');
     progressContainer.id = 'uploadProgress';
     progressContainer.style.cssText = `
@@ -7675,26 +6824,33 @@ function createImage() {
         </div>
     `;
 
+    // Insert progress indicator
     const formButtons = document.querySelector('#createImageForm .form-buttons');
     if (formButtons) {
         formButtons.parentNode.insertBefore(progressContainer, formButtons);
     }
 
+    // Create XMLHttpRequest for progress tracking
     const xhr = new XMLHttpRequest();
     xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.CLOUD_NAME}/image/upload`, true);
 
+    // ===== NETWORK TIMEOUT HANDLING =====
     xhr.timeout = CLOUDINARY_CONFIG.UPLOAD_TIMEOUT;
     xhr.ontimeout = function() {
         showTemporaryMessage(`Upload timed out after ${CLOUDINARY_CONFIG.UPLOAD_TIMEOUT/1000} seconds. Please try again.`, 'warning');
 
+        // Clean up progress UI
         const progressContainer = document.getElementById('uploadProgress');
         if (progressContainer) progressContainer.remove();
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
 
+        // Fallback to local storage
         fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
     };
+    // ===== END NETWORK TIMEOUT =====
 
+    // Progress tracking
     xhr.upload.addEventListener('progress', function(e) {
         if (e.lengthComputable) {
             const percent = Math.round((e.loaded / e.total) * 100);
@@ -7706,6 +6862,7 @@ function createImage() {
         }
     });
 
+    // Success handling
     xhr.onload = function() {
         const progressContainer = document.getElementById('uploadProgress');
         if (progressContainer) progressContainer.remove();
@@ -7714,17 +6871,19 @@ function createImage() {
             try {
                 const data = JSON.parse(xhr.responseText);
 
+                // ===== ENHANCED RESPONSE VALIDATION =====
                 if (!data.secure_url) {
                     console.error('Cloudinary response missing secure_url:', data);
                     throw new Error('Upload failed: No secure_url in response');
                 }
 
+                // Create image object with Cloudinary URL
                 const newImage = {
                     id: Date.now(),
                     title: title,
                     description: description,
                     category: category,
-                    imageUrl: data.secure_url,
+                    imageUrl: data.secure_url, // Store Cloudinary URL
                     targetUrl: targetUrl,
                     createdAt: new Date().toISOString(),
                     expiresAt: expiresAt,
@@ -7751,6 +6910,7 @@ function createImage() {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
 
+                // Fallback to local storage
                 fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
             }
         } else {
@@ -7759,22 +6919,27 @@ function createImage() {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
 
+            // Fallback to local storage
             fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
         }
     };
 
+    // Error handling
     xhr.onerror = function() {
         console.error('❌ Upload error:', xhr.statusText);
         showTemporaryMessage('Network error during upload. Please check your connection.', 'warning');
 
+        // Clean up progress UI
         const progressContainer = document.getElementById('uploadProgress');
         if (progressContainer) progressContainer.remove();
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
 
+        // Fallback to local storage
         fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
     };
 
+    // Handle CORS errors
     xhr.onabort = function() {
         console.warn('Upload was aborted');
         const progressContainer = document.getElementById('uploadProgress');
@@ -7790,6 +6955,7 @@ function createImage() {
     xhr.send(formData);
 }
 
+// ===== FALLBACK FUNCTION FOR LOCAL STORAGE =====
 function fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt) {
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -7798,13 +6964,13 @@ function fallbackToLocalStorage(file, title, description, category, targetUrl, e
             title: title,
             description: description,
             category: category,
-            imageData: e.target.result,
+            imageData: e.target.result, // Fallback to base64
             targetUrl: targetUrl,
             createdAt: new Date().toISOString(),
             expiresAt: expiresAt,
             status: 'active',
             order: allImages.length + 1,
-            isLocalFallback: true
+            isLocalFallback: true // Mark as fallback
         };
 
         allImages.push(fallbackImage);
@@ -7814,6 +6980,7 @@ function fallbackToLocalStorage(file, title, description, category, targetUrl, e
 
         showTemporaryMessage(`"${title}" saved locally (Cloudinary upload failed)`, 'info');
 
+        // Switch to manage images tab
         const imageTabBtn = document.querySelector('#imageContentManagementSection .admin-tab[onclick="switchImageTab(\'manage-images\')"]');
         if (imageTabBtn) {
             imageTabBtn.click();
@@ -7821,11 +6988,8 @@ function fallbackToLocalStorage(file, title, description, category, targetUrl, e
     };
     reader.onerror = function() {
         showTemporaryMessage('Failed to read image file', 'error');
-        const imageSubmitBtn = document.getElementById('imageSubmitBtn');
-        if (imageSubmitBtn) {
-            imageSubmitBtn.textContent = 'Upload Image';
-            imageSubmitBtn.disabled = false;
-        }
+        document.getElementById('imageSubmitBtn').textContent = 'Upload Image';
+        document.getElementById('imageSubmitBtn').disabled = false;
     };
     reader.readAsDataURL(file);
 }
@@ -7833,11 +6997,11 @@ function fallbackToLocalStorage(file, title, description, category, targetUrl, e
 function updateImage() {
   if (!imageToEdit) return;
 
-  const title = document.getElementById('imageTitle')?.value.trim();
-  const description = document.getElementById('imageDescription')?.value.trim();
-  const category = document.getElementById('imageCategory')?.value;
-  const targetUrl = document.getElementById('imageTargetUrl')?.value.trim() || '#';
-  const visibility = document.getElementById('imageVisibility')?.value;
+  const title = document.getElementById('imageTitle').value.trim();
+  const description = document.getElementById('imageDescription').value.trim();
+  const category = document.getElementById('imageCategory').value;
+  const targetUrl = document.getElementById('imageTargetUrl').value.trim() || '#';
+  const visibility = document.getElementById('imageVisibility').value;
 
   if (!title || !description || !category) {
     showTemporaryMessage('Please fill in all required fields', 'warning');
@@ -7845,181 +7009,22 @@ function updateImage() {
   }
 
   const imageIndex = allImages.findIndex(img => img.id === imageToEdit.id);
-  if (imageIndex === -1) return;
-
-  let expiresAt = null;
-  if (visibility === 'days') {
-    const days = parseInt(document.getElementById('imageDays')?.value || 0);
-    if (days && days > 0) {
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + days);
-      expiresAt = expiryDate.toISOString();
-    }
-  } else if (visibility === 'date') {
-    const dateStr = document.getElementById('imageEndDate')?.value;
-    if (dateStr) {
-      expiresAt = new Date(dateStr + 'T23:59:59').toISOString();
-    }
-  }
-
-  const uploadInput = document.getElementById('imageUpload');
-  if (uploadInput?.files[0]) {
-    const file = uploadInput.files[0];
-
-    if (!CLOUDINARY_CONFIG.ALLOWED_TYPES.includes(file.type)) {
-      showTemporaryMessage('Only JPG, PNG, GIF, and WebP images are allowed', 'warning');
-      return;
-    }
-
-    if (file.size > CLOUDINARY_CONFIG.MAX_FILE_SIZE) {
-      showTemporaryMessage(`File size must be less than ${CLOUDINARY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`, 'warning');
-      return;
-    }
-
-    const submitBtn = document.getElementById('imageSubmitBtn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Uploading...';
-    submitBtn.disabled = true;
-
-    const progressContainer = document.createElement('div');
-    progressContainer.id = 'uploadProgress';
-    progressContainer.className = 'upload-progress-container';
-    progressContainer.innerHTML = `
-      <div class="upload-progress-header">
-        <span class="upload-progress-title">Uploading to Cloudinary...</span>
-        <span class="upload-progress-percent" id="uploadPercent">0%</span>
-      </div>
-      <div class="upload-progress-bar">
-        <div class="upload-progress-fill" id="uploadProgressBar"></div>
-      </div>
-      <div class="upload-progress-details">
-        <span>File: ${file.name}</span>
-        <span>${(file.size / 1024 / 1024).toFixed(2)} MB</span>
-      </div>
-      <div class="upload-status-message" id="uploadStatusMessage"></div>
-    `;
-
-    const formButtons = document.querySelector('#createImageForm .form-buttons');
-    if (formButtons) {
-      formButtons.parentNode.insertBefore(progressContainer, formButtons);
-    }
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.CLOUD_NAME}/image/upload`, true);
-
-    xhr.timeout = CLOUDINARY_CONFIG.UPLOAD_TIMEOUT;
-    xhr.ontimeout = function() {
-      showTemporaryMessage(`Upload timed out after ${CLOUDINARY_CONFIG.UPLOAD_TIMEOUT/1000} seconds. Please try again.`, 'warning');
-
-      const progressContainer = document.getElementById('uploadProgress');
-      if (progressContainer) progressContainer.remove();
-      submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
-
-      fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
-    };
-
-    xhr.upload.addEventListener('progress', function(e) {
-      if (e.lengthComputable) {
-        const percent = Math.round((e.loaded / e.total) * 100);
-        const percentElement = document.getElementById('uploadPercent');
-        const progressBar = document.getElementById('uploadProgressBar');
-
-        if (percentElement) percentElement.textContent = percent + '%';
-        if (progressBar) progressBar.style.width = percent + '%';
-
-        const statusMessage = document.getElementById('uploadStatusMessage');
-        if (statusMessage) {
-          if (percent < 30) {
-            statusMessage.textContent = 'Starting upload...';
-            statusMessage.className = 'upload-status-message upload-status-info';
-          } else if (percent < 70) {
-            statusMessage.textContent = 'Uploading...';
-            statusMessage.className = 'upload-status-message upload-status-info';
-          } else if (percent < 100) {
-            statusMessage.textContent = 'Finalizing upload...';
-            statusMessage.className = 'upload-status-message upload-status-info';
-          }
-        }
+  if (imageIndex !== -1) {
+    let expiresAt = null;
+    if (visibility === 'days') {
+      const days = parseInt(document.getElementById('imageDays').value);
+      if (days && days > 0) {
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + days);
+        expiresAt = expiryDate.toISOString();
       }
-    });
-
-    xhr.onload = function() {
-      const progressContainer = document.getElementById('uploadProgress');
-      if (progressContainer) progressContainer.remove();
-
-      if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          const data = JSON.parse(xhr.responseText);
-
-          if (!data.secure_url) {
-            console.error('Cloudinary response missing secure_url:', data);
-            throw new Error('Upload failed: No secure_url in response');
-          }
-
-          allImages[imageIndex].title = title;
-          allImages[imageIndex].description = description;
-          allImages[imageIndex].category = category;
-          allImages[imageIndex].targetUrl = targetUrl;
-          allImages[imageIndex].expiresAt = expiresAt;
-          allImages[imageIndex].updatedAt = new Date().toISOString();
-          allImages[imageIndex].imageUrl = data.secure_url;
-          delete allImages[imageIndex].imageData;
-
-          saveImagesToStorage();
-          renderActiveImages();
-
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
-
-          showTemporaryMessage(`"${title}" updated successfully!`, 'success');
-          console.log('✅ Cloudinary upload successful. URL:', data.secure_url);
-
-          switchImageTab('manage-images');
-        } catch (error) {
-          console.error('❌ Upload processing error:', error);
-          showTemporaryMessage('Failed to process upload response', 'warning');
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
-
-          fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
-        }
-      } else {
-        console.error('❌ Upload failed with status:', xhr.status, xhr.statusText);
-        showTemporaryMessage(`Upload failed (HTTP ${xhr.status}). Please try again.`, 'warning');
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-
-        fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+    } else if (visibility === 'date') {
+      const dateStr = document.getElementById('imageEndDate').value;
+      if (dateStr) {
+        expiresAt = new Date(dateStr + 'T23:59:59').toISOString();
       }
-    };
+    }
 
-    xhr.onerror = function() {
-      console.error('❌ Upload error:', xhr.statusText);
-      showTemporaryMessage('Network error during upload. Please check your connection.', 'warning');
-
-      const progressContainer = document.getElementById('uploadProgress');
-      if (progressContainer) progressContainer.remove();
-      submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
-
-      fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
-    };
-
-    xhr.onabort = function() {
-      console.warn('Upload was aborted');
-      const progressContainer = document.getElementById('uploadProgress');
-      if (progressContainer) progressContainer.remove();
-      submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
-    };
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_CONFIG.UPLOAD_PRESET);
-
-    xhr.send(formData);
-  } else {
     allImages[imageIndex] = {
       ...allImages[imageIndex],
       title: title,
@@ -8030,10 +7035,182 @@ function updateImage() {
       updatedAt: new Date().toISOString()
     };
 
-    saveImagesToStorage();
-    renderActiveImages();
-    showTemporaryMessage('Image updated successfully!', 'success');
-    switchImageTab('manage-images');
+    const uploadInput = document.getElementById('imageUpload');
+    if (uploadInput.files[0]) {
+      const file = uploadInput.files[0];
+
+      // ===== ENHANCED FILE VALIDATION =====
+      if (!CLOUDINARY_CONFIG.ALLOWED_TYPES.includes(file.type)) {
+        showTemporaryMessage('Only JPG, PNG, GIF, and WebP images are allowed', 'warning');
+        return;
+      }
+
+      if (file.size > CLOUDINARY_CONFIG.MAX_FILE_SIZE) {
+        showTemporaryMessage(`File size must be less than ${CLOUDINARY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)}MB`, 'warning');
+        return;
+      }
+
+      // Show uploading status
+      const submitBtn = document.getElementById('imageSubmitBtn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Uploading...';
+      submitBtn.disabled = true;
+
+      // Create progress indicator
+      const progressContainer = document.createElement('div');
+      progressContainer.id = 'uploadProgress';
+      progressContainer.className = 'upload-progress-container';
+      progressContainer.innerHTML = `
+        <div class="upload-progress-header">
+          <span class="upload-progress-title">Uploading to Cloudinary...</span>
+          <span class="upload-progress-percent" id="uploadPercent">0%</span>
+        </div>
+        <div class="upload-progress-bar">
+          <div class="upload-progress-fill" id="uploadProgressBar"></div>
+        </div>
+        <div class="upload-progress-details">
+          <span>File: ${file.name}</span>
+          <span>${(file.size / 1024 / 1024).toFixed(2)} MB</span>
+        </div>
+        <div class="upload-status-message" id="uploadStatusMessage"></div>
+      `;
+
+      // Insert progress indicator
+      const formButtons = document.querySelector('#createImageForm .form-buttons');
+      if (formButtons) {
+        formButtons.parentNode.insertBefore(progressContainer, formButtons);
+      }
+
+      // Create XMLHttpRequest for progress tracking
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.CLOUD_NAME}/image/upload`, true);
+
+      // ===== NETWORK TIMEOUT HANDLING =====
+      xhr.timeout = CLOUDINARY_CONFIG.UPLOAD_TIMEOUT;
+      xhr.ontimeout = function() {
+        showTemporaryMessage(`Upload timed out after ${CLOUDINARY_CONFIG.UPLOAD_TIMEOUT/1000} seconds. Please try again.`, 'warning');
+
+        // Clean up progress UI
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+
+        // Fallback to local storage
+        fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+      };
+
+      // Progress tracking
+      xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          const percentElement = document.getElementById('uploadPercent');
+          const progressBar = document.getElementById('uploadProgressBar');
+
+          if (percentElement) percentElement.textContent = percent + '%';
+          if (progressBar) progressBar.style.width = percent + '%';
+
+          // Update status message based on progress
+          const statusMessage = document.getElementById('uploadStatusMessage');
+          if (statusMessage) {
+            if (percent < 30) {
+              statusMessage.textContent = 'Starting upload...';
+              statusMessage.className = 'upload-status-message upload-status-info';
+            } else if (percent < 70) {
+              statusMessage.textContent = 'Uploading...';
+              statusMessage.className = 'upload-status-message upload-status-info';
+            } else if (percent < 100) {
+              statusMessage.textContent = 'Finalizing upload...';
+              statusMessage.className = 'upload-status-message upload-status-info';
+            }
+          }
+        }
+      });
+
+      // Success handling
+      xhr.onload = function() {
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const data = JSON.parse(xhr.responseText);
+
+            // ===== ENHANCED RESPONSE VALIDATION =====
+            if (!data.secure_url) {
+              console.error('Cloudinary response missing secure_url:', data);
+              throw new Error('Upload failed: No secure_url in response');
+            }
+
+            // Update image with Cloudinary URL
+            allImages[imageIndex].imageUrl = data.secure_url; // Store Cloudinary URL
+            delete allImages[imageIndex].imageData; // Remove old base64 data
+
+            saveImagesToStorage();
+            renderActiveImages();
+
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+
+            showTemporaryMessage(`"${title}" updated successfully!`, 'success');
+            console.log('✅ Cloudinary upload successful. URL:', data.secure_url);
+
+            switchImageTab('manage-images');
+          } catch (error) {
+            console.error('❌ Upload processing error:', error);
+            showTemporaryMessage('Failed to process upload response', 'warning');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+
+            // Fallback to local storage
+            fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+          }
+        } else {
+          console.error('❌ Upload failed with status:', xhr.status, xhr.statusText);
+          showTemporaryMessage(`Upload failed (HTTP ${xhr.status}). Please try again.`, 'warning');
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+
+          // Fallback to local storage
+          fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+        }
+      };
+
+      // Error handling
+      xhr.onerror = function() {
+        console.error('❌ Upload error:', xhr.statusText);
+        showTemporaryMessage('Network error during upload. Please check your connection.', 'warning');
+
+        // Clean up progress UI
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+
+        // Fallback to local storage
+        fallbackToLocalStorage(file, title, description, category, targetUrl, expiresAt);
+      };
+
+      // Handle CORS errors
+      xhr.onabort = function() {
+        console.warn('Upload was aborted');
+        const progressContainer = document.getElementById('uploadProgress');
+        if (progressContainer) progressContainer.remove();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      };
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_CONFIG.UPLOAD_PRESET);
+
+      xhr.send(formData);
+    } else {
+      saveImagesToStorage();
+      renderActiveImages();
+      showTemporaryMessage('Image updated successfully!', 'success');
+      switchImageTab('manage-images');
+    }
   }
 }
 
@@ -8046,30 +7223,17 @@ function resetImageForm() {
   document.getElementById('imageVisibility').value = 'forever';
   document.getElementById('imageDays').value = '';
   document.getElementById('imageEndDate').value = '';
-  
-  const previewImage = document.getElementById('previewImage');
-  const imagePreview = document.getElementById('imagePreview');
-  if (previewImage && imagePreview) {
-    previewImage.src = '';
-    imagePreview.style.display = 'none';
-  }
-  
-  const daysInputGroup = document.getElementById('daysInputGroup');
-  const dateInputGroup = document.getElementById('dateInputGroup');
-  if (daysInputGroup) daysInputGroup.style.display = 'none';
-  if (dateInputGroup) dateInputGroup.style.display = 'none';
+  document.getElementById('previewImage').src = '';
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('daysInputGroup').style.display = 'none';
+  document.getElementById('dateInputGroup').style.display = 'none';
   
   imageToEdit = null;
-  const imageSubmitBtn = document.getElementById('imageSubmitBtn');
-  if (imageSubmitBtn) {
-    imageSubmitBtn.textContent = 'Upload Image';
-  }
+  document.getElementById('imageSubmitBtn').textContent = 'Upload Image';
 }
 
 function renderActiveImages() {
   const container = document.getElementById('activeImagesContainer');
-  if (!container) return;
-  
   const activeImages = allImages.filter(img => img.status === 'active');
 
   container.innerHTML = '';
@@ -8096,6 +7260,8 @@ function renderActiveImages() {
 
     const isExpired = image.expiresAt && new Date(image.expiresAt) < new Date();
     const categoryClass = `category-${image.category}`;
+
+    // Use Cloudinary URL if available, otherwise use base64 data
     const imageSource = image.imageUrl || image.imageData || 'placeholder.jpg';
 
     imageElement.innerHTML = `
@@ -8131,10 +7297,9 @@ function renderActiveImages() {
 }
 
 function filterImagesByCategory() {
-  const filterValue = document.getElementById('imageCategoryFilter')?.value || 'all';
+  const filterValue = document.getElementById('imageCategoryFilter').value;
   const activeImages = allImages.filter(img => img.status === 'active');
   const container = document.getElementById('activeImagesContainer');
-  if (!container) return;
   
   if (filterValue === 'all') {
     renderActiveImages();
@@ -8275,6 +7440,7 @@ function formatDate(dateString) {
   });
 }
 
+// ================= SLIDER UPDATES =================
 let currentImageIndex = 0;
 
 function updateSliderImages() {
@@ -8295,16 +7461,12 @@ function updateSliderImages() {
     updateImageSlider();
   } else {
     const img = document.getElementById('currentImage');
-    if (img) {
-      img.src = 'placeholder.jpg';
-      img.alt = 'No images available';
-      img.style.cursor = 'default';
-      img.onclick = null;
-    }
-    const sliderCounter = document.getElementById('sliderCounter');
-    if (sliderCounter) sliderCounter.textContent = '0/0';
-    const sliderSubtitle = document.getElementById('sliderSubtitle');
-    if (sliderSubtitle) sliderSubtitle.textContent = '';
+    img.src = 'placeholder.jpg';
+    img.alt = 'No images available';
+    img.style.cursor = 'default';
+    img.onclick = null;
+    document.getElementById('sliderCounter').textContent = '0/0';
+    document.getElementById('sliderSubtitle').textContent = '';
     
     const dots = document.querySelectorAll('.indicator-dot');
     dots.forEach(dot => dot.remove());
@@ -8315,15 +7477,17 @@ function updateImageSlider() {
   const img = document.getElementById('currentImage');
   const counter = document.getElementById('sliderCounter');
 
-  if (!img || !counter || sliderImages.length === 0) {
-    if (img) img.src = 'placeholder.jpg';
-    if (counter) counter.textContent = '0/0';
-    const sliderSubtitle = document.getElementById('sliderSubtitle');
-    if (sliderSubtitle) sliderSubtitle.textContent = '';
+  if (sliderImages.length === 0) {
+    img.src = 'placeholder.jpg';
+    img.alt = 'No images available';
+    counter.textContent = '0/0';
+    document.getElementById('sliderSubtitle').textContent = '';
     return;
   }
 
   const currentImage = sliderImages[currentImageIndex];
+
+  // Use Cloudinary URL if available, otherwise use base64 data
   const imageSource = currentImage.imageUrl || currentImage.imageData || 'placeholder.jpg';
   img.src = imageSource;
   img.alt = currentImage.title;
@@ -8383,8 +7547,6 @@ function goToImage(index) {
 
 function updateSliderIndicators() {
   const indicatorContainer = document.querySelector('.slider-indicator');
-  if (!indicatorContainer) return;
-  
   indicatorContainer.innerHTML = '';
   
   for (let i = 0; i < sliderImages.length; i++) {
@@ -8397,9 +7559,7 @@ function updateSliderIndicators() {
 
 function toggleFilterPanel() {
   const panel = document.getElementById('sliderFilterPanel');
-  if (panel) {
-    panel.classList.toggle('show');
-  }
+  panel.classList.toggle('show');
 }
 
 function applySliderFilter(category) {
@@ -8407,54 +7567,32 @@ function applySliderFilter(category) {
   updateSliderImages();
   updateSliderIndicators();
   
-  const sliderFilterPanel = document.getElementById('sliderFilterPanel');
-  if (sliderFilterPanel) {
-    sliderFilterPanel.classList.remove('show');
-  }
+  document.getElementById('sliderFilterPanel').classList.remove('show');
 }
 
+// ================= DASHBOARD NAVIGATION FUNCTIONS =================
 function openCardManagement() {
-  const dashboardMenu = document.getElementById('dashboardMenu');
-  const cardsManagementSection = document.getElementById('cardsManagementSection');
-  
-  if (dashboardMenu) dashboardMenu.style.display = 'none';
-  if (cardsManagementSection) {
-    cardsManagementSection.style.display = 'block';
-    initializeDashboard();
-  }
+  document.getElementById('dashboardMenu').style.display = 'none';
+  document.getElementById('cardsManagementSection').style.display = 'block';
+  initializeDashboard();
 }
 
 function openSystemSettings() {
-  const dashboardMenu = document.getElementById('dashboardMenu');
-  const systemSettingsSection = document.getElementById('systemSettingsSection');
-  
-  if (dashboardMenu) dashboardMenu.style.display = 'none';
-  if (systemSettingsSection) {
-    systemSettingsSection.style.display = 'block';
-    showTemporaryMessage('System Settings - Coming Soon!', 'info');
-  }
+  document.getElementById('dashboardMenu').style.display = 'none';
+  document.getElementById('systemSettingsSection').style.display = 'block';
+  showTemporaryMessage('System Settings - Coming Soon!', 'info');
 }
 
 function openAnalytics() {
-  const dashboardMenu = document.getElementById('dashboardMenu');
-  const analyticsSection = document.getElementById('analyticsSection');
-  
-  if (dashboardMenu) dashboardMenu.style.display = 'none';
-  if (analyticsSection) {
-    analyticsSection.style.display = 'block';
-    showTemporaryMessage('Analytics - Coming Soon!', 'info');
-  }
+  document.getElementById('dashboardMenu').style.display = 'none';
+  document.getElementById('analyticsSection').style.display = 'block';
+  showTemporaryMessage('Analytics - Coming Soon!', 'info');
 }
 
 function openFileManager() {
-  const dashboardMenu = document.getElementById('dashboardMenu');
-  const fileManagerSection = document.getElementById('fileManagerSection');
-  
-  if (dashboardMenu) dashboardMenu.style.display = 'none';
-  if (fileManagerSection) {
-    fileManagerSection.style.display = 'block';
-    showTemporaryMessage('File Manager - Coming Soon!', 'info');
-  }
+  document.getElementById('dashboardMenu').style.display = 'none';
+  document.getElementById('fileManagerSection').style.display = 'block';
+  showTemporaryMessage('File Manager - Coming Soon!', 'info');
 }
 
 function backToDashboard() {
@@ -8462,15 +7600,13 @@ function backToDashboard() {
     section.style.display = 'none';
   });
 
-  const dashboardMenu = document.getElementById('dashboardMenu');
-  if (dashboardMenu) {
-    dashboardMenu.style.display = 'block';
-  }
+  document.getElementById('dashboardMenu').style.display = 'block';
 
   resetCardForm();
   resetImageForm();
 }
 
+// ================= EXISTING FUNCTIONALITY =================
 const images = [
   "time_table.jpg",
   "modure_summery.jpg"
@@ -8486,8 +7622,6 @@ const toggleBtn = document.querySelector('.toggle-slider-btn');
 const mainContent = document.querySelector('main');
 
 function toggleImageSlider() {
-  if (!imageSlider || !toggleBtn || !mainContent) return;
-  
   const isOpen = imageSlider.classList.contains('open');
   
   if (isOpen) {
@@ -8503,30 +7637,26 @@ function toggleImageSlider() {
   }
 }
 
+// Menu functionality
 function toggleMenu(){
   const m=document.getElementById('menu');
-  if (m) {
-    m.style.display=m.style.display==='flex'?'none':'flex';
-  }
+  m.style.display=m.style.display==='flex'?'none':'flex';
 }
 
+// Modal functionality
 let currentFileName = '';
 
 function showModal(fileName) {
   currentFileName = fileName;
   const modal = document.getElementById('fileModal');
   const modalMessage = document.getElementById('modalMessage');
-  if (modal && modalMessage) {
-    modalMessage.textContent = `Do you want to see the "${fileName}" content and download it?`;
-    modal.classList.add('active');
-  }
+  modalMessage.textContent = `Do you want to see the "${fileName}" content and download it?`;
+  modal.classList.add('active');
 }
 
 function closeModal() {
   const modal = document.getElementById('fileModal');
-  if (modal) {
-    modal.classList.remove('active');
-  }
+  modal.classList.remove('active');
   currentFileName = '';
 }
 
@@ -8543,70 +7673,49 @@ function downloadFile() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  const fileModal = document.getElementById('fileModal');
-  const adminModal = document.getElementById('adminModal');
-  const deleteModal = document.getElementById('deleteModal');
-  const sliderFilterPanel = document.getElementById('sliderFilterPanel');
-  const addUserModal = document.getElementById('addUserModal');
-  const editUserModal = document.getElementById('editUserModal');
-  const caseModal = document.getElementById('caseModal');
-  
-  if (fileModal) {
-    fileModal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeModal();
-      }
-    });
-  }
-  
-  if (adminModal) {
-    adminModal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeAdminModal();
-      }
-    });
-  }
-  
-  if (deleteModal) {
-    deleteModal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeDeleteModal();
-      }
-    });
-  }
-  
-  if (sliderFilterPanel) {
-    sliderFilterPanel.addEventListener('click', function(e) {
-      e.stopPropagation();
-    });
-  }
-  
-  if (addUserModal) {
-    addUserModal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeAddUserModal();
-      }
-    });
-  }
-  
-  if (editUserModal) {
-    editUserModal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeEditUserModal();
-      }
-    });
-  }
-  
-  if (caseModal) {
-    caseModal.addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeCaseModal();
-      }
-    });
+// Close modal when clicking outside
+document.getElementById('fileModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeModal();
   }
 });
 
+document.getElementById('adminModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeAdminModal();
+  }
+});
+
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeDeleteModal();
+  }
+});
+
+document.getElementById('sliderFilterPanel').addEventListener('click', function(e) {
+  e.stopPropagation();
+});
+
+// User Management Modals close handlers
+document.getElementById('addUserModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeAddUserModal();
+  }
+});
+
+document.getElementById('editUserModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeEditUserModal();
+  }
+});
+
+document.getElementById('caseModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeCaseModal();
+  }
+});
+
+// Close modal with Escape key
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     closeModal();
@@ -8615,10 +7724,7 @@ document.addEventListener('keydown', function(e) {
     closeAddUserModal();
     closeEditUserModal();
     closeCaseModal();
-    const sliderFilterPanel = document.getElementById('sliderFilterPanel');
-    if (sliderFilterPanel) {
-      sliderFilterPanel.classList.remove('show');
-    }
+    document.getElementById('sliderFilterPanel').classList.remove('show');
   }
 });
 
@@ -8683,9 +7789,7 @@ function buildCardElement(p){
     }
   });
   
-  if (container) {
-    container.appendChild(c);
-  }
+  container.appendChild(c);
   return c;
 }
 
@@ -8693,8 +7797,6 @@ let cards = [];
 let lastCardCount = 0;
 
 function update(){
-  if (!container) return;
-  
   let displayedCards;
   try {
     const savedCards = localStorage.getItem('ring0_admin_cards');
@@ -8795,15 +7897,8 @@ function update(){
   });
 }
 
-async function initializePage() {
-  // Load existing cards from localStorage
+function initializePage() {
   loadCardsFromStorage();
-
-  // NEW: Load and display posts from Supabase
-  await loadPostsFromSupabase();
-
-  // NEW: Setup real-time updates
-  setupRealtimeUpdates();
 
   const activeCards = allPosts.filter(card => card.status === 'active');
   cards = activeCards.map(p => ({post:p, el:buildCardElement(p)}));
@@ -8813,70 +7908,30 @@ async function initializePage() {
   updateSliderImages();
   updateSliderIndicators();
 
+  // Load user management data
   loadDataFramework();
   loadUserData();
   loadGroups();
   updateRegistrationSwitch();
 
+  // Initialize enhanced features
   updateRegistrationSettingsUI();
   updateMainMenu();
 
   update();
   setInterval(update,1000);
 
+  // Ensure no auto-advance runs automatically on page load; user must enable via settings.
   if (autoAdvanceInterval) {
     clearInterval(autoAdvanceInterval);
     autoAdvanceInterval = null;
   }
-
+  
+  // Check registration visibility on load
   const isRegistrationEnabled = localStorage.getItem('ring0_registration_enabled') !== 'false';
   const menuButtons = document.querySelectorAll('nav button');
-  const memberSignUpBtn = menuButtons[menuButtons.length - 1];
-
-  if (memberSignUpBtn && memberSignUpBtn.textContent.toLowerCase().includes('member')) {
-    if (!isRegistrationEnabled) {
-      memberSignUpBtn.style.display = 'none';
-    }
-  }
-}
-async function initializePage() {
-  // Load existing cards from localStorage
-  loadCardsFromStorage();
-
-  // NEW: Load and display posts from Supabase
-  await loadPostsFromSupabase();
-
-  // NEW: Setup real-time updates
-  setupRealtimeUpdates();
-
-  const activeCards = allPosts.filter(card => card.status === 'active');
-  cards = activeCards.map(p => ({post:p, el:buildCardElement(p)}));
-
-  loadImagesFromStorage();
-  loadSliderSettings();
-  updateSliderImages();
-  updateSliderIndicators();
-
-  loadDataFramework();
-  loadUserData();
-  loadGroups();
-  updateRegistrationSwitch();
-
-  updateRegistrationSettingsUI();
-  updateMainMenu();
-
-  update();
-  setInterval(update,1000);
-
-  if (autoAdvanceInterval) {
-    clearInterval(autoAdvanceInterval);
-    autoAdvanceInterval = null;
-  }
-
-  const isRegistrationEnabled = localStorage.getItem('ring0_registration_enabled') !== 'false';
-  const menuButtons = document.querySelectorAll('nav button');
-  const memberSignUpBtn = menuButtons[menuButtons.length - 1];
-
+  const memberSignUpBtn = menuButtons[menuButtons.length - 1]; // Last button is "member sign up"
+  
   if (memberSignUpBtn && memberSignUpBtn.textContent.toLowerCase().includes('member')) {
     if (!isRegistrationEnabled) {
       memberSignUpBtn.style.display = 'none';
@@ -8917,6 +7972,7 @@ window.addEventListener('storage', function(e) {
   }
 });
 
+// Clean up expired images periodically
 setInterval(function() {
   const now = new Date();
   const expiredImages = allImages.filter(img => 
@@ -8932,10 +7988,11 @@ setInterval(function() {
   }
 }, 60000);
 
+// Close menu when clicking outside
 document.addEventListener('click', function(event) {
   const menu = document.getElementById('menu');
   const menuBtn = document.querySelector('.menu-btn');
-  if (menu && menuBtn && menu.style.display === 'flex' &&
+  if (menu.style.display === 'flex' &&
       !menu.contains(event.target) &&
       !menuBtn.contains(event.target)) {
     menu.style.display = 'none';
@@ -8944,7 +8001,7 @@ document.addEventListener('click', function(event) {
   const filterPanel = document.getElementById('sliderFilterPanel');
   const filterIcon = document.querySelector('.filter-icon');
   
-  if (filterPanel && filterIcon && filterPanel.classList.contains('show') && 
+  if (filterPanel.classList.contains('show') && 
       !filterPanel.contains(event.target) && 
       !filterIcon.contains(event.target)) {
     filterPanel.classList.remove('show');
@@ -9011,8 +8068,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
 </script>
 
+<!-- Modular integration scripts -->
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/realtime.js"></script>
+<script src="js/cloudinary.js"></script>
+<script src="js/sync.js"></script>
+<script src="js/offline.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+<script src="js/diagnostics.js"></script>
 
 </body>
 </html>
+

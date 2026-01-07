@@ -4061,7 +4061,7 @@ async function fetchLatestPosts() {
     }
   }
 
-  const cloudinaryConfig = window.CLOUDINARY_CONFIG || typeof CLOUDINARY_CONFIG !== 'undefined' && CLOUDINARY_CONFIG;
+  const cloudinaryConfig = window.CLOUDINARY_CONFIG || (typeof CLOUDINARY_CONFIG !== 'undefined' ? CLOUDINARY_CONFIG : null);
   if (cloudinaryConfig) {
     if (cloudinaryConfig.CLOUD_NAME && cloudinaryConfig.CLOUD_NAME.includes("example")) {
       alert("WARNING: Cloudinary cloud name may be a placeholder.");

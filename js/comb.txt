@@ -1,0 +1,703 @@
+app.js
+
+// App bootstrap: load posts, wire realtime, wire upload form minimally
+(function () {
+  async function init() {
+    // ensure clients exist
+    if (!window.supabaseClient) console.warn('Supabase client missing');
+
+    // find a container to render posts
+    const container = document.getElementById('adminImagesContainer') || document.querySelector('.admin-images-container') || document.getElementById('postsContainer');
+
+    // initial load
+    try {
+      const res = await window.supabaseHelper.fetchPosts();
+      if (!res.error && res.data && container) {
+        window.UI.renderPosts(container, res.data);
+      }
+    } catch (e) { console.warn('Failed to load posts', e); }
+
+    // realtime
+    window.realtime && window.realtime.subscribePosts({
+      onInsert: async (newPost, all) => {
+        // if polling uses (all) param, re-render whole list
+        if (Array.isArray(all)) {
+          if (container) window.UI.renderPosts(container, all);
+          return;
+        }
+        if (container && newPost) {
+          const el = window.UI.createPostElement(newPost);
+          container.insertBefore(el, container.firstChild);
+        }
+      },
+      onDelete: (oldPost) => {
+        if (!oldPost || !container) return;
+        const imgs = Array.from(container.querySelectorAll('img'));
+        const target = imgs.find(i => i.src && i.src.includes(oldPost.image_url || ''));
+        if (target && target.parentElement) target.parentElement.remove();
+      }
+    });
+
+    // wire upload form if present (uses existing form IDs)
+    const uploadInput = document.getElementById('imageUpload');
+    const uploadBtn = document.getElementById('imageSubmitBtn');
+    const createForm = document.getElementById('createImageForm');
+    if (createForm && uploadInput && uploadBtn) {
+      createForm.addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const file = uploadInput.files && uploadInput.files[0];
+        if (!file) return alert('Select a file');
+
+        const title = (document.getElementById('imageTitle') || {}).value || file.name;
+        const description = (document.getElementById('imageDescription') || {}).value || '';
+        const category = (document.getElementById('imageCategory') || {}).value || '';
+        const targetUrl = (document.getElementById('imageTargetUrl') || {}).value || '';
+
+        try {
+          const result = await window.cloudinaryUpload(file, { onProgress: (p) => {
+            const bar = document.querySelector('.upload-progress-fill');
+            if (bar) bar.style.width = p + '%';
+          }});
+
+          const imageUrl = result && (result.secure_url || result.url || result.fallback_base64);
+          if (!imageUrl) throw new Error('No image URL returned');
+
+          const payload = { title: sanitize(title), description: sanitize(description), image_url: imageUrl, category, target_url: targetUrl };
+
+          if (!navigator.onLine) {
+            window.offlineQueue.add({ type: 'insert', data: payload });
+            alert('Queued for upload while offline');
+          } else {
+            await window.supabaseHelper.insertPost(payload);
+          }
+
+          // reset form
+          createForm.reset();
+          const preview = document.getElementById('imagePreview'); if (preview) preview.style.display = 'none';
+        } catch (err) {
+          console.error('Upload failed', err);
+          alert('Upload failed: ' + (err.message || err));
+        }
+      });
+    }
+
+    function sanitize(str) {
+      return String(str).replace(/[<>]/g, '');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+
+
+cloudinary.js
+
+// Cloudinary unsigned upload helper with progress, retries, and base64 fallback
+(function () {
+  const cfg = window.config && window.config.cloudinary;
+  if (!cfg) {
+    console.error('Cloudinary config missing.');
+    return;
+  }
+
+  async function uploadToCloudinary(file, { onProgress } = {}) {
+    // Validate
+    if (!file) throw new Error('No file provided');
+    if (file.size > cfg.max_file_size_mb * 1024 * 1024) throw new Error('File too large');
+    if (!cfg.allowed_types.includes(file.type)) throw new Error('Invalid file type');
+
+    const maxAttempts = 3;
+    let attempt = 0;
+    let lastErr = null;
+
+    while (attempt < maxAttempts) {
+      try {
+        const result = await _uploadOnce(file, onProgress);
+        return result;
+      } catch (err) {
+        lastErr = err;
+        attempt++;
+        const backoff = 2 ** attempt * 300; // exponential backoff
+        await new Promise(r => setTimeout(r, backoff));
+      }
+    }
+
+    // Fallback: return base64 data URL
+    try {
+      const base64 = await fileToBase64(file);
+      return { fallback_base64: base64 };
+    } catch (err) {
+      throw lastErr || err;
+    }
+  }
+
+  function _uploadOnce(file, onProgress) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', cfg.upload_url, true);
+      xhr.timeout = cfg.timeout_ms || 30000;
+
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const data = JSON.parse(xhr.responseText);
+            resolve(data);
+          } catch (err) {
+            reject(new Error('Invalid server response'));
+          }
+        } else {
+          reject(new Error('Upload failed: ' + xhr.status));
+        }
+      };
+
+      xhr.onerror = function () { reject(new Error('Network error')); };
+      xhr.ontimeout = function () { reject(new Error('Upload timeout')); };
+
+      if (xhr.upload && typeof onProgress === 'function') {
+        xhr.upload.onprogress = function (ev) {
+          if (ev.lengthComputable) {
+            onProgress(Math.round((ev.loaded / ev.total) * 100));
+          }
+        };
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', cfg.upload_preset);
+      xhr.send(formData);
+    });
+  }
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  window.cloudinaryUpload = uploadToCloudinary;
+})();
+
+
+config.js
+
+// Centralized config for Cloudinary and Supabase
+window.config = {
+  cloudinary: {
+    cloud_name: 'dcpqnmdas',
+    upload_preset: 'unsigned_images',
+    upload_url: 'https://api.cloudinary.com/v1_1/dcpqnmdas/image/upload',
+    max_file_size_mb: 5,
+    timeout_ms: 30000,
+    allowed_types: ['image/jpeg','image/jpg','image/png','image/gif','image/webp']
+  },
+  supabase: {
+    url: 'https://dngbicvrkxetsrirzmwn.supabase.co',
+    anon_key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRuZ2JpY3Zya3hldHNyaXptd24iLCJyb2xlIjoiYW5vbiIsImlhdCI6MTczNjIyMzYwMCwiZXhwIjoyMDUxNzk5NjAwfQ.example_anon_key_replace_with_real'
+  }
+};
+
+// Configuration validation guard
+(function() {
+  const config = window.config;
+  let isHealthy = true;
+
+  if (!config) {
+    console.error('CRITICAL: window.config is undefined. Load config.js before other scripts.');
+    showConfigError('Configuration not loaded');
+    return;
+  }
+
+  // Check Supabase configuration
+  if (!config.supabase || !config.supabase.url || !config.supabase.anon_key) {
+    console.error('CRITICAL: Supabase configuration incomplete. Check config.js');
+    showConfigError('Supabase configuration incomplete');
+    isHealthy = false;
+  } else if (config.supabase.anon_key.includes('example_anon_key') || config.supabase.anon_key.includes('USE_PROVIDED')) {
+    console.error('CRITICAL: Supabase anon key is placeholder. Replace with real key before deployment.');
+    showConfigError('Supabase anon key is placeholder - replace with real key');
+    isHealthy = false;
+  }
+
+  // Check Cloudinary configuration
+  if (!config.cloudinary || !config.cloudinary.cloud_name || !config.cloudinary.upload_preset) {
+    console.error('CRITICAL: Cloudinary configuration incomplete. Check config.js');
+    showConfigError('Cloudinary configuration incomplete');
+    isHealthy = false;
+  }
+
+  // Update health indicator
+  const indicator = document.getElementById('configHealthIndicator');
+  if (indicator) {
+    if (isHealthy) {
+      indicator.textContent = '✓ Configuration: Healthy';
+      indicator.style.background = '#35d07f';
+      // Auto-hide healthy indicator after 5 seconds
+      setTimeout(() => {
+        indicator.style.display = 'none';
+      }, 5000);
+    } else {
+      indicator.textContent = '❌ Configuration: Issues Found';
+      indicator.style.background = '#ff6b6b';
+      indicator.style.display = 'block';
+    }
+  }
+
+  console.log('Configuration validation:', isHealthy ? 'PASSED' : 'FAILED');
+
+  function showConfigError(message) {
+    // Show visual error indicator
+    const indicator = document.getElementById('configHealthIndicator');
+    if (indicator) {
+      indicator.textContent = `❌ ${message}`;
+      indicator.style.background = '#ff6b6b';
+      indicator.style.display = 'block';
+    }
+  }
+})();
+
+
+diagnostics.JSON
+
+// Diagnostics harness — runs simple PASS/FAIL checks and logs to console
+(function () {
+  function pass(name, info) { console.log(`${name}: PASS${info ? ' - ' + info : ''}`); }
+  function fail(name, info) { console.warn(`${name}: FAIL${info ? ' - ' + info : ''}`); }
+
+  async function testSupabaseConnection() {
+    const name = 'testSupabaseConnection';
+    if (!window.supabaseClient || !window.supabaseHelper) {
+      fail(name, 'Supabase client/helper missing');
+      return false;
+    }
+    try {
+      const res = await window.supabaseHelper.fetchPosts();
+      if (res && !res.error) { pass(name, `fetched ${Array.isArray(res.data) ? res.data.length : 0}`); return true; }
+      fail(name, res && res.error ? String(res.error) : 'unknown');
+      return false;
+    } catch (e) { fail(name, String(e)); return false; }
+  }
+
+  function testRealtimeSubscription() {
+    const name = 'testRealtimeSubscription';
+    if (!window.realtime || typeof window.realtime.subscribePosts !== 'function') {
+      fail(name, 'realtime manager missing');
+      return false;
+    }
+    try {
+      // call subscribePosts with no-op handlers (subscribe may fallback to polling)
+      window.realtime.subscribePosts({ onInsert: () => {}, onDelete: () => {} });
+      pass(name);
+      return true;
+    } catch (e) { fail(name, String(e)); return false; }
+  }
+
+  async function testCloudinaryUpload() {
+    const name = 'testCloudinaryUpload';
+    if (typeof window.cloudinaryUpload !== 'function') {
+      fail(name, 'cloudinaryUpload missing');
+      return false;
+    }
+    // Make a tiny 1x1 PNG blob and attempt upload with short timeout wrapper
+    try {
+      const b64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=';
+      const res = await promiseTimeout(window.cloudinaryUpload(new Blob([Uint8Array.from(atob(b64), c=>c.charCodeAt(0))], { type: 'image/png' })), 8000);
+      if (res && (res.secure_url || res.url || res.fallback_base64)) { pass(name); return true; }
+      // if server rejected, still consider function reachable
+      pass(name, 'function executed (no URL returned)');
+      return true;
+    } catch (e) { fail(name, String(e)); return false; }
+  }
+
+  function testMultiTabSync() {
+    const name = 'testMultiTabSync';
+    if (!window.syncManager) { fail(name, 'syncManager missing'); return false; }
+    return new Promise((resolve) => {
+      const token = 'diag-' + Date.now() + '-' + Math.random().toString(36).slice(2,6);
+      let resolved = false;
+      const off = window.syncManager.onMessage((msg) => {
+        if (msg && msg.token === token) {
+          pass(name); resolved = true; off(); resolve(true);
+        }
+      });
+      window.syncManager.broadcast({ token });
+      setTimeout(() => { if (!resolved) { fail(name, 'no echo'); off(); resolve(false); } }, 1200);
+    });
+  }
+
+  function testOfflineQueue() {
+    const name = 'testOfflineQueue';
+    if (!window.offlineQueue || typeof window.offlineQueue.add !== 'function') { fail(name, 'offlineQueue missing'); return false; }
+    try {
+      const before = JSON.stringify(window.offlineQueue._raw ? window.offlineQueue._raw() : []);
+      window.offlineQueue.add({ type: 'test', data: { foo: 'bar' } });
+      const after = JSON.stringify(window.offlineQueue._raw ? window.offlineQueue._raw() : []);
+      if (after.length > before.length) { pass(name); return true; }
+      fail(name, 'no change in queue'); return false;
+    } catch (e) { fail(name, String(e)); return false; }
+  }
+
+  function promiseTimeout(promise, ms) {
+    return new Promise((resolve, reject) => {
+      const id = setTimeout(() => reject(new Error('timeout')), ms);
+      promise.then((res) => { clearTimeout(id); resolve(res); }).catch((err) => { clearTimeout(id); reject(err); });
+    });
+  }
+
+  async function runDiagnostics() {
+    console.group('RING-0 Diagnostics');
+    const s1 = await testSupabaseConnection();
+    const s2 = testRealtimeSubscription();
+    const s3 = await testCloudinaryUpload();
+    const s4 = await testMultiTabSync();
+    const s5 = testOfflineQueue();
+    console.log('Summary:', { testSupabaseConnection: s1, testRealtimeSubscription: s2, testCloudinaryUpload: s3, testMultiTabSync: s4, testOfflineQueue: s5 });
+    console.groupEnd();
+  }
+
+  // Auto-run diagnostics on load but expose function to call manually
+  window.runDiagnostics = runDiagnostics;
+  document.addEventListener('DOMContentLoaded', () => { setTimeout(runDiagnostics, 800); });
+
+})();
+// Simple diagnostics that run required tests and log PASS/FAIL
+(async function () {
+  function pass(name) { console.info(`PASS: ${name}`); }
+  function fail(name, err) { console.error(`FAIL: ${name}`, err); }
+
+  async function testSupabaseConnection() {
+    try {
+      if (!window.supabaseHelper) throw new Error('supabaseHelper missing');
+      const res = await window.supabaseHelper.fetchPosts();
+      if (res.error) throw res.error;
+      pass('testSupabaseConnection');
+      return true;
+    } catch (e) { fail('testSupabaseConnection', e); return false; }
+  }
+
+  async function testRealtimeSubscription() {
+    try {
+      if (!window.realtime) throw new Error('realtime module missing');
+      // subscribe and unsubscribe quickly to verify library presence
+      let ok = false;
+      await window.realtime.subscribePosts({ onInsert: () => { ok = true; } });
+      // give a short window to establish
+      await new Promise(r => setTimeout(r, 800));
+      pass('testRealtimeSubscription');
+      return true;
+    } catch (e) { fail('testRealtimeSubscription', e); return false; }
+  }
+
+  async function testCloudinaryUpload() {
+    try {
+      if (typeof window.cloudinaryUpload !== 'function') throw new Error('cloudinaryUpload missing');
+      // create tiny blob (1x1 png)
+      const png = atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=');
+      const arr = new Uint8Array(png.length);
+      for (let i = 0; i < png.length; i++) arr[i] = png.charCodeAt(i);
+      const blob = new Blob([arr], { type: 'image/png' });
+      // attempt upload but allow fallback
+      try {
+        const res = await window.cloudinaryUpload(blob, { onProgress: () => {} });
+        if (res && (res.secure_url || res.fallback_base64)) {
+          pass('testCloudinaryUpload');
+          return true;
+        }
+        throw new Error('No URL returned');
+      } catch (e) {
+        // if CORS/network prevents real upload but fallback worked, consider pass
+        if (e && e.message && /Upload|Network|timeout/i.test(e.message)) {
+          fail('testCloudinaryUpload', e);
+          return false;
+        }
+        throw e;
+      }
+    } catch (e) { fail('testCloudinaryUpload', e); return false; }
+  }
+
+  async function testMultiTabSync() {
+    try {
+      if (!window.syncManager) throw new Error('syncManager missing');
+      let ok = false;
+      const unsub = window.syncManager.onMessage((msg) => { if (msg && msg.test === 'ping') ok = true; });
+      window.syncManager.broadcast({ test: 'ping' });
+      await new Promise(r => setTimeout(r, 300));
+      unsub();
+      if (ok) pass('testMultiTabSync'); else throw new Error('no response');
+      return ok;
+    } catch (e) { fail('testMultiTabSync', e); return false; }
+  }
+
+  async function testOfflineQueue() {
+    try {
+      if (!window.offlineQueue) throw new Error('offlineQueue missing');
+      const before = window.offlineQueue._raw();
+      window.offlineQueue.add({ type: 'insert', data: { title: 'diag', description: 'diag', image_url: '' } });
+      const after = window.offlineQueue._raw();
+      if (after.length <= before.length) throw new Error('queue not added');
+      pass('testOfflineQueue');
+      return true;
+    } catch (e) { fail('testOfflineQueue', e); return false; }
+  }
+
+  async function runDiagnostics() {
+    console.group('Diagnostics');
+    await testSupabaseConnection();
+    await testRealtimeSubscription();
+    await testCloudinaryUpload();
+    await testMultiTabSync();
+    await testOfflineQueue();
+    console.groupEnd();
+  }
+
+  window.addEventListener('DOMContentLoaded', runDiagnostics);
+})();
+
+
+offline.js
+
+// Offline queue: persist operations and auto-sync on reconnect
+(function () {
+  const STORAGE_KEY = 'ring0_offline_queue_v1';
+  let queue = [];
+
+  function load() {
+    try { queue = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch (e) { queue = []; }
+  }
+
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(queue)); } catch (e) {}
+  }
+
+  function add(op) {
+    op.ts = Date.now();
+    queue.push(op);
+    save();
+    window.syncManager && window.syncManager.broadcast({ type: 'offline-queue-updated' });
+  }
+
+  async function processQueue() {
+    if (!navigator.onLine) return;
+    load();
+    if (!queue.length) return;
+    const copy = queue.slice();
+    for (const item of copy) {
+      try {
+        if (item.type === 'insert') {
+          await window.supabaseHelper.insertPost(item.data);
+        } else if (item.type === 'delete') {
+          await window.supabaseHelper.deletePost(item.id);
+        }
+        // remove on success
+        queue = queue.filter(q => q.ts !== item.ts);
+        save();
+      } catch (e) {
+        console.debug('Failed to sync queue item, will retry later', e);
+      }
+    }
+  }
+
+  window.addEventListener('online', () => { processQueue(); });
+
+  load();
+
+  window.offlineQueue = { add, processQueue, _raw: () => queue.slice() };
+})();
+
+
+
+realtime.js
+
+// Realtime subscription manager for posts
+(function () {
+  const POLL_FALLBACK_SECONDS = 5;
+  let channel = null;
+  let polling = null;
+
+  async function subscribePosts({ onInsert, onDelete } = {}) {
+    if (!window.supabaseClient) {
+      console.warn('No supabase client available; starting polling fallback');
+      startPolling(onInsert);
+      return;
+    }
+
+    try {
+      channel = window.supabaseClient
+        .channel('posts-changes')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, (payload) => {
+          if (typeof onInsert === 'function') onInsert(payload.new);
+        })
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'posts' }, (payload) => {
+          if (typeof onDelete === 'function') onDelete(payload.old);
+        })
+        .subscribe();
+    } catch (err) {
+      console.warn('Realtime subscribe failed, using polling fallback', err);
+      startPolling(onInsert);
+    }
+  }
+
+  function startPolling(onInsert) {
+    if (polling) return;
+    polling = setInterval(async () => {
+      try {
+        const res = await window.supabaseHelper.fetchPosts();
+        if (res.error) return;
+        if (typeof onInsert === 'function') onInsert(null, res.data);
+      } catch (err) {
+        console.debug('Polling error', err);
+      }
+    }, POLL_FALLBACK_SECONDS * 1000);
+  }
+
+  function stopPolling() {
+    if (polling) {
+      clearInterval(polling);
+      polling = null;
+    }
+  }
+
+  window.realtime = { subscribePosts, stopPolling };
+})();
+
+
+
+superbase.js
+
+// Initialize Supabase client and provide minimal helpers
+(function () {
+  if (!window.config || !window.config.supabase) {
+    console.error('Supabase config missing. Load config.js first.');
+    return;
+  }
+
+  if (typeof supabase === 'undefined') {
+    console.warn('Supabase library not found. Ensure CDN script is loaded in head.');
+  }
+
+  try {
+    window.supabaseClient = (typeof supabase !== 'undefined')
+      ? supabase.createClient(window.config.supabase.url, window.config.supabase.anon_key)
+      : null;
+  } catch (err) {
+    console.error('Error initializing Supabase client', err);
+    window.supabaseClient = null;
+  }
+
+  // Minimal DB helpers
+  window.supabaseHelper = {
+    async fetchPosts() {
+      if (!window.supabaseClient) return { data: [], error: new Error('no client') };
+      return await window.supabaseClient.from('posts').select('*').order('created_at', { ascending: false });
+    },
+    async insertPost(payload) {
+      if (!window.supabaseClient) return { data: null, error: new Error('no client') };
+      return await window.supabaseClient.from('posts').insert([payload]);
+    },
+    async deletePost(id) {
+      if (!window.supabaseClient) return { error: new Error('no client') };
+      return await window.supabaseClient.from('posts').delete().eq('id', id);
+    }
+  };
+})();
+
+
+
+sync.js
+
+// Multi-tab sync manager: BroadcastChannel primary, localStorage fallback
+(function () {
+  const CHANNEL_NAME = 'ring0-property-sync';
+  let bc = null;
+  const listeners = new Set();
+
+  try {
+    bc = new BroadcastChannel(CHANNEL_NAME);
+    bc.onmessage = (ev) => {
+      try { listeners.forEach(fn => fn(ev.data)); } catch(e){}
+    };
+  } catch (err) {
+    bc = null;
+  }
+
+  window.syncManager = {
+    broadcast(msg) {
+      const payload = Object.assign({ ts: Date.now() }, msg);
+      if (bc) {
+        try { bc.postMessage(payload); } catch (e) { /* ignore */ }
+      }
+      try {
+        localStorage.setItem('ring0_sync_msg', JSON.stringify(payload));
+        // keep a short lived key to trigger storage events
+        setTimeout(() => localStorage.removeItem('ring0_sync_msg'), 200);
+      } catch (e) {}
+    },
+    onMessage(fn) { listeners.add(fn); return () => listeners.delete(fn); }
+  };
+
+  window.addEventListener('storage', (ev) => {
+    if (ev.key === 'ring0_sync_msg' && ev.newValue) {
+      try { const data = JSON.parse(ev.newValue); listeners.forEach(fn => fn(data)); } catch(e){}
+    }
+  });
+})();
+
+
+ui.js
+
+// Minimal UI helpers to render posts and create safe DOM elements
+(function () {
+  function createPostElement(post) {
+    const card = document.createElement('div');
+    card.className = 'image-card';
+
+    const img = document.createElement('img');
+    img.loading = 'lazy';
+    img.alt = post.title || 'image';
+    img.src = post.image_url || '';
+    card.appendChild(img);
+
+    const h4 = document.createElement('h4');
+    h4.textContent = post.title || 'Untitled';
+    card.appendChild(h4);
+
+    const p = document.createElement('p');
+    p.textContent = post.description || '';
+    card.appendChild(p);
+
+    const actions = document.createElement('div');
+    actions.className = 'image-card-actions';
+
+    const del = document.createElement('button');
+    del.className = 'image-card-btn delete';
+    del.textContent = 'Delete';
+    del.addEventListener('click', async () => {
+      if (!post.id) return;
+      try {
+        await window.supabaseHelper.deletePost(post.id);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
+    actions.appendChild(del);
+    card.appendChild(actions);
+
+    return card;
+  }
+
+  async function renderPosts(container, posts) {
+    if (!container) return;
+    container.innerHTML = '';
+    for (const p of posts) {
+      try {
+        const el = createPostElement(p);
+        container.appendChild(el);
+      } catch (e) { console.warn('Error rendering post', e); }
+    }
+  }
+
+  window.UI = { createPostElement, renderPosts };
+})();

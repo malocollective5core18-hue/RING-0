@@ -10,7 +10,7 @@ window.config = {
   },
   supabase: {
     url: 'https://dngbicvrkxetsrirzmwn.supabase.co',
-    anon_key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRuZ2JpY3Zya3hldHNyaXptd24iLCJyb2xlIjoiYW5vbiIsImlhdCI6MTczNjIyMzYwMCwiZXhwIjoyMDUxNzk5NjAwfQ.example_anon_key_replace_with_real'
+    anon_key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRuZ2JpY3Zya3hldHNyaXJ6bXduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY5MzAyMTMsImV4cCI6MjA4MjUwNjIxM30.RVDwv00a5ZuwKPbgq8dVYuMhAP0L55VYxmaCHRzM6dY'
   }
 };
 
